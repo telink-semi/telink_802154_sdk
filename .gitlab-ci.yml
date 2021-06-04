@@ -64,3 +64,4 @@ clean_cov:
     - rm -rf * .git*    
     - ls -a  
   when: manual
+  
