@@ -12,7 +12,7 @@ build:
   before_script:
   script:
     - which tc32-elf-gcc
-    - chmod +x tl_802154_sdk/*.sh
+    - chmod +x tl_802154_sdk/tools/*.sh
     - date
     - ls ./tl_802154_sdk/
     - $TC32_ECLIPSE_BUILD  -data ${CI_PIPELINE_ID}_WS1  -import ./tl_802154_sdk/ -cleanBuild tl_802154_sdk/assoc_coor_8258
