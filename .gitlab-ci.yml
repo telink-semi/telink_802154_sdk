@@ -1,11 +1,65 @@
 stages:
-  - build
+  - scc
+  - genLicense
+  - checkLicense
+  - build_tc32
+  - build_riscv
   - cov
-  - clean_build
-  - clean_cov
+  - fossid
+  - plainPW_check
+  - misspellChecking
 
-build:
-  stage: build
+scc:
+  stage: scc
+  script:
+    - echo "Enter scc stage"
+    - scc | tee scc.txt
+    - bash /usr/bin/scc_calc.sh
+    - echo  "The End SCC result:"
+    - cat scc.txt
+  artifacts:
+    paths:
+    - scc.txt
+
+genLicense:
+  variables:
+    CODE_COMPILE_ARCH: 'EAGLE_ANDES'
+    COV_PF_CATALOG: 'ZIGBEE'
+  stage: genLicense
+  before_script:
+  script:
+    - date
+    - generat_license_list
+    - date
+  artifacts:
+    paths:
+    - "license_list_gen.txt"
+    - "no_license_list_gen.txt"
+    - "mismatch_license_file_gen.txt"
+  when: manual
+
+checkLicense:
+  variables:
+    CODE_COMPILE_ARCH: 'EAGLE_ANDES'
+    COV_PF_CATALOG: 'ZIGBEE'
+  stage: checkLicense
+  allow_failure: yes
+  before_script:
+  script:
+    - date
+    - check_license
+    #- generat_license_list # For no license files
+    - date
+
+  artifacts:
+    when: always
+    paths:
+    - "mismatch_license.txt"
+    - "no_license*.txt"
+    - "unknow_type_file.txt"
+
+build_tc32:
+  stage: build_tc32
   tags:
     - LINUX
     - TC32
@@ -14,15 +68,39 @@ build:
     - which tc32-elf-gcc
     - chmod +x tl_802154_sdk/tools/*.sh
     - date
-    - ls ./tl_802154_sdk/
-    - $TC32_ECLIPSE_BUILD  -data ${CI_PIPELINE_ID}_WS1  -import ./tl_802154_sdk/ -cleanBuild tl_802154_sdk/assoc_coor_8258
+    - ls tl_802154_sdk/build/tlsr_tc32
+    - $TC32_ECLIPSE_BUILD  -data ${CI_PIPELINE_ID}_WS1  -import tl_802154_sdk/build/tlsr_tc32 -cleanBuild tl_802154_sdk/associate_coordinator_8258
     - date
 
   artifacts:
     paths:
-    - "tl_802154_sdk/assoc_coor_8258/*.bin"
-    - "tl_802154_sdk/assoc_coor_8258/*.lst"
-    - "tl_802154_sdk/assoc_coor_8258/*.elf"
+    - "tl_802154_sdk/build/tlsr_tc32/associate_coordinator_8258/*.bin"
+    - "tl_802154_sdk/build/tlsr_tc32/associate_coordinator_8258/*.lst"
+    - "tl_802154_sdk/build/tlsr_tc32/associate_coordinator_8258/*.elf"
+
+build_riscv:
+  variables:    
+    CODE_COMPILE_ARCH: 'EAGLE_ANDES'    
+    COV_PF_CATALOG: 'ZIGBEE'  
+  stage: build_riscv
+  before_script:
+  script:
+    - ls
+    - pwd
+    - chmod +x tl_802154_sdk/tools/*.sh
+    - date
+    - echo "--------------- Will build Demo -----------------"
+    - echo #$ECLIPSE_PROJECT/$ECLIPSE_BUILD_TARGET
+    - $ANDESRISCV_ECLIPSE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import tl_802154_sdk/build/tlsr_riscv -cleanBuild tl_802154_sdk/associate_coordinator_9518
+    - date
+    - simpleMemoryMap.sh riscv32-elf-readelf | tee mm.csv
+    - MemoryMap_Pretty.py mm.csv | tee mm_pretty.csv
+
+  artifacts:
+    paths:
+    - "tl_802154_sdk/build/tlsr_riscv/associate_coordinator_9518/output/*.bin"
+    - "tl_802154_sdk/build/tlsr_riscv/associate_coordinator_9518/*.elf"
+    - mm_pretty.csv
     
 # The cov job definition
 cov:
@@ -36,32 +114,44 @@ cov:
     - TC32
   before_script:  
   script:    
-    - chmod +x tl_802154_sdk/*.sh  
-    - $COV_B COV_$CI_PROJECT_NAME $COV_B_TEMPLATE/$CODE_COMPILE_ARCH $TC32_ECLIPSE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import ./tl_802154_sdk/  -cleanBuild tl_802154_sdk/assoc_coor_8258    
+    - chmod +x tl_802154_sdk/tools/*.sh    
+    - $COV_B COV_$CI_PROJECT_NAME $COV_B_TEMPLATE/$CODE_COMPILE_ARCH $TC32_ECLIPSE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import tl_802154_sdk/build/tlsr_tc32  -cleanBuild tl_802154_sdk/associate_coordinator_8258   
     - $COV_A COV_$CI_PROJECT_NAME    
     - cov_add_commit_steam_project_2_platform.sh
   when: manual
         
-clean_build:
-  stage: clean_build
+fossid:
+  tags:
+    - FOSSID
+  stage: fossid
+  script:
+    - fossid_check.sh
+  artifacts:
+    paths:
+    - fossid*.txt
+  when: manual
+
+plainPW_check:
+  stage: plainPW_check 
+  script:
+    - echo "Enter Plain Password checking stage"
+    - check_plain_weak_password | tee result.txt
+    - ls -l result.txt
+    - echo "Error List:"
+    - cat result.txt
+  artifacts:
+    paths:
+    - result.txt
+  when: manual
+
+misspellChecking:
+  stage: misspellChecking
   tags:
     - LINUX
-    - TC32
   script:
-    - ls -a
-    - rm -r * .git*
-    - ls -a
-  when: always
-
-clean_cov:  
-  stage: clean_cov  
-  tags:    
-    - COV    
-    - LINUX    
-    - TC32    
-  script:    
-    - ls -a    
-    - rm -rf * .git*    
-    - ls -a  
-  when: manual
-  
+    - echo "--------------- Begin ------------------------"
+    - misspell-check
+    - echo "---------------- End -----------------------"
+  artifacts:
+    paths:
+    - misspell_result.txt
