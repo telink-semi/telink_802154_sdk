@@ -10,6 +10,7 @@ stages:
   - misspellChecking
 
 scc:
+  stage: scc
   script:
     - echo "Enter scc stage"
     - scc | tee scc.txt
