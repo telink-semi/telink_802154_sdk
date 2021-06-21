@@ -51,9 +51,11 @@
 #include "./chip_826x/gpio_default.h"
 #elif MCU_CORE_8258
 #include "./chip_8258/driver_8258.h"
-
 #elif MCU_CORE_8278
 #include "./chip_8278/driver_8278.h"
 #include "./chip_8278/gpio_default.h"
+#elif defined (MCU_CORE_B91)
+#include "chip_b91/driver_b91.h"
+#include "chip_b91/gpio_default.h"
 #endif
 

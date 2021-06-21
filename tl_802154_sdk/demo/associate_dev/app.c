@@ -36,7 +36,7 @@ unsigned short coor_addr_short = 0x0;
 unsigned short pan_id = 0;
 
 //rx packet
-volatile u8 uaer_packet[16] = {0};
+volatile u8 user_packet[16] = {0};
 //poll data
 void dev_config(void)
 {
@@ -108,36 +108,25 @@ void add_key_material(void)
 my_coor_t received_coor = {{{0}},0};
 void dev_active_scan(void)
 {
-    unsigned char *pData;
-    pData = ev_buf_allocate(sizeof(zb_mac_mlme_scan_req_t));
-    if (NULL == pData) {
-        while(1);
-        return;
-    }
+	zb_mac_mlme_scan_req_t  scan_req;
+	zb_mac_mlme_scan_req_t *pscan_req = (zb_mac_mlme_scan_req_t *)&scan_req;
+    memset(pscan_req, 0, sizeof(zb_mac_mlme_scan_req_t));
     received_coor.coor_size = 0;
-    memset(pData, 0, sizeof(zb_mac_mlme_scan_req_t));
-
-	zb_mac_mlme_scan_req_t *mlme_scanReq = (zb_mac_mlme_scan_req_t *)pData;
-	mlme_scanReq->scanType = ACTIVE_SCAN;
-	mlme_scanReq->scanChannels = (1<<DEFAULT_CHANNEL);//scan 24 channel
-	mlme_scanReq->scanDuration = 2;
-	tl_zbMacScanRequest(mlme_scanReq);
-	ev_buf_free(pData);
+    pscan_req->scanType = ACTIVE_SCAN;
+    pscan_req->scanChannels = (1<<DEFAULT_CHANNEL);//scan 24 channel
+    pscan_req->scanDuration = 2;
+    tl_MacMlmeScanRequest(scan_req);
 }
 
 void MyScanCnfCb(unsigned char *pData)
 {
+	if(pData==NULL) return;
 	zb_mac_mlme_scan_conf_t *pConf = (zb_mac_mlme_scan_conf_t *)pData;
     if ((pConf->status == MAC_SUCCESS) && (pConf->scanType == ACTIVE_SCAN)) {
     	if (BeaconReqTimer) {
     		TL_ZB_TIMER_CANCEL(&BeaconReqTimer);
     	}
     }
-
-    if (pData) {
-        ev_buf_free((u8 *)pData);
-    }
-
 	if(received_coor.coor_size);
     dev_start_associate();
 }
@@ -148,7 +137,6 @@ void dev_start_associate(void)
     my_pan_t *pan_ptr = NULL;
     my_pan_t *pan_of_highest_lqi = NULL;
     u8 len=0;
-    unsigned char *pData = NULL;
     u32 pan_size = received_coor.coor_size;
     if(pan_size)
     	pan_of_highest_lqi = &received_coor.coor_beacon[0];
@@ -162,35 +150,32 @@ void dev_start_associate(void)
     		pan_of_highest_lqi = pan_ptr;
     }
 
-    //try to associate to the pan with highest lqi
-    pData = ev_buf_allocate(sizeof(zb_mlme_associate_req_t));
-    if (NULL == pData) {
-        while(1);
-    }
-	zb_mlme_associate_req_t *pMlmeAssocReq = (zb_mlme_associate_req_t *)pData;
-	memset((u8 *)pMlmeAssocReq, 0, sizeof(zb_mlme_associate_req_t));
 
-	pMlmeAssocReq->logicalChannel = pan_of_highest_lqi->channel;
-	pMlmeAssocReq->coordPanId = pan_of_highest_lqi->pan_id;
-	pMlmeAssocReq->capbilityInfo.rcvOnWhenIdle = 1; //allocate address and rx on when idle
-	pMlmeAssocReq->capbilityInfo.allocAddr = 1;
+
+    zb_mlme_associate_req_t assoc_req;
+	zb_mlme_associate_req_t *passoc_req = (zb_mlme_associate_req_t *)&assoc_req;
+	memset((u8 *)passoc_req, 0, sizeof(zb_mlme_associate_req_t));
+
+	passoc_req->logicalChannel = pan_of_highest_lqi->channel;
+	passoc_req->coordPanId = pan_of_highest_lqi->pan_id;
+	passoc_req->capbilityInfo.rcvOnWhenIdle = 1; //allocate address and rx on when idle
+	passoc_req->capbilityInfo.allocAddr = 1;
 
 	if(pan_of_highest_lqi->coor_addr.addrMode == ZB_ADDR_64BIT_DEV){
-		pMlmeAssocReq->coordAddress.addrMode = ZB_ADDR_64BIT_DEV;
-		ZB_IEEE_ADDR_COPY(pMlmeAssocReq->coordAddress.addr.extAddr, (u8 *)&pan_of_highest_lqi->coor_addr.addr.extAddr);
+		passoc_req->coordAddress.addrMode = ZB_ADDR_64BIT_DEV;
+		ZB_IEEE_ADDR_COPY(passoc_req->coordAddress.addr.extAddr, (u8 *)&pan_of_highest_lqi->coor_addr.addr.extAddr);
 		len = 8;
 		tl_zbMacAttrSet(MAC_ATTR_COORDINATOR_EXTENDED_ADDRESS,(u8 *)&pan_of_highest_lqi->coor_addr.addr.extAddr,len);
 	}else{
-		pMlmeAssocReq->coordAddress.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST;
+		passoc_req->coordAddress.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST;
 		len = 2;
-		memcpy(&pMlmeAssocReq->coordAddress.addr.shortAddr, &pan_of_highest_lqi->coor_addr.addr.shortAddr, len);
+		memcpy(&passoc_req->coordAddress.addr.shortAddr, &pan_of_highest_lqi->coor_addr.addr.shortAddr, len);
 		tl_zbMacAttrSet(MAC_ATTR_COORDINATOR_SHORT_ADDRESS,(u8 *)&pan_of_highest_lqi->coor_addr.addr.shortAddr,len);
 	}
 		len = 2;
 		tl_zbMacAttrSet(MAC_ATTR_PAN_ID,(u8 *)&pan_of_highest_lqi->pan_id,len);
 
-    tl_zbMacAssociateRequest(pData);
-    ev_buf_free(pData);
+	tl_MacMlmeAssociateRequestSend(assoc_req);
 }
 
 
@@ -214,19 +199,15 @@ void dev_start_scan(void)
 volatile static unsigned int tdebug_cnt_poll_req = 0;
 void poll_data_req_send(void *arg)
 {
-	unsigned char *pData;
-    pData = ev_buf_allocate(sizeof(mac_mlme_poll_req_t));
-    if (NULL == pData) {
-        while(1);
-    }
-    mac_mlme_poll_req_t *req = (mac_mlme_poll_req_t *)pData;
-	memset((u8 *)req, 0, sizeof(mac_mlme_poll_req_t));
-	req->coordAddrMode = ZB_ADDR_64BIT_DEV;
+	mac_mlme_poll_req_t	 poll_req;
+    mac_mlme_poll_req_t *ppoll_req = (mac_mlme_poll_req_t *)&poll_req;
+	memset((u8 *)ppoll_req, 0, sizeof(mac_mlme_poll_req_t));
+	ppoll_req->coordAddrMode = ZB_ADDR_64BIT_DEV;
 	u8 len;
-	tl_zbMacAttrGet(MAC_ATTR_COORDINATOR_EXTENDED_ADDRESS,(u8 *)&req->coordAddr.extAddr,&len);
-	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&req->coordPanId,&len);
-	tl_zbMacPollRequst(pData);
-	ev_buf_free(pData);
+	tl_zbMacAttrGet(MAC_ATTR_COORDINATOR_EXTENDED_ADDRESS,(u8 *)&ppoll_req->coordAddr.extAddr,&len);
+	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&ppoll_req->coordPanId,&len);
+	tl_MacMlmePollRequestSend(poll_req);
+	tdebug_cnt_poll_req++;
 }
 
 
@@ -263,6 +244,7 @@ int PollDataTimerCb(void *arg)
 
 void MyAssocCnfCb(unsigned char *pData)
 {
+	if(pData==NULL) return;
 	u8 len=0;
 	zb_mlme_associate_conf_t *pCnf = (zb_mlme_associate_conf_t *)pData;
 	len=8;
@@ -280,10 +262,6 @@ void MyAssocCnfCb(unsigned char *pData)
     	mac_set_pollRate(NORMAL_POLL_RATE);//data request
 	    ota_queryStart(QUERY_RATE);	// ota query 30S
     }
-
-    if (pData) {
-        ev_buf_free(pData);
-    }
 }
 
 void MyDataIndCb(unsigned char *pData)
@@ -294,11 +272,10 @@ void MyDataIndCb(unsigned char *pData)
 	u8 ret = tl_appDataIndicate((u8 *)pInd->msdu,len);
 	if(ret!=SUCCESS)//not OTA packet
 	{
-		if(len>sizeof(uaer_packet))
-			len = sizeof(uaer_packet);
-		memcpy((u8 *)uaer_packet,(u8 *)pInd->msdu,len);
+		if(len>sizeof(user_packet))
+			len = sizeof(user_packet);
+		memcpy((u8 *)user_packet,(u8 *)pInd->msdu,len);
 	}
-	ev_buf_free(pData);
 }
 
 volatile static unsigned int tdebug_cnt_poll_cnf = 0;
@@ -311,13 +288,13 @@ void MyPollCnfCb(unsigned char *pData)
     {
 //    	TL_SCHEDULE_TASK(poll_data_req_send, (void *)NULL);
     }
-    ev_buf_free(pData);
 }
 
 
 
 void MyBeaconIndCb(unsigned char *pData)
 {
+	if(pData==NULL)  return;
 	zb_mlme_beacon_notify_ind_t *pInd = (zb_mlme_beacon_notify_ind_t *)pData;
 	u8 size = received_coor.coor_size+1;
 	if(size<MAX_ED_SCAN_RESULTS_SUPPORTED)
@@ -330,10 +307,6 @@ void MyBeaconIndCb(unsigned char *pData)
 		pan_ptr->permitjoin = pInd->panDesc.gtsPermit;
 		received_coor.coor_size++;
 	}
-
-    if (pData) {
-        ev_buf_free(pData);
-    }
 }
 
 
@@ -346,15 +319,4 @@ void MyDataCnfCb(unsigned char *pData)
 	{
 			//if the status isn't MAC_SUCCESS,user can retransmit in app layer
 	}
-    ev_buf_free(pData);
 }
-
-
-
-
-
-
-
-
-
-

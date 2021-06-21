@@ -247,16 +247,6 @@ static inline unsigned int gpio_read(GPIO_PinTypeDef pin)
 	return BM_IS_SET(reg_gpio_in(pin), pin & 0xff);
 }
 
-/**
- * @brief     This function read a pin's cache from the buffer.
- * @param[in] pin - the pin needs to read.
- * @param[in] p - the buffer from which to read the pin's level.
- * @return    the state of the pin.
- */
-static inline unsigned int gpio_read_cache(GPIO_PinTypeDef pin, unsigned char *p)
-{
-	return p[pin>>8] & (pin & 0xff);
-}
 
 
 /**

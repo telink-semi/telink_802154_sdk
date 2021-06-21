@@ -40,7 +40,11 @@
 
 //flash address
 #define	FLASH_OTA_NEWIMAGE_ADDR						0x40000//256K
+#if defined(MCU_CORE_B91)
+#define	OTA_TLNK_KEYWORD_ADDROFFSET					0x20
+#else
 #define	OTA_TLNK_KEYWORD_ADDROFFSET					8
+#endif
 #define	OTA_MAX_IMAGE_SIZE							0x30000
 
 //callback

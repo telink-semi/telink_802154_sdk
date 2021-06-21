@@ -113,9 +113,10 @@ void ota_startReqHandler(u8 *pd)
 	}
 	u8 payload_len = sizeof(ota_cmd_t);
 	u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
-	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)ev_buf_allocate(req_cmd_len+payload_len);
+	zb_mscp_data_req_t  coor_req;
+	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)&coor_req;
 	if(msg){
-		memset(msg, 0, req_cmd_len+payload_len);
+		memset(msg, 0, req_cmd_len);
 		ota_cmd_t rsp;
 		rsp.hdr.appId = TL_SPECIFIC_ID_OTA;
 		rsp.hdr.cmdId = TL_CMD_OTA_START_RSP;
@@ -154,8 +155,7 @@ void ota_startReqHandler(u8 *pd)
 #endif
 
 		u8 *ptr = (u8 *)&rsp;
-		tl_MacDataRequestSend(msg,ptr,payload_len);
-		ev_buf_free((u8 *)msg);
+		tl_MacMcpsDataRequestSend(coor_req,ptr,payload_len);
 	}
 }
 
@@ -172,9 +172,10 @@ void ota_stopReqHandler(u8 *pd)
 	{
 		u8 payload_len = sizeof(ota_cmd_t);
 		u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
-		zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)ev_buf_allocate(req_cmd_len+payload_len);
+		zb_mscp_data_req_t  coor_req;
+		zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)&coor_req;
 		if(msg){
-			memset(msg, 0, req_cmd_len+payload_len);
+			memset(msg, 0, req_cmd_len);
 			ota_cmd_t rsp;
 			rsp.hdr.appId = TL_SPECIFIC_ID_OTA;
 			rsp.hdr.cmdId = TL_CMD_OTA_STOP_RSP;
@@ -211,8 +212,7 @@ void ota_stopReqHandler(u8 *pd)
 			msg->sec.key_index = 0x05;
 	#endif
 			u8 *ptr = (u8 *)&rsp;
-			tl_MacDataRequestSend(msg,ptr,payload_len);
-			ev_buf_free((u8 *)msg);
+			tl_MacMcpsDataRequestSend(coor_req,ptr,payload_len);
 		}
 	}
 
@@ -231,9 +231,10 @@ void ota_dataReqHandler(u8 *pd)
 	{
 		u8 payload_len = sizeof(ota_data_t);
 		u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
-		zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)ev_buf_allocate(payload_len+req_cmd_len);
+		zb_mscp_data_req_t  coor_req;
+		zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)&coor_req;
 		if(msg){
-			memset(msg, 0, req_cmd_len+payload_len);
+			memset(msg, 0, req_cmd_len);
 			ota_data_t rsp;
 			rsp.hdr.appId = TL_SPECIFIC_ID_OTA;
 			rsp.hdr.cmdId = TL_CMD_OTA_DATA_RSP;
@@ -288,8 +289,7 @@ void ota_dataReqHandler(u8 *pd)
 			msg->sec.key_index = 0x05;
 #endif
 			u8 *ptr = (u8 *)&rsp;
-			tl_MacDataRequestSend(msg,ptr,payload_len);
-			ev_buf_free((u8 *)msg);
+			tl_MacMcpsDataRequestSend(coor_req,ptr,payload_len);
 		}
 	}
 }
@@ -334,9 +334,9 @@ void ota_mcuReboot(void)
 		baseAddr = FLASH_OTA_NEWIMAGE_ADDR;
 		newAddr = 0;
 	}
-	flash_write((newAddr + 8),1,&flashInfo);//enable boot-up flag
+	flash_write((newAddr + OTA_TLNK_KEYWORD_ADDROFFSET),1,&flashInfo);//enable boot-up flag
 	flashInfo = 0;
-	flash_write((baseAddr + 8),1,&flashInfo);//disable boot-up flag
+	flash_write((baseAddr + OTA_TLNK_KEYWORD_ADDROFFSET),1,&flashInfo);//disable boot-up flag
 	SYSTEM_RESET();//reset
 }
 
@@ -451,15 +451,15 @@ void ota_DataProcess(u8 len, u8 *pData)
 			ota_headercnt += datalen;
 			u32 baseAddr = (mcuBootAddr) ? 0 : FLASH_OTA_NEWIMAGE_ADDR;
 			u8 flag=0;
-			if((flashOffsetAddr<=8)&&((datalen+flashOffsetAddr)>=8)&&(datalen>0))
+			if((flashOffsetAddr<=OTA_TLNK_KEYWORD_ADDROFFSET)&&((datalen+flashOffsetAddr)>=OTA_TLNK_KEYWORD_ADDROFFSET)&&(datalen>0))
 			{
 					flag = 1;
-					pData[i+8-flashOffsetAddr] = 0xff;
+					pData[i+OTA_TLNK_KEYWORD_ADDROFFSET-flashOffsetAddr] = 0xff;
 			}
 			cfs_flash_write(baseAddr + flashOffsetAddr, datalen, &pData[i]);
 
 			if(flag)
-				pData[i+8-flashOffsetAddr] = 0x4b;
+				pData[i+OTA_TLNK_KEYWORD_ADDROFFSET-flashOffsetAddr] = 0x4b;
 
 			flashOffsetAddr += datalen;
 
@@ -553,10 +553,11 @@ void ota_startReq(void)
 	ota_cmd_t req;
 	u8 payload_len = sizeof(ota_cmd_t);
 	u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
-	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t*)ev_buf_allocate(req_cmd_len+payload_len);
+	zb_mscp_data_req_t	dev_req;
+	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t*)&dev_req;
 	if(msg)
 	{
-		memset(msg, 0, req_cmd_len+payload_len);
+		memset(msg, 0, req_cmd_len);
 		req.hdr.appId = TL_SPECIFIC_ID_OTA;
 		req.hdr.cmdId = TL_CMD_OTA_START_REQ;
 		req.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
@@ -591,8 +592,7 @@ void ota_startReq(void)
 		msg->sec.key_index = 0x05;
 #endif
 		u8 *ptr = (u8 *)&req;
-		tl_MacDataRequestSend(msg,ptr,payload_len);
-		ev_buf_free((u8 *)msg);
+		tl_MacMcpsDataRequestSend(dev_req,ptr,payload_len);
 	}
 }
 
@@ -603,9 +603,10 @@ void ota_dataReq(void)
 	ota_cmd_t req;
 	u8 payload_len = sizeof(ota_cmd_t);
 	u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
-	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)ev_buf_allocate(req_cmd_len+payload_len);
+	zb_mscp_data_req_t dev_req;
+	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)&dev_req;
 	if(msg){
-		memset(msg, 0, req_cmd_len+payload_len);
+		memset(msg, 0, req_cmd_len);
 		req.hdr.appId = TL_SPECIFIC_ID_OTA;
 		req.hdr.cmdId = TL_CMD_OTA_DATA_REQ;
 		req.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
@@ -640,8 +641,7 @@ void ota_dataReq(void)
 		msg->sec.key_index = 0x05;
 #endif
 		u8 *ptr = (u8 *)&req;
-		tl_MacDataRequestSend(msg,ptr,payload_len);
-		ev_buf_free((u8 *)msg);
+		tl_MacMcpsDataRequestSend(dev_req,ptr,payload_len);
 	}
 }
 
@@ -651,10 +651,11 @@ void ota_stopReq(void)
 	ota_cmd_t req;
 	u8 payload_len = sizeof(ota_cmd_t);
 	u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
-	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t*)ev_buf_allocate(req_cmd_len+payload_len);
+	zb_mscp_data_req_t dev_req;
+	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t*)&dev_req;
 	if(msg)
 	{
-		memset(msg, 0, req_cmd_len+payload_len);
+		memset(msg, 0, req_cmd_len);
 		req.hdr.appId = TL_SPECIFIC_ID_OTA;
 		req.hdr.cmdId = TL_CMD_OTA_STOP_REQ;
 		req.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
@@ -689,8 +690,7 @@ void ota_stopReq(void)
 		msg->sec.key_index = 0x05;
 #endif
 		u8 *ptr = (u8 *)&req;
-		tl_MacDataRequestSend(msg,ptr,payload_len);
-		ev_buf_free((u8 *)msg);
+		tl_MacMcpsDataRequestSend(dev_req,ptr,payload_len);
 	}
 }
 

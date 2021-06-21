@@ -232,7 +232,6 @@ u8 tl_zbMacAttrSet(u8 attribute, u8 *value, u8 index);
 u8 tl_zbMacAttrGet(u8 attribute, u8* value, u8* len);
 
 
-
 void mac_secMaterial_Init(u8 coldReset);
 //void *mac_secMaterial_alloc(mac_secMaterial_t type);
 //char mac_secMaterial_free(mac_secMaterial_t type, void *item);

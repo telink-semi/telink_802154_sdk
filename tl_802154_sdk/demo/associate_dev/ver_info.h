@@ -28,11 +28,11 @@
 	#endif
 #elif (MCU_CORE_8278)
 #define CHIP_ID  					0x78
+#elif (MCU_CORE_B91)
+#define CHIP_ID  					0x95
 #else
 #define CHIP_ID  					0x0000
 #endif
 
 
 #define	IMAGE_TYPE								  	((CHIP_ID << 8) | IMAGE_TYPE_DEVICE)
-
-

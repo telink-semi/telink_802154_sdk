@@ -11,7 +11,7 @@ my_device_t end_device = {{0},0,0};
 unsigned short coor_addr_short = 0x2211;
 
 unsigned char  device_ext_addr[8] = {0};
-unsigned short device_addr_short = 0x3344;
+unsigned short device_addr_short = 0x3300;
 unsigned short pan_id = 0xbeef;
 
 
@@ -24,7 +24,7 @@ unsigned char test_key[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
 static int data_send_indir_timer_cb(void *arg);
 
 //rx packet
-volatile u8 uaer_packet[16] = {0};
+volatile u8 user_packet[16] = {0};
 
 void coor_config(void)
 {
@@ -99,23 +99,18 @@ void add_key_material(void)
 
 void pan_start(void)
 {
-    unsigned char *pData;
-    pData = ev_buf_allocate(sizeof(zb_mac_mlme_start_req_t));
-    if (NULL == pData) {
-        while(1);
-    }
-    memset(pData, 0, sizeof(zb_mac_mlme_start_req_t));
-    zb_mac_mlme_start_req_t *pStartReq = (zb_mac_mlme_start_req_t *)pData;
+    zb_mac_mlme_start_req_t start_req;
+    zb_mac_mlme_start_req_t *pstart_req = (zb_mac_mlme_start_req_t *)&start_req;
+    memset(pstart_req, 0, sizeof(zb_mac_mlme_start_req_t));
 	/* TODO: fill zero params if necessary */
-    pStartReq->panId = pan_id;
-    pStartReq->logicalChannel = DEFAULT_CHANNEL;
-    pStartReq->channelPage = 0;
-    pStartReq->panCoordinator = 1;
-    pStartReq->coordRealignment = 0;
-    pStartReq->beaconOrder = ZB_TURN_OFF_ORDER;
-    pStartReq->superframeOrder = ZB_TURN_OFF_ORDER;
-	tl_zbMacStartRequest(pStartReq);
-	ev_buf_free(pData);
+    pstart_req->panId = pan_id;
+    pstart_req->logicalChannel = DEFAULT_CHANNEL;
+    pstart_req->channelPage = 0;
+    pstart_req->panCoordinator = 1;
+    pstart_req->coordRealignment = 0;
+    pstart_req->beaconOrder = ZB_TURN_OFF_ORDER;
+    pstart_req->superframeOrder = ZB_TURN_OFF_ORDER;
+    tl_MacMlmeStartRequest(start_req);
 }
 
 
@@ -124,7 +119,7 @@ void pan_start(void)
 int data_send_indir_timer_cb(void *arg)
 {
 	TL_SCHEDULE_TASK(mac_send_data_indirect, (void *)NULL);
-	return 0;
+	return -1;
 }
 
 
@@ -133,11 +128,8 @@ int data_send_indir_timer_cb(void *arg)
 void mac_send_data_indirect(void *arg)
 {
 	static unsigned int test_cnt = 0xaa000001;
-	unsigned char *pData = ev_buf_allocate(sizeof(zb_mscp_data_req_t)+sizeof(test_cnt));
-	if (NULL == pData) {
-		while(1);
-	}
-	zb_mscp_data_req_t *req = (zb_mscp_data_req_t *)pData;
+	zb_mscp_data_req_t data_req;
+	zb_mscp_data_req_t *req = (zb_mscp_data_req_t *)&data_req;
 	memset(req, 0, sizeof(zb_mscp_data_req_t));
 	req->srcAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
 	req->dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
@@ -156,11 +148,17 @@ void mac_send_data_indirect(void *arg)
 	memcpy(req->sec.key_source,default_key_source,sizeof(default_key_source));
 	req->sec.key_index = default_key_index;
 
-	u8 *pay = (u8 *)&test_cnt;
+
+	u8 *pay = ev_buf_allocate(sizeof(test_cnt));//allocate ev buffer
+	if (NULL == pay) {
+		while(1);
+	}
 	u8 pay_len = sizeof(test_cnt);
+	memcpy((u8 *)pay,(u8 *)&test_cnt,pay_len);
 	test_cnt++;
-	tl_MacDataRequestSend(req,pay,pay_len);
-	ev_buf_free(pData);
+	tl_MacMcpsDataRequestSend(data_req,pay,pay_len);
+	ev_buf_free(pay);//free payload ev buffer
+
 }
 
 
@@ -170,16 +168,17 @@ void data_send(void)
     if (data_send_indir_timer) {
     	TL_ZB_TIMER_CANCEL(&data_send_indir_timer);
     }
-
-    data_send_indir_timer = TL_ZB_TIMER_SCHEDULE(data_send_indir_timer_cb, NULL, 5000);
+    data_send_indir_timer = TL_ZB_TIMER_SCHEDULE(data_send_indir_timer_cb, NULL, 2000);
 }
 
 void MyAssociateIndCb(unsigned char *pData)
 {
+	if(pData==NULL) return;
 	zb_mlme_associate_ind_t *pInd = (zb_mlme_associate_ind_t *)pData;
 
-	if(pData==NULL) return;
+
 	extAddr_t device_address;
+	device_addr_short++;
 	u16 address = device_addr_short;
 	ZB_IEEE_ADDR_COPY(device_address, pInd->devAddress);
 	ZB_IEEE_ADDR_COPY(device_ext_addr, pInd->devAddress);
@@ -188,21 +187,15 @@ void MyAssociateIndCb(unsigned char *pData)
 	u8 len=0;
 	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&end_device.pan_id,&len);
 	add_key_material();//add device info to key table
-	ev_buf_free(pData);//release zb buffer
 
-    u8 *pRsp;
-    pRsp = ev_buf_allocate(sizeof(zb_mlme_associate_resp_t));//ev buffer for user
-    if (NULL == pRsp) {
-        while(1);
-    }
-    memset(pRsp, 0, sizeof(zb_mlme_associate_resp_t));
-	zb_mlme_associate_resp_t *pResp = (zb_mlme_associate_resp_t *)pRsp;
+	zb_mlme_associate_resp_t AssociateRsp;
+	zb_mlme_associate_resp_t *pResp = (zb_mlme_associate_resp_t *)&AssociateRsp;
+    memset(pResp, 0, sizeof(zb_mlme_associate_resp_t));
 	ZB_IEEE_ADDR_COPY(pResp->devAddress, device_address);
 	pResp->shortAddress = address;
 	pResp->status = MAC_SUCCESS;
-	tl_zbMacAssociateResponse(pRsp);
-	data_send();
-	ev_buf_free(pRsp);
+	tl_MacMlmeAssociateResponseSend(AssociateRsp);
+	data_send();//indirect send data
 }
 
 
@@ -210,8 +203,6 @@ void MyStartCnfCb(unsigned char *pData)
 {
 	if(pData==NULL)  	return;
 //	mac_mlme_startCnf_t *pCnf = (mac_mlme_startCnf_t *)pData;
-
-    ev_buf_free(pData);
 }
 
 
@@ -225,7 +216,6 @@ void MyDataCnfCb(unsigned char *pData)
 	{
 			//if the status isn't MAC_SUCCESS,user can retransmit in app layer
 	}
-    ev_buf_free(pData);
     gpio_toggle(DEBUG_PIN1);
 }
 
@@ -234,8 +224,6 @@ void MyPullIndCb(unsigned char *pData)
 	if(pData==NULL)  	return;
 //	mac_mlme_poll_ind_t *pInd = (mac_mlme_poll_ind_t *)pData;
 //	pInd->addrMode
-//
-    ev_buf_free(pData);
     gpio_toggle(DEBUG_PIN2);
 }
 
@@ -247,7 +235,6 @@ void MyStateIndCb(unsigned char *pData)
 	{
 	//check  associateresponse state
 	}
-	ev_buf_free(pData);
 }
 
 
@@ -257,17 +244,11 @@ void MyDataIndCb(unsigned char *pData)
 	if(pData==NULL)  	return;
 	zb_mscp_data_ind_t * pInd = (zb_mscp_data_ind_t *)pData;
 	u8 len = pInd->msduLength;
-	if((pInd->srcAddr.addrMode==ZB_ADDR_64BIT_DEV&&ZB_IEEE_ADDR_CMP(&pInd->srcAddr.addr,end_device.extAddr))||
-	   (end_device.shortAddr==pInd->srcAddr.addr.shortAddr))
+	u8 ret = tl_appDataIndicate((u8 *)pInd->msdu,len);
+	if(ret!=SUCCESS)
 	{
-		u8 ret = tl_appDataIndicate((u8 *)pInd->msdu,len);
-		if(ret!=SUCCESS)
-		{
-			if(len>sizeof(uaer_packet))
-				len = sizeof(uaer_packet);
-			memcpy((u8 *)uaer_packet,(u8 *)pInd->msdu,len);
-		}
+		if(len>sizeof(user_packet))
+			len = sizeof(user_packet);
+		memcpy((u8 *)user_packet,(u8 *)pInd->msdu,len);
 	}
-
-	ev_buf_free(pData);
 }

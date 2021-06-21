@@ -1033,7 +1033,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacDataRequest(p)			tl_upper2macPost(TL_Q_NWK2MAC, MAC_MCPS_DATA_REQ, p)
+#define tl_zbMacDataRequest(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MCPS_DATA_REQ, p)
 
 
 
@@ -1055,7 +1055,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacResetRequst(p)			tl_upper2macPost(TL_Q_NWK2MAC, MAC_MLME_RESET_REQ, p)
+#define tl_zbMacResetRequst(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_RESET_REQ, p)
 
 /*
  * MLME-POLL.request primitive from upper layer to MAC layer
@@ -1065,7 +1065,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacPollRequst(p)			tl_upper2macPost(TL_Q_NWK2MAC, MAC_MLME_POLL_REQ, p)
+#define tl_zbMacPollRequst(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_POLL_REQ, p)
 
 /*
  * MLME-ASSOCIATE.request primitive from upper layer to MAC layer
@@ -1075,7 +1075,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacAssociateRequest(p)		tl_upper2macPost(TL_Q_NWK2MAC, MAC_MLME_ASSOCIATE_REQ, p)
+#define tl_zbMacAssociateRequest(p)		tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_ASSOCIATE_REQ, p)
 
 /*
  * MLME-ASSOCIATE.response primitive from upper layer to MAC layer
@@ -1085,7 +1085,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define	tl_zbMacAssociateResponse(p)	tl_upper2macPost(TL_Q_NWK2MAC, MAC_MLME_ASSOCIATE_RES, p)
+#define	tl_zbMacAssociateResponse(p)	tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_ASSOCIATE_RES, p)
 
 /*
  * MLME-ORPHAN.response primitive from upper layer to MAC layer
@@ -1095,7 +1095,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacOrphanResponse(p)		tl_upper2macPost(TL_Q_NWK2MAC, MAC_MLME_ORPHAN_RES, p)
+#define tl_zbMacOrphanResponse(p)		tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_ORPHAN_RES, p)
 
 /*
  * MLME-SCAN.request primitive from upper layer to MAC layer
@@ -1105,7 +1105,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacScanRequest(p)			tl_upper2macPost(TL_Q_NWK2MAC, MAC_MLME_SCAN_REQ, p)
+#define tl_zbMacScanRequest(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_SCAN_REQ, p)
 
 
 /*
@@ -1116,7 +1116,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacStartRequest(p)			tl_upper2macPost(TL_Q_NWK2MAC, MAC_MLME_START_REQ, p)
+#define tl_zbMacStartRequest(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_START_REQ, p)
 
 /*
  * MLME-DISASSOCIATE.request primitive from upper layer to MAC layer
@@ -1126,7 +1126,7 @@ void tl_zbMacMcpsDataRequestProc(void *arg);
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacDisassociateRequest(p)	tl_upper2macPost(TL_Q_NWK2MAC, MAC_MLME_DISASSOCIATE_REQ, p)
+#define tl_zbMacDisassociateRequest(p)	tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_DISASSOCIATE_REQ, p)
 
 /*
  * MAC layer to NWK layer primitive

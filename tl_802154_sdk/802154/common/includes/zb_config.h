@@ -163,5 +163,5 @@
 #define ZB_DEFAULT_TX_POWER_IDX						0 /* idx = 0, means MAX TX power. */
 
 
-
+u32 zbBufferSizeGet(void);
 #endif	/* ZB_CONFIG_H */

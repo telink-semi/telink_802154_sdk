@@ -77,7 +77,7 @@ extern "C" {
 #endif
 
 /* HCI interface */
-#define	ZBHCI_UART					1
+#define	ZBHCI_UART					0
 #define ZBHCI_USB_CDC				0
 #define ZBHCI_USB_HID				0
 #define ZBHCI_USB_PRINT				0
@@ -106,7 +106,8 @@ extern "C" {
 #define BOARD_8258_DONGLE			3
 #define BOARD_8278_EVK				4
 #define BOARD_8278_DONGLE			5
-
+#define BOARD_9518_EVK				6
+#define BOARD_9518_DONGLE			7
 
 /* Board define */
 #if defined(MCU_CORE_826x)
@@ -124,7 +125,8 @@ extern "C" {
 	#define CLOCK_SYS_CLOCK_HZ  	32000000
 
 #elif defined(MCU_CORE_B91)
-	#define BOARD					BOARD_9518_EVK
+	#define FLASH_CAP_SIZE_1M		1
+	#define BOARD					BOARD_9518_DONGLE
 	/* system clock config */
 	#define CLOCK_SYS_CLOCK_HZ  	48000000
 #else

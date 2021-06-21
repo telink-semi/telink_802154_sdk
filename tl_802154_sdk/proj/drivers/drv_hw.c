@@ -108,6 +108,8 @@ static void internalFlashSizeCheck(void){
 	u32 mid = 0;
 #if  defined(MCU_CORE_8278)
 	mid = flash_read_mid();
+#elif  defined(MCU_CORE_B91)
+	mid = flash_read_mid();
 #elif defined(MCU_CORE_8258)
 	flash_read_mid((u8 *)&mid);
 #endif
@@ -230,6 +232,7 @@ startup_state_e drv_platform_init(void)
 		PM_CLOCK_INIT();
 #endif
 	}else{
+
 #if PM_ENABLE
 		drv_pm_wakeupTimeUpdate();
 #endif

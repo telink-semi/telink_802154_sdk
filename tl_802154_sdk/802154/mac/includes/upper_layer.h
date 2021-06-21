@@ -25,5 +25,33 @@ typedef void (* UpperLayerCb_Type)(unsigned char *pData);
 extern void UpperLayerCallbackSet(unsigned char Index, UpperLayerCb_Type Callback);
 extern UpperLayerCb_Type UpperLayerCallbackGet(unsigned char Index);
 extern void UpperLayerProcess(void);
-extern u8 tl_MacDataRequestSend(zb_mscp_data_req_t *req,u8 *payload,u8 pay_len);
+
+
+//the APIs are called in APP layer
+//MCPS-data.request
+u8 tl_MacMcpsDataRequestSend(zb_mscp_data_req_t req,u8 *payload,u8 pay_len);
+
+//MLME-poll.request
+u8  tl_MacMlmePollRequestSend(mac_mlme_poll_req_t req);
+
+//MLME-associate.request
+u8  tl_MacMlmeAssociateRequestSend(zb_mlme_associate_req_t req);
+
+//MLME-associate.response
+u8  tl_MacMlmeAssociateResponseSend(zb_mlme_associate_resp_t req);
+
+//MLME-orphan.response
+u8  tl_MacMlmeOrphanResponseSend(mac_mlme_orphan_resp_t req);
+
+//MLME-scan.request
+u8  tl_MacMlmeScanRequest(zb_mac_mlme_scan_req_t req);
+
+//MLME-start.request
+u8  tl_MacMlmeStartRequest(zb_mac_mlme_start_req_t req);
+
+//MLME-disassociate.request
+u8  tl_MacMlmeDisassociateRequestSend(zb_mlme_disassociate_req_t req);
+
+
+
 #endif /* _UPPER_LAYER_H_ */

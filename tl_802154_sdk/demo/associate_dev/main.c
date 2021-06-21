@@ -2,7 +2,7 @@
 #include "app.h"
 #include "sampledevice.h"
 
-volatile u32 tick = 0;
+volatile u32 tick = 0xaa55;
 int main(void)
 {
 	u8 isRetention = drv_platform_init();
@@ -46,6 +46,5 @@ int main(void)
 #endif
     }
 }
-
 
 
