@@ -1,3 +1,23 @@
+## V1.3.0.1
+### Features
+* support 9518 chip
+* optimize ota demo
+### Bug Fixes
+* N/A
+### BREAKING CHANGES
+* N/A
+
+### Features
+* 支持9518
+* 优化OTA示例
+### Bug Fixes
+* N/A
+### BREAKING CHANGES
+* N/A
+
+
+
+
 ## V1.3.0.0
 ### Features
 * support 826x/8258/8278 chips
