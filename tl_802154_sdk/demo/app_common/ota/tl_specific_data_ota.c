@@ -52,18 +52,49 @@ u8 mcuBootAddrGet(void)
 
 
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
-u8 outa_bin_state;
+u8 ota_bin_state;
 u32 ota_headersize;
 
-void ota_initInfo(void)
+void ota_init(void)
 {
-	dev_otaInfo.fileVer = 0;
-	dev_otaInfo.imageType = 0;
-	dev_otaInfo.manufaurerCode = 0;
-	dev_otaInfo.imageSize = 0;
-	ota_headersize = 0;
-	outa_bin_state = OTA_BIN_INVALID;
+	u32 file_id=0;
+	ota_hdrFields_t headinfo;
+	ota_signInfo_t imageinfo;
 	mcuBootAddr = mcuBootAddrGet();
+	u32 flashAddr = (mcuBootAddr) ? 0 : FLASH_OTA_NEWIMAGE_ADDR;
+	flash_read(flashAddr, 4, (u8 *)&file_id);
+	ota_bin_state = OTA_BIN_INVALID;
+	memset(&dev_otaInfo,0,sizeof(dev_otaInfo));
+	ota_headersize = 0;
+	if(file_id==OTA_UPGRADE_FILE_ID)
+	{
+		flash_read(flashAddr,sizeof(ota_hdrFields_t), (u8 *)&headinfo);
+		if(headinfo.totalImageSize>=OTA_MAX_IMAGE_SIZE)
+		{
+			ota_bin_state = OTA_BIN_INVALID;
+			return;
+		}
+
+		if(headinfo.otaHdrLen<headinfo.totalImageSize)
+			flash_read(flashAddr+headinfo.otaHdrLen,sizeof(ota_signInfo_t), (u8 *)&imageinfo);
+		else
+		{
+			ota_bin_state = OTA_BIN_INVALID;
+			return;
+		}
+
+		if(headinfo.totalImageSize>=OTA_MAX_IMAGE_SIZE)
+		{
+			ota_bin_state = OTA_BIN_INVALID;
+			return;
+		}
+		dev_otaInfo.fileVer = headinfo.fileVer;
+		dev_otaInfo.imageType = headinfo.imageType;
+		dev_otaInfo.manufaurerCode = headinfo.manufaurerCode;
+		dev_otaInfo.imageSize = headinfo.totalImageSize;
+		ota_headersize = dev_otaInfo.imageSize;
+		ota_bin_state = OTA_BIN_VALID;
+	}
 }
 
 
@@ -71,46 +102,9 @@ void ota_initInfo(void)
 void ota_startReqHandler(u8 *pd)
 {
 	ota_preamble_t *pHdr = (ota_preamble_t *)pd;
-	ota_hdrFields_t headinfo;
-	ota_signInfo_t imageinfo;
-	u32 file_id=0;
-	ota_initInfo();
-	u32 flashAddr = (mcuBootAddr) ? 0 : FLASH_OTA_NEWIMAGE_ADDR;
-	flash_read(flashAddr, 4, (u8 *)&file_id);
+	if(pHdr->manufaurerCode!=dev_otaInfo.manufaurerCode) //filter manufaurerCode
+		return;
 
-	if(file_id==OTA_UPGRADE_FILE_ID)
-	{
-		flash_read(flashAddr,sizeof(ota_hdrFields_t), (u8 *)&headinfo);
-		dev_otaInfo.fileVer = headinfo.fileVer;
-		dev_otaInfo.imageType = headinfo.imageType;
-		dev_otaInfo.manufaurerCode = headinfo.manufaurerCode;
-		dev_otaInfo.imageSize = headinfo.totalImageSize;
-
-
-		ota_headersize = dev_otaInfo.imageSize;
-
-		if((pHdr->fileVer<dev_otaInfo.fileVer)&&
-		   (pHdr->imageType==dev_otaInfo.imageType)&&
-		   (pHdr->manufaurerCode==dev_otaInfo.manufaurerCode))
-			outa_bin_state = OTA_BIN_VALID;
-		else
-			outa_bin_state = OTA_BIN_INVALID;
-
-		if(outa_bin_state == OTA_BIN_VALID)
-		{
-			if(headinfo.otaHdrLen<headinfo.totalImageSize)
-				flash_read(flashAddr+headinfo.otaHdrLen,sizeof(ota_signInfo_t), (u8 *)&imageinfo);
-			else
-				outa_bin_state = OTA_BIN_INVALID;
-
-			if((imageinfo.BinType!=OTA_TYPE_BIN)||
-			   (headinfo.totalImageSize!=(headinfo.otaHdrLen+imageinfo.BinSize+sizeof(ota_signInfo_t))))
-				outa_bin_state = OTA_BIN_INVALID;
-		}
-
-		if(headinfo.totalImageSize>=OTA_MAX_IMAGE_SIZE)
-			outa_bin_state = OTA_BIN_INVALID;
-	}
 	u8 payload_len = sizeof(ota_cmd_t);
 	u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
 	zb_mscp_data_req_t  coor_req;
@@ -124,15 +118,16 @@ void ota_startReqHandler(u8 *pd)
 		rsp.hdr.len = sizeof(ota_preamble_t);
 
 
-		rsp.pay.fileVer = dev_otaInfo.fileVer;//dev_otaInfo.fileVer;
-		rsp.pay.imageType = dev_otaInfo.imageType;//dev_otaInfo.imageType;
-		rsp.pay.manufaurerCode = dev_otaInfo.manufaurerCode;//dev_otaInfo.manufaurerCode;
+		rsp.pay.fileVer = dev_otaInfo.fileVer;//fileVer;
+		rsp.pay.imageType = dev_otaInfo.imageType;//imageType;
+		rsp.pay.manufaurerCode = dev_otaInfo.manufaurerCode;//manufaurerCode;
 		rsp.pay.imageSize = dev_otaInfo.imageSize;//max data block
 
 		msg->srcAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
 
-		msg->dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
-		msg->dstAddr.addr.shortAddr = end_device.shortAddr;
+//		msg->dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
+//		msg->dstAddr.addr.shortAddr = end_device[0].shortAddr;
+		memcpy((u8 *)&msg->dstAddr,(u8 *)&dev_src_addr,sizeof(addr_t));//copy dst address info
 
 		u8 len=0;
 		tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&msg->dstPanId,&len);
@@ -189,8 +184,9 @@ void ota_stopReqHandler(u8 *pd)
 
 			msg->srcAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
 
-			msg->dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
-			msg->dstAddr.addr.shortAddr = end_device.shortAddr;
+//			msg->dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
+//			msg->dstAddr.addr.shortAddr = end_device[0].shortAddr;
+			memcpy((u8 *)&msg->dstAddr,(u8 *)&dev_src_addr,sizeof(addr_t));
 
 			u8 len=0;
 			tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&msg->dstPanId,&len);
@@ -227,7 +223,7 @@ void ota_dataReqHandler(u8 *pd)
 	if((pdHdr->fileVer==dev_otaInfo.fileVer)&&
 	   (pdHdr->imageType==dev_otaInfo.imageType)&&
 	   (pdHdr->manufaurerCode==dev_otaInfo.manufaurerCode)&&
-	   (outa_bin_state == OTA_BIN_VALID))
+	   (ota_bin_state == OTA_BIN_VALID))
 	{
 		u8 payload_len = sizeof(ota_data_t);
 		u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
@@ -266,8 +262,9 @@ void ota_dataReqHandler(u8 *pd)
 
 			msg->srcAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
 
-			msg->dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
-			msg->dstAddr.addr.shortAddr = end_device.shortAddr;
+//			msg->dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
+//			msg->dstAddr.addr.shortAddr = end_device[0].shortAddr;
+			memcpy((u8 *)&msg->dstAddr,(u8 *)&dev_src_addr,sizeof(addr_t));
 
 			u8 len=0;
 			tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&msg->dstPanId,&len);
@@ -312,7 +309,7 @@ u32 flashOffsetAddr=0;
 ota_periodiccallback_t ota_dataCb = NULL;
 
 
-void ota_initInfo(void)
+void ota_init(void)
 {
 	memset((u8 *)&dev_otaInfo,0,sizeof(ota_preamble_t));
 	memset((u8 *)&binInfo,0,sizeof(ota_preamble_t));
@@ -715,7 +712,7 @@ void ota_dataReqRetry(u16 seconds)
 //30S
 void ota_queryStart(u16 seconds)
 {
-	ota_initInfo();
+	ota_init();
 	ota_state = OTA_STA_IDLE;
 	if(!ev_timer_exist(&otaQueryTimer)){
 		otaQueryTimer.cb = ota_periodicQueryServerCb;

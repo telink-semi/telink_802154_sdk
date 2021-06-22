@@ -57,7 +57,7 @@ void add_key_material(void)
 		while(1);
 	}
 	mac_deviceDesc_set(pDevDesc, pan_id, coor_addr_short, coor_ext_addr, 0, 0);
-	tl_zbMacAttrSet(MAC_DEVICE_TABLE, (u8 *)pDevDesc, 0);//添加device table到macPib
+	tl_zbMacAttrSet(MAC_DEVICE_TABLE, (u8 *)pDevDesc, 0);//add device table to macPib
 
 	//set key_id_lookup_list
 	mac_keyid_lookup_desc_t *pKeyIDDesc = (mac_keyid_lookup_desc_t *)mac_keyidDesc_alloc();
@@ -75,9 +75,9 @@ void add_key_material(void)
 	if (!pKeyDevDesc) {
 		while(1);
 	}
-	mac_keydevDesc_set(pKeyDevDesc, pDevDesc, 0, 0);//添加mac_deviceDesc_t到pKeyDevDesc
+	mac_keydevDesc_set(pKeyDevDesc, pDevDesc, 0, 0);//add mac_deviceDesc_t  to pKeyDevDesc
 
-	//set key_usage_list  用于设置加密包类型，01：mac data  03:mac cmd
+	//set key_usage_list  mac packet type，01：mac data  03:mac cmd
 	mac_keyusageDesc_t *pKeyUsgDesc[2];
 	pKeyUsgDesc[0]= (mac_keyusageDesc_t *)mac_keyusageDesc_alloc();
 	if (!pKeyUsgDesc[0]) {
@@ -96,9 +96,9 @@ void add_key_material(void)
 		while(1);
 	}
 
-	mac_keyDesc_set(pKeyDesc, &pKeyIDDesc, 1, &pKeyDevDesc, 1, pKeyUsgDesc, 2, test_key);//设置key table到申请的结构体
+	mac_keyDesc_set(pKeyDesc, &pKeyIDDesc, 1, &pKeyDevDesc, 1, pKeyUsgDesc, 2, test_key);
 
-	tl_zbMacAttrSet(MAC_KEY_TABLE, (u8 *)pKeyDesc, 0);  //增加key table到macPib
+	tl_zbMacAttrSet(MAC_KEY_TABLE, (u8 *)pKeyDesc, 0);  //add key table to macPib
 }
 
 

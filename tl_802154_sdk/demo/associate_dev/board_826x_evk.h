@@ -142,8 +142,8 @@ extern "C" {
 #define PD6_OUTPUT_ENABLE			1
 #define PD6_INPUT_ENABLE			0
 
-#define LED_POWER					LED_R
-#define LED_PERMIT					LED_G
+#define LED_1					LED_R
+#define LED_2					LED_G
 
 #endif
 

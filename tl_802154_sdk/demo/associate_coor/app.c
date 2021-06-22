@@ -4,16 +4,16 @@
 #define    DEBUG_PIN1                     LED_1
 #define    DEBUG_PIN2                     LED_2
 
-
-my_device_t end_device = {{0},0,0};
-
+#define		END_DEVICE_NUM		10
+my_device_t end_device[END_DEVICE_NUM] = {{{0},0,0}};
+u8 device_index=0;
+u8 indirect_device_index=0;
 //coor info
 unsigned short coor_addr_short = 0x2211;
-
 unsigned char  device_ext_addr[8] = {0};
 unsigned short device_addr_short = 0x3300;
 unsigned short pan_id = 0xbeef;
-
+addr_t	dev_src_addr;
 
 //key material
 unsigned char default_key_source[8] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07};
@@ -119,7 +119,7 @@ void pan_start(void)
 int data_send_indir_timer_cb(void *arg)
 {
 	TL_SCHEDULE_TASK(mac_send_data_indirect, (void *)NULL);
-	return -1;
+	return 0;
 }
 
 
@@ -133,7 +133,7 @@ void mac_send_data_indirect(void *arg)
 	memset(req, 0, sizeof(zb_mscp_data_req_t));
 	req->srcAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
 	req->dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST; //16-bit short address mode
-	req->dstAddr.addr.shortAddr = end_device.shortAddr;
+	req->dstAddr.addr.shortAddr = end_device[indirect_device_index].shortAddr;
 
 	u8 len=0;
 	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&req->dstPanId,&len);
@@ -158,7 +158,9 @@ void mac_send_data_indirect(void *arg)
 	test_cnt++;
 	tl_MacMcpsDataRequestSend(data_req,pay,pay_len);
 	ev_buf_free(pay);//free payload ev buffer
-
+	indirect_device_index++;
+	if(indirect_device_index>=device_index)
+		indirect_device_index = 0;
 }
 
 
@@ -168,26 +170,24 @@ void data_send(void)
     if (data_send_indir_timer) {
     	TL_ZB_TIMER_CANCEL(&data_send_indir_timer);
     }
-    data_send_indir_timer = TL_ZB_TIMER_SCHEDULE(data_send_indir_timer_cb, NULL, 2000);
+    data_send_indir_timer = TL_ZB_TIMER_SCHEDULE(data_send_indir_timer_cb, NULL, 5000);
 }
 
 void MyAssociateIndCb(unsigned char *pData)
 {
-	if(pData==NULL) return;
+	if(pData==NULL||device_index>=END_DEVICE_NUM) return;
 	zb_mlme_associate_ind_t *pInd = (zb_mlme_associate_ind_t *)pData;
-
-
 	extAddr_t device_address;
 	device_addr_short++;
 	u16 address = device_addr_short;
 	ZB_IEEE_ADDR_COPY(device_address, pInd->devAddress);
 	ZB_IEEE_ADDR_COPY(device_ext_addr, pInd->devAddress);
-	ZB_IEEE_ADDR_COPY(end_device.extAddr, device_address);
-	end_device.shortAddr = address;
+	ZB_IEEE_ADDR_COPY(end_device[device_index].extAddr, device_address);
+	end_device[device_index].shortAddr = address;
 	u8 len=0;
-	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&end_device.pan_id,&len);
+	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&end_device[device_index].pan_id,&len);
 	add_key_material();//add device info to key table
-
+	device_index++;
 	zb_mlme_associate_resp_t AssociateRsp;
 	zb_mlme_associate_resp_t *pResp = (zb_mlme_associate_resp_t *)&AssociateRsp;
     memset(pResp, 0, sizeof(zb_mlme_associate_resp_t));
@@ -243,6 +243,7 @@ void MyDataIndCb(unsigned char *pData)
 {
 	if(pData==NULL)  	return;
 	zb_mscp_data_ind_t * pInd = (zb_mscp_data_ind_t *)pData;
+	memcpy((u8 *)&dev_src_addr,(u8 *)&pInd->srcAddr,sizeof(addr_t));
 	u8 len = pInd->msduLength;
 	u8 ret = tl_appDataIndicate((u8 *)pInd->msdu,len);
 	if(ret!=SUCCESS)

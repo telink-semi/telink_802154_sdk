@@ -168,7 +168,7 @@ u8  tl_appOtaCmdHandler(u8 *pd);
 
 
 
-
+void ota_init(void);
 int ota_periodicQueryServerCb(void *data);
 int ota_periodicDataServerCb(void *data);
 void ota_startReq(void);
