@@ -7,7 +7,7 @@ stages:
   - cov
   - fossid
   - plainPW_check
-  - misspellChecking
+  #- misspellChecking
 
 scc:
   stage: scc
