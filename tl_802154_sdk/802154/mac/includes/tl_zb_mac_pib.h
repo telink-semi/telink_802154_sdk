@@ -205,12 +205,12 @@ void generateIEEEAddr(void);
 /*
  * MLME-SET.request to set MAC pib attribute from upper layer to MAC layer
  *
- * @param attribute MAC PIB attribut MAC PIB attributee id(Table 86 ?a MAC PIB attributes)
+ * @param attribute MAC PIB attribute  MAC PIB attribute id(Table 86 ?a MAC PIB attributes)
  *
  * @param value the pointer value of the attribute
  *
- * @param index:if the attribute is related to security,the means of index are entery number
- * 				othsewise the index means len, the length of the attribute vlaue
+ * @param index:if the attribute is related to security,the means of index are entry number
+ * 				othsewise the index means len, the length of the attribute value
  *
  * @return MAC_SUCCESS if it's successful, or MAC_INVALID_PARAMETER
  *
@@ -220,11 +220,11 @@ u8 tl_zbMacAttrSet(u8 attribute, u8 *value, u8 index);
 /*
 * MLME-GET.request to get MAC pib attribute from upper layer to MAC layer
 *
-* @param attribute MAC PIB attribut MAC PIB attributee id(Table 86 ?a MAC PIB attributes)
+* @param attribute MAC PIB attribute MAC PIB attribute id(Table 86 ?a MAC PIB attributes)
 *
 * @param value the pointer to the value of the attribute
 *
-* @param len the length of the attribute vlaue
+* @param len the length of the attribute value
 *
 * @return MAC_SUCCESS if it's successful, or MAC_INVALID_PARAMETER
 *

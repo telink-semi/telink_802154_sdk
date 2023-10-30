@@ -588,7 +588,7 @@ extern void uart_cts_config(uart_num_e uart_num,uart_cts_pin_e cts_pin,unsigned 
 extern void uart_rts_config(uart_num_e uart_num,uart_rts_pin_e rts_pin,unsigned char rts_parity,unsigned char auto_mode_en);
 
 /**
- * @brief     This function serves to set uart rts trig lexel in auto mode.
+ * @brief     This function serves to set uart rts trig level in auto mode.
  * @param[in] uart_num - UART0 or UART1.
  * @param[in] level    - threshold of trig RTS pin's level toggle(only for auto mode).
  * @return    none

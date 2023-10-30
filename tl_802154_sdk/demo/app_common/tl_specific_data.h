@@ -16,7 +16,7 @@
  *           This heading MUST NOT be removed from this file.
  *
  * 			 Licensees are granted free, non-transferable use of the information in this
- *			 file under Mutual Non-Disclosure Agreement. NO WARRENTY of ANY KIND is provided.
+ *			 file under Mutual Non-Disclosure Agreement. NO Warranty of ANY KIND is provided.
  *
  *******************************************************************************************************/
 
@@ -45,7 +45,7 @@ typedef struct{
 
 extern u8 	g_tlAppDataSeqNo;
 
-#define TL_SPECIFC_SEQNO_ADD		(g_tlAppDataSeqNo++)
+#define TL_SPECIFIC_SEQNO_ADD		(g_tlAppDataSeqNo++)
 
 u8  tl_appDataIndicate(u8 *pd, u8 len);
 

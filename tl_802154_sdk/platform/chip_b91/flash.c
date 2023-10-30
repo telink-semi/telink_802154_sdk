@@ -115,7 +115,7 @@ _attribute_ram_code_sec_noinline_ static void flash_send_addr(unsigned int addr)
 }
 
 /**
- * @brief     This function serves to wait flash done.(make this a asynchorous version).
+ * @brief     This function serves to wait flash done.(make this a asynchronous version).
  * @return    none.
  */
 _attribute_ram_code_sec_noinline_ static void flash_wait_done(void)

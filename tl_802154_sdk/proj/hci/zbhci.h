@@ -121,12 +121,12 @@ typedef enum{
 	ZBHCI_CMD_MGMT_NWK_UPDATE_RSP			,//= 0x0035,
 
 	ZBHCI_CMD_NODES_JOINED_GET_REQ			= 0x0040,
-	ZBHCI_CMD_NODES_TOGLE_TEST_REQ			= 0x0041,
+	ZBHCI_CMD_NODES_TOGGLE_TEST_REQ			= 0x0041,
 	ZBHCI_CMD_TXRX_PERFORMANCE_TEST_REQ		= 0x0042,
 	ZBHCI_CMD_AF_DATA_SEND_TEST_REQ			= 0x0044,
 
 	ZBHCI_CMD_NODES_JOINED_GET_RSP			= 0x8040,
-	ZBHCI_CMD_NODES_TOGLE_TEST_RSP			= 0x8041,
+	ZBHCI_CMD_NODES_TOGGLE_TEST_RSP			= 0x8041,
 	ZBHCI_CMD_TXRX_PERFORMANCE_TEST_RSP		= 0x8042,
 	ZBHCI_CMD_NODES_DEV_ANNCE_IND			= 0x8043,
 	ZBHCI_CMD_AF_DATA_SEND_TEST_RSP			= 0x8044,
@@ -362,14 +362,14 @@ typedef struct{
 }zbhci_app_data_confirm_t;
 
 typedef struct{
-	ev_timer_event_t	*performaceTestTmrEvt;
+	ev_timer_event_t	*performanceTestTmrEvt;
 	u16 sendTotalCnt;
 	u16 sendSuccessCnt;
 	u16 rcvTotalCnt;
 	u16 dstAddr;
 	u8	dstEp;
 	u8  dataApsCnt;
-	u8	performaceTest;
+	u8	performanceTest;
 }zbhci_afTestReq_t;
 
 typedef struct{

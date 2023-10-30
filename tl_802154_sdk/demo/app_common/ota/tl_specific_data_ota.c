@@ -16,7 +16,7 @@
  *           This heading MUST NOT be removed from this file.
  *
  * 			 Licensees are granted free, non-transferable use of the information in this
- *			 file under Mutual Non-Disclosure Agreement. NO WARRENTY of ANY KIND is provided.
+ *			 file under Mutual Non-Disclosure Agreement. NO Warranty of ANY KIND is provided.
  *
  *******************************************************************************************************/
 
@@ -114,7 +114,7 @@ void ota_startReqHandler(u8 *pd)
 		ota_cmd_t rsp;
 		rsp.hdr.appId = TL_SPECIFIC_ID_OTA;
 		rsp.hdr.cmdId = TL_CMD_OTA_START_RSP;
-		rsp.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
+		rsp.hdr.seqNo = TL_SPECIFIC_SEQNO_ADD;
 		rsp.hdr.len = sizeof(ota_preamble_t);
 
 
@@ -174,7 +174,7 @@ void ota_stopReqHandler(u8 *pd)
 			ota_cmd_t rsp;
 			rsp.hdr.appId = TL_SPECIFIC_ID_OTA;
 			rsp.hdr.cmdId = TL_CMD_OTA_STOP_RSP;
-			rsp.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
+			rsp.hdr.seqNo = TL_SPECIFIC_SEQNO_ADD;
 			rsp.hdr.len = sizeof(ota_preamble_t);
 
 			rsp.pay.fileVer = dev_otaInfo.fileVer;//dev_otaInfo.fileVer;
@@ -234,7 +234,7 @@ void ota_dataReqHandler(u8 *pd)
 			ota_data_t rsp;
 			rsp.hdr.appId = TL_SPECIFIC_ID_OTA;
 			rsp.hdr.cmdId = TL_CMD_OTA_DATA_RSP;
-			rsp.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
+			rsp.hdr.seqNo = TL_SPECIFIC_SEQNO_ADD;
 
 
 			u8 read_len = 0;
@@ -557,7 +557,7 @@ void ota_startReq(void)
 		memset(msg, 0, req_cmd_len);
 		req.hdr.appId = TL_SPECIFIC_ID_OTA;
 		req.hdr.cmdId = TL_CMD_OTA_START_REQ;
-		req.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
+		req.hdr.seqNo = TL_SPECIFIC_SEQNO_ADD;
 		req.hdr.len = sizeof(ota_preamble_t);
 
 		req.pay.fileVer = FILE_VERSION;
@@ -606,7 +606,7 @@ void ota_dataReq(void)
 		memset(msg, 0, req_cmd_len);
 		req.hdr.appId = TL_SPECIFIC_ID_OTA;
 		req.hdr.cmdId = TL_CMD_OTA_DATA_REQ;
-		req.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
+		req.hdr.seqNo = TL_SPECIFIC_SEQNO_ADD;
 		req.hdr.len = sizeof(ota_preamble_t);
 
 		req.pay.fileVer = dev_otaInfo.fileVer;//rc_otaInfo.fileVer;
@@ -655,7 +655,7 @@ void ota_stopReq(void)
 		memset(msg, 0, req_cmd_len);
 		req.hdr.appId = TL_SPECIFIC_ID_OTA;
 		req.hdr.cmdId = TL_CMD_OTA_STOP_REQ;
-		req.hdr.seqNo = TL_SPECIFC_SEQNO_ADD;
+		req.hdr.seqNo = TL_SPECIFIC_SEQNO_ADD;
 		req.hdr.len = sizeof(ota_preamble_t);
 
 		req.pay.fileVer = binInfo.fileVer;//FILE_VERSION;

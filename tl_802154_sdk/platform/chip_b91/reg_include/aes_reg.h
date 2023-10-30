@@ -52,7 +52,7 @@
 #define reg_aes_mode     			REG_ADDR32(0x1600b0)
 enum{
 	FLD_AES_START	=	BIT(0),
-	FLD_AES_MODE	=	BIT(1),   /**< 0-ciher  1-deciher */
+	FLD_AES_MODE	=	BIT(1),   /**< 0-cipher  1-decipher */
 };
 
 #define reg_embase_addr     		REG_ADDR32(0x140b04)

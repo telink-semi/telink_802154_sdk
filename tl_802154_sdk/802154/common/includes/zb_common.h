@@ -258,7 +258,7 @@ enum{
 
 #define ZB_IS_16BIT_SECURITY_KEY_ZERO(key) 		(!memcmp((key), g_null_securityKey, SEC_KEY_LEN))
 #define ZB_IS_64BIT_ADDR_ZERO(addr) 			(!memcmp((addr), g_zero_addr, EXT_ADDR_LEN))
-#define ZB_IS_64BIT_ADDR_INVAILD(addr) 			(!memcmp((addr), g_invalid_addr, EXT_ADDR_LEN))
+#define ZB_IS_64BIT_ADDR_INVALID(addr) 			(!memcmp((addr), g_invalid_addr, EXT_ADDR_LEN))
 #define ZB_64BIT_ADDR_ZERO(addr)       			(memset((addr), 0, EXT_ADDR_LEN))
 #define ZB_64BIT_ADDR_COPY(dst, src) 			(memcpy(dst, src, EXT_ADDR_LEN))
 #define ZB_64BIT_ADDR_CMP(one, two) 			((bool)!memcmp((one), (two), EXT_ADDR_LEN))
@@ -269,7 +269,7 @@ enum{
 #define ZB_EXTPANID_CMP 						ZB_64BIT_ADDR_CMP
 
 #define ZB_IEEE_ADDR_IS_ZERO 					ZB_IS_64BIT_ADDR_ZERO
-#define ZB_IEEE_ADDR_IS_INVAILD 				ZB_IS_64BIT_ADDR_INVAILD
+#define ZB_IEEE_ADDR_IS_INVALID 				ZB_IS_64BIT_ADDR_INVALID
 #define ZB_IEEE_ADDR_ZERO 						ZB_64BIT_ADDR_ZERO
 #define	ZB_IEEE_ADDR_INVALID(addr)				ZB_64BIT_ADDR_COPY(addr, g_invalid_addr)
 #define ZB_IEEE_ADDR_COPY 						ZB_64BIT_ADDR_COPY

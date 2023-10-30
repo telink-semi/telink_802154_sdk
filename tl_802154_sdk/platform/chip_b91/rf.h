@@ -946,13 +946,13 @@ void rf_set_rx_timeout(unsigned short timeout_us);
 
 
 /**
- * @brief	This function serve to initial the ptx seeting.
+ * @brief	This function serve to initial the ptx setting.
  * @return	none.
  */
 void rf_ptx_config(void);
 
 /**
- * @brief	This function serve to initial the prx seeting.
+ * @brief	This function serve to initial the prx setting.
  * @return	none.
  */
 void rf_prx_config(void);

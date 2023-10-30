@@ -102,7 +102,7 @@ rf_phy_params_t g_phyParams = {
 /**********************************************************************
  * LOCAL FUNCTIONS
  */
-#define ZB_SWTICH_TO_TXMODE()    do{ \
+#define ZB_SWITCH_TO_TXMODE()    do{ \
 									if(fPaEn) {	\
 										drv_gpio_write(rf_pa_txen_pin, 1); 		\
 										drv_gpio_write(rf_pa_rxen_pin, 0); 		\
@@ -110,7 +110,7 @@ rf_phy_params_t g_phyParams = {
 									ZB_RADIO_TRX_SWITCH(RF_MODE_TX, LOGICCHANNEL_TO_PHYSICAL(rf_getChannel()));	\
 								}while(0)
 
-#define ZB_SWTICH_TO_RXMODE()    do{ \
+#define ZB_SWITCH_TO_RXMODE()    do{ \
 									if(fPaEn) {	\
 										drv_gpio_write(rf_pa_txen_pin, 0); 		\
 										drv_gpio_write(rf_pa_rxen_pin, 1); 		\
@@ -243,10 +243,10 @@ _attribute_ram_code_ void rf_setTrxState(u8 state)
     		ZB_RADIO_MODE_MAX_GAIN();
     	}
 
-    	ZB_SWTICH_TO_RXMODE();
+    	ZB_SWITCH_TO_RXMODE();
         rfMode = RF_STATE_RX;
     }else if(RF_STATE_TX == state){
-    	ZB_SWTICH_TO_TXMODE();
+    	ZB_SWITCH_TO_TXMODE();
         WaitUs(g_phyParams.turnArnd);
         rfMode = RF_STATE_TX;
     }else{
@@ -351,7 +351,7 @@ void rf_startED(void)
 }
 
 /*********************************************************************
- * @fn      rf_stopED
+ * @fn      rf_stop_ED
  *
  * @brief   Stop Energy Detect
  *
@@ -538,7 +538,7 @@ _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_rx_irq_handler(voi
 
     /* switch to tx in advance to let the pll stable */
  	if(macPld[0] & MAC_FCF_ACK_REQ_BIT){
- 		ZB_SWTICH_TO_TXMODE();
+ 		ZB_SWITCH_TO_TXMODE();
  		txTime = clock_time();
  	}
 
@@ -546,7 +546,7 @@ _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_rx_irq_handler(voi
 	u8 *rxNextBuf = tl_getRxBuf();
 	if(!rxNextBuf){
 		if(macPld[0] & MAC_FCF_ACK_REQ_BIT){
-			ZB_SWTICH_TO_RXMODE();
+			ZB_SWITCH_TO_RXMODE();
 		}
 
     	/* diagnostics PHY to MAC queue limit */
@@ -621,14 +621,14 @@ _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_rx_irq_handler(voi
 		/* set interrupt mask bit again */
 		ZB_RADIO_IRQ_MASK_SET;
 		/* rf is set to rx mode again */
-		ZB_SWTICH_TO_RXMODE();
+		ZB_SWITCH_TO_RXMODE();
 	}
 
 	/* enable rf rx dma again */
 	ZB_RADIO_RX_ENABLE;
 
 	/* zb_mac_receive_data handler */
-	zb_macDataRecvHander(p, macPld, len, fAck, ZB_RADIO_TIMESTAMP_GET(p), ZB_RADION_PKT_RSSI_GET(p) - 110);
+	zb_macDataRecvHandler(p, macPld, len, fAck, ZB_RADIO_TIMESTAMP_GET(p), ZB_RADION_PKT_RSSI_GET(p) - 110);
 }
 
 
@@ -648,7 +648,7 @@ _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_tx_irq_handler(voi
     g_sysDiags.macTxIrqCnt++;
 
     rfMode = RF_STATE_RX;
-    ZB_SWTICH_TO_RXMODE();
+    ZB_SWITCH_TO_RXMODE();
 
     zb_macDataSendHander();
 }

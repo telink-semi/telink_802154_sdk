@@ -585,7 +585,7 @@ enum{
 #define    reg_rf_ll_ctrl2          REG_ADDR8(REG_BB_LL_BASE_ADDR+0x15)
 enum{
 	FLD_RF_R_TXCHN_MAN            =	BIT_RNG(0,2),
-	FLD_RF_R_NOACK_RECNT_EN       =	BIT(3),
+	FLD_RF_R_NOACK_RETRY_CNT_EN       =	BIT(3),
 	FLD_RF_R_TXCHN_MAN_EN         =	BIT(4),
 	FLD_RF_R_NOACK_REV_EN         =	BIT(5),
 	FLD_RF_R_RXIRQ_REPORT_ALL     =	BIT(6),
@@ -597,7 +597,7 @@ enum{
 enum{
 	FLD_RF_R_TX_EN_DLY_EN         =	BIT(0),
 	FLD_RF_R_PLL_RESET_EN         =	BIT(1),
-	FLD_RF_R_CMD_SCHDULE_EN       =	BIT(2),
+	FLD_RF_R_CMD_SCHEDULE_EN      =	BIT(2),
 	FLD_RF_R_PLL_EN_MAN           =	BIT(3),
 	FLD_RF_R_T_TX_EN_DLY          =	BIT_RNG(4,7),
 };
@@ -750,7 +750,7 @@ enum
 	FLD_RF_SFD0_NUM				  = BIT_RNG(4,6),
 };
 
-#define		reg_rf_modem_sync_thre_ble		REG_ADDR8(REG_TL_MODEM_BASE_ADDR+0x4e)
+#define		reg_rf_modem_sync_thres_ble		REG_ADDR8(REG_TL_MODEM_BASE_ADDR+0x4e)
 
 #define		reg_rf_agc_rssi_lat		REG_ADDR8(REG_TL_MODEM_BASE_ADDR+0x5d)
 

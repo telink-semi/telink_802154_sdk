@@ -94,7 +94,7 @@ typedef enum {
  * @param[in] none
  * @return none
  */
-static inline void reset_i2c_moudle(void)
+static inline void reset_i2c_module(void)
 {
 	reg_rst0 |= FLD_RST0_I2C;
 	reg_rst0 &= (~FLD_RST0_I2C);

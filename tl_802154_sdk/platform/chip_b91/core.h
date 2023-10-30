@@ -57,7 +57,7 @@
 /*
  * Inline nested interrupt entry/exit macros
  */
-/* Svae/Restore macro */
+/* Save/Restore macro */
 #define save_csr(r)             long __##r = read_csr(r);
 #define restore_csr(r)           write_csr(r, __##r);
 /* Support PowerBrake (Performance Throttling) feature */

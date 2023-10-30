@@ -207,7 +207,7 @@ typedef enum{
 
 
 #define reg_usb_ep8_send_max	REG_ADDR8(0x10083b)
-#define reg_usb_ep8_send_thre	REG_ADDR8(0x10083c)
+#define reg_usb_ep8_send_thres	REG_ADDR8(0x10083c)
 #define reg_usb_ep8_fifo_mode	REG_ADDR8(0x10083d)
 enum{
 	FLD_USB_ENP8_FIFO_MODE =	BIT(0),

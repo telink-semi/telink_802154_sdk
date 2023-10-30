@@ -57,7 +57,7 @@
 #define reg_pke_a_ram(a)		 	((volatile unsigned long *)(PKE_BASE+0x0400+(a)*(0x24)))
 #define reg_pke_b_ram(b)		 	((volatile unsigned long *)(PKE_BASE+0x1000+(b)*(0x24)))
 
-/********* oprand length *********/
+/********* operand length *********/
 #define PKE_OPERAND_MAX_WORD_LEN	(0x08)
 #define PKE_OPERAND_MAX_BIT_LEN		(0x100)
 #define ECC_MAX_WORD_LEN			PKE_OPERAND_MAX_WORD_LEN
@@ -295,7 +295,7 @@ unsigned int div2n_u32(unsigned int a[], signed int aWordLen, unsigned int n);
  * @brief		load the pre-calculated mont parameters H(R^2 mod modulus) and
  * 				n1( - modulus ^(-1) mod 2^w ).
  * @param[in] 	H 	  	- R^2 mod modulus.
- * @param[in] 	n1 	  	- modulus ^(-1) mod 2^w, here w is 32 acutally.
+ * @param[in] 	n1 	  	- modulus ^(-1) mod 2^w, here w is 32 actually.
  * @param[in] 	wordLen - word length of modulus or H.
  * @return: 	none.
  */

@@ -196,7 +196,7 @@ ev_bufItem_t *ev_buf_getHead(u8 *pd);
 /**
  * @brief       judge if the buffer is ev buffer
  *
- * @param       the buffer adrress
+ * @param       the buffer address
  *
  * @return      1: if ev buffer; 0: others
  */

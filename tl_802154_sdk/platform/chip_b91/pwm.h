@@ -187,7 +187,7 @@ static inline void pwm_32k_chn_en(pwm_clk_32k_en_chn_e pwm_32K_en_chn){
 
 
 /**
- * @brief     This fuction servers to set pin as pwm0
+ * @brief     This function servers to set pin as pwm0
  * @param[in] pin - selected pin
  * @return	  none.
  */

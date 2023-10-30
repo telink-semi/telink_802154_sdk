@@ -222,7 +222,7 @@ enum PWMIRQSOURCE{
 
 
 /************************************************************
-*	@brief	Initiate the PWM function include seting and enabling the PWM clock. 
+*	@brief	Initiate the PWM function include setting and enabling the PWM clock.
 *			For test pin number 22 - 27 is the PWM output pin.
 *
 *	@param	None

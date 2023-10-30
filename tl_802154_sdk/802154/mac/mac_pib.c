@@ -234,12 +234,12 @@ const mac_pibTbl_t g_zbMacPibTbl[] = {
 /*
  * MLME-SET.request to set MAC pib attribute
  *
- * @param attribute MAC PIB attribut MAC PIB attributee id(Table 86  MAC PIB attributes)
+ * @param attribute MAC PIB attribute MAC PIB attribute id(Table 86  MAC PIB attributes)
  *
  * @param value the pointer value of the attribute
  *
- * @param index:if the attribute is related to security,the means of index are entery number
- * 				othsewise the index means len, the length of the attribute vlaue
+ * @param index:if the attribute is related to security,the means of index are entry number
+ * 				othsewise the index means len, the length of the attribute value
  *
  * @return MAC_SUCCESS if it's successful, or MAC_INVALID_PARAMETER
  *
@@ -364,12 +364,12 @@ _CODE_MAC_ u8 tl_zbMacAttrSet(u8 attribute, u8 *value, u8 index){
 /*
  * MLME-GET.request to get MAC pib attribute
  *
- * @param attribute MAC PIB attribut MAC PIB attributee id(Table 86  MAC PIB attributes)
+ * @param attribute MAC PIB attribute MAC PIB attributee id(Table 86  MAC PIB attributes)
  *
  * @param value the pointer to the value of the attribute
  *
- * @param index:if the attribute is related to security,the means of index are entery number
- * 				othsewise the index means len, the length of the attribute vlaue
+ * @param index:if the attribute is related to security,the means of index are entry number
+ * 				othsewise the index means len, the length of the attribute value
  *
  * @return MAC_SUCCESS if it's successful, or MAC_INVALID_PARAMETER
  *
@@ -446,9 +446,9 @@ _CODE_MAC_ u8 tl_zbMacAttrGet(u8 attribute, u8* value, u8* index){
 /*
  * MLME-GET.request to del MAC pib attribute
  *
- * @param pibAttribute MAC PIB security attribut MAC PIB attributee id(Table 86  MAC PIB attributes)
+ * @param pibAttribute MAC PIB security attribute MAC PIB attribute id(Table 86  MAC PIB attributes)
  *
- * @param pibIndex:entery number
+ * @param pibIndex:entry number
  *
  * @return MAC_SUCCESS if it's successful, or MAC_INVALID_PARAMETER
  *
@@ -517,7 +517,7 @@ _CODE_MAC_ void generateIEEEAddr(void){
 
 	flash_read(CFG_MAC_ADDRESS, 8, addr);
 
-	if(ZB_IEEE_ADDR_IS_INVAILD(addr)){
+	if(ZB_IEEE_ADDR_IS_INVALID(addr)){
 		unsigned int t0 = clock_time();
 		u32 jitter = 0;
 		do{

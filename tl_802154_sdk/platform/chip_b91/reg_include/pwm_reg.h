@@ -293,7 +293,7 @@ typedef enum{
  */
 #define reg_pwm_ir_fifo_irq_trig_level	REG_ADDR8(REG_PWM_BASE+0x4c)
 enum{
-	FLD_PWM0_FIFO_NUM_OF_TRIGGLE_LEVEL 	=		BIT_RNG(0,3),
+	FLD_PWM0_FIFO_NUM_OF_TRIGGER_LEVEL 	=		BIT_RNG(0,3),
 };
 
 

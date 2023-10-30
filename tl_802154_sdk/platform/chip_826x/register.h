@@ -655,7 +655,7 @@ enum{
 #define reg_usb_irq				REG_ADDR8(0x139)
 #define reg_usb_mask			REG_ADDR8(0x13a)
 #define reg_usb_ep8_send_max	REG_ADDR8(0x13b)
-#define reg_usb_ep8_send_thre	REG_ADDR8(0x13c)
+#define reg_usb_ep8_send_thres	REG_ADDR8(0x13c)
 #define reg_usb_ep8_fifo_mode	REG_ADDR8(0x13d)
 #define reg_usb_ep_max_size		REG_ADDR8(0x13e)
 

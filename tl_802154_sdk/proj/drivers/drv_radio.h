@@ -55,7 +55,7 @@
 /* RF is busy */
 #define RF_DMA_BUSY()									0
 
-/* trx swith */
+/* trx switch */
 #define ZB_RADIO_TRX_SWITCH(mode, chn) 					RF_TrxStateSet(mode, chn)
 
 /* set tx power */
@@ -112,7 +112,7 @@
 															*((u32*)p) = 0; \
 														}while(0)
 
-/* set rx mode, maxium receiver buffer size, enable Rx/Tx interrupt */
+/* set rx mode, maximum receiver buffer size, enable Rx/Tx interrupt */
 #define ZB_RADIO_TRX_CFG(len)							do{	\
 															RF_rx_cfg(len, 0);  \
 															dma_irq_disable(FLD_DMA_CHN_RF_RX | FLD_DMA_CHN_RF_TX); \
@@ -187,7 +187,7 @@
 /* RF is busy */
 #define RF_DMA_BUSY()									is_rf_receiving_pkt()
 
-/* trx swith */
+/* trx switch */
 #define ZB_RADIO_TRX_SWITCH(mode, chn) 					rf_trx_state_set(mode, chn)
 
 /* set tx power */
@@ -247,7 +247,7 @@
 															p[4] = 0;		\
 														}while(0)
 
-/* set rx mode, maxium receiver buffer size, enable Rx/Tx interrupt */
+/* set rx mode, maximum receiver buffer size, enable Rx/Tx interrupt */
 #define ZB_RADIO_TRX_CFG(size)							do{ \
 															rf_rx_cfg(size, 0); \
 															dma_irq_disable(FLD_DMA_CHN_RF_RX | FLD_DMA_CHN_RF_TX); \
@@ -322,7 +322,7 @@
 /* RF is busy */
 #define RF_DMA_BUSY()									is_rf_receiving_pkt()
 
-/* trx swith */
+/* trx switch */
 #define ZB_RADIO_TRX_SWITCH(mode, chn) 					rf_trx_state_set(mode, chn)
 
 /* set tx power */
@@ -382,7 +382,7 @@
 															p[4] = 0;		\
 														}while(0)
 
-/* set rx mode, maxium receiver buffer size, enable Rx/Tx interrupt */
+/* set rx mode, maximum receiver buffer size, enable Rx/Tx interrupt */
 #define ZB_RADIO_TRX_CFG(size)							do{ \
 															rf_rx_cfg(size, 0); \
 															dma_irq_disable(FLD_DMA_CHN_RF_RX | FLD_DMA_CHN_RF_TX); \
@@ -457,7 +457,7 @@
 /* RF is busy */
 #define RF_DMA_BUSY()									rf_receiving_flag()
 
-/* trx swith */
+/* trx switch */
 #define ZB_RADIO_TRX_SWITCH(mode, chn) 					rf_set_trx_state(mode, chn)
 
 /* set tx power */
@@ -517,7 +517,7 @@
 															p[4] = 0;		\
 														}while(0)
 
-/* set Rx mode, maxium receiver buffer size, enable Rx/Tx interrupt */
+/* set Rx mode, maximum receiver buffer size, enable Rx/Tx interrupt */
 #define ZB_RADIO_TRX_CFG(size)							do{ \
 															rf_set_rx_maxlen(size);							\
 															rf_set_rx_dma_config();							\

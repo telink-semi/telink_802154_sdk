@@ -833,12 +833,12 @@ typedef struct{
  * status for processing the indirect data
  */
 enum{
-	ZB_INDRECT_IDLE,
-	ZB_INDRECT_ASSOCIATE,
-	ZB_INDRECT_POLL,
-	ZB_INDRECT_ASSOCIATE_RESPONSE,
-	ZB_INDRECT_MCPS_DATA,
-	ZB_INDRECT_DISASSOCIATE_NOTIFY
+	ZB_INDIRECT_IDLE,
+	ZB_INDIRECT_ASSOCIATE,
+	ZB_INDIRECT_POLL,
+	ZB_INDIRECT_ASSOCIATE_RESPONSE,
+	ZB_INDIRECT_MCPS_DATA,
+	ZB_INDIRECT_DISASSOCIATE_NOTIFY
 };
 
 
@@ -1060,7 +1060,7 @@ void tl_zbMacDataPurgeRequestProc(zb_mscp_purge_req_t *p, zb_mscp_purge_conf_t *
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacMcpsDataRequst(p)		tl_zbMacMcpsDataRequestProc(p)
+#define tl_zbMacMcpsDataRequest(p)		tl_zbMacMcpsDataRequestProc(p)
 
 /*
  * MLME-RESET.request primitive from upper layer to MAC layer

@@ -551,7 +551,7 @@ enum{
 	FLD_USB_EDP7_IRQ 		= 	BIT(7),
 };
 #define reg_usb_ep8_send_max	REG_ADDR8(0x13b)
-#define reg_usb_ep8_send_thre	REG_ADDR8(0x13c)
+#define reg_usb_ep8_send_thres	REG_ADDR8(0x13c)
 #define reg_usb_ep8_fifo_mode	REG_ADDR8(0x13d)
 #define reg_usb_ep_max_size		REG_ADDR8(0x13e)
 
@@ -608,7 +608,7 @@ enum{
 	FLD_PWM_ENABLE				= BIT(1),
 	FLD_LINER_INTERPOLATE_EN	= BIT(2),
 	FLD_LEFT_SHAPING_EN 		= BIT(5),
-	FLD_RIGTH_SHAPING_EN 		= BIT(6)
+	FLD_RIGHT_SHAPING_EN 		= BIT(6)
 };
 
 #define reg_ascl_tune     REG_ADDR32(0x564)

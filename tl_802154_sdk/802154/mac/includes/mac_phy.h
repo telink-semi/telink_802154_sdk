@@ -158,7 +158,7 @@ typedef struct{
  * parameters for phy/mac
  */
 typedef struct{
-	u16 turnArnd;  //phy turn arround
+	u16 turnArnd;  //phy turn around
 	s8  ccaThres;    //threshold for cca
 }rf_phy_params_t;
 
