@@ -351,7 +351,7 @@ void rf_startED(void)
 }
 
 /*********************************************************************
- * @fn      rf_stop_ED
+ * @fn      rf_stopED
  *
  * @brief   Stop Energy Detect
  *
@@ -650,6 +650,6 @@ _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_tx_irq_handler(voi
     rfMode = RF_STATE_RX;
     ZB_SWITCH_TO_RXMODE();
 
-    zb_macDataSendHander();
+    zb_macDataSendHandler();
 }
 

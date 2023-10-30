@@ -393,7 +393,7 @@ static inline void pwm_set_dma_address(void * pdat)
 }
 
 /**
- * @brief     This fuction servers to start the pwm's IRQ sending.
+ * @brief     This function servers to start the pwm's IRQ sending.
  * @param[in] none.
  * @return	  none.
  */
