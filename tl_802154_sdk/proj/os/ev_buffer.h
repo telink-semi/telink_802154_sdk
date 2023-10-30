@@ -68,7 +68,7 @@
  */
 #define BUFFER_GROUP_0                   	24
 #define BUFFER_GROUP_1                   	60
-#define BUFFER_GROUP_2                   	150
+#define BUFFER_GROUP_2                   	200
 #define BUFFER_GROUP_3                   	1024
 #define MAX_BUFFER_SIZE                  	BUFFER_GROUP_3
 

@@ -70,6 +70,7 @@ TN_MEM_DEF(macKeyDevMem, mac_keydevDesc_t, MAC_KEY_DEV_TABLE_MAX_LEN);
 LIST_DEF(macKeyTable);
 LIST_DEF(macDevTable);
 LIST_DEF(macSecLvlTable);
+LIST_DEF(macKeyDevTable);
 
 void mac_secMaterial_Init(u8 coldReset)
 {
@@ -86,6 +87,7 @@ void mac_secMaterial_Init(u8 coldReset)
 		tn_list_init(macKeyTable);
 		tn_list_init(macDevTable);
 		tn_list_init(macSecLvlTable);
+		tn_list_init(macKeyDevTable);
 	}
 		g_zbMacPib.keyTable = (void *)macKeyTable;
 		g_zbMacPib.devTable = (void *)macDevTable;
@@ -213,19 +215,19 @@ const mac_pibTbl_t g_zbMacPibTbl[] = {
 
     /* Security related PIBs*/
     {OFFSETOF(tl_zb_mac_pib_t, keyTable), sizeof(void *), 0, 0},
-    {OFFSETOF(tl_zb_mac_pib_t, devTable), sizeof(void *), 0, 0},
-    {OFFSETOF(tl_zb_mac_pib_t, secLvlTable), sizeof(void *), 0, 0},
     {OFFSETOF(tl_zb_mac_pib_t, keyTableEntries), sizeof(u8), 0, MAC_KEY_TABLE_MAX_LEN},
+    {OFFSETOF(tl_zb_mac_pib_t, devTable), sizeof(void *), 0, 0},
     {OFFSETOF(tl_zb_mac_pib_t, devTableEntries), sizeof(u8), 0, MAC_DEV_TABLE_MAX_LEN},
+    {OFFSETOF(tl_zb_mac_pib_t, secLvlTable), sizeof(void *), 0, 0},
     {OFFSETOF(tl_zb_mac_pib_t, secLvlTableEntries), sizeof(u8), 0, MAC_SEC_LVL_TABLE_MAX_LEN},
+    {OFFSETOF(tl_zb_mac_pib_t, frameCounter), sizeof(u32), 0, 0xffffffff},
     {OFFSETOF(tl_zb_mac_pib_t, autoReqSecLvl), sizeof(u8), 0, 7},
-    {OFFSETOF(tl_zb_mac_pib_t, frameCounter), sizeof(u32), 0, 0},
-    {OFFSETOF(tl_zb_mac_pib_t, autoReqKeySource), 8, 0, 0},
     {OFFSETOF(tl_zb_mac_pib_t, autoReqKeyIdMode), sizeof(u8), 0, 3},
+    {OFFSETOF(tl_zb_mac_pib_t, autoReqKeySource), 8, 0, 0},
     {OFFSETOF(tl_zb_mac_pib_t, autoReqKeyIndex), sizeof(u8), 1, 0xff},
-    {OFFSETOF(tl_zb_mac_pib_t, panCoordShortAddr), sizeof(u16), 0, 0},
     {OFFSETOF(tl_zb_mac_pib_t, defaultKeySource), 8, 0, 0},
     {OFFSETOF(tl_zb_mac_pib_t, panCoordExtAddr), 8, 0, 0},
+    {OFFSETOF(tl_zb_mac_pib_t, panCoordShortAddr), sizeof(u16), 0, 0}
 };
 
 
@@ -342,12 +344,18 @@ _CODE_MAC_ u8 tl_zbMacAttrSet(u8 attribute, u8 *value, u8 index){
 		return MAC_SUCCESS;
 	}
 
-	u8 len = index;
-	if(len > g_zbMacPibTbl[attribute-MAC_PIB_ATTRIBUTE_START].len){
+	u8 len = index,offset=0;
+	if(attribute>=MAC_KEY_TABLE)
+	{
+		offset = MAC_KEY_TABLE - MAC_TX_POWER;
+		offset -= 1;
+	}
+
+	if(len > g_zbMacPibTbl[attribute-MAC_PIB_ATTRIBUTE_START-offset].len){
 		return MAC_STA_INVALID_PARAMETER;
 	}
 
-	memcpy((u8 *)&g_zbMacPib+g_zbMacPibTbl[attribute-MAC_PIB_ATTRIBUTE_START].offset, value, len);
+	memcpy((u8 *)&g_zbMacPib+g_zbMacPibTbl[attribute-MAC_PIB_ATTRIBUTE_START-offset].offset, value, len);
 
 	return MAC_SUCCESS;
 }
@@ -371,6 +379,7 @@ _CODE_MAC_ u8 tl_zbMacAttrGet(u8 attribute, u8* value, u8* index){
 
 	if(attribute == MAC_PHY_ATTR_CURRENT_CHANNEL){
 		*value = g_zbMacPib.phyChannelCur;
+		*index = 1;
 		return MAC_SUCCESS;
 	}
 
@@ -425,6 +434,9 @@ _CODE_MAC_ u8 tl_zbMacAttrGet(u8 attribute, u8* value, u8* index){
 
 	u8 len = g_zbMacPibTbl[attribute-MAC_PIB_ATTRIBUTE_START].len;
 	memcpy(value, (u8 *)&g_zbMacPib+g_zbMacPibTbl[attribute-MAC_PIB_ATTRIBUTE_START].offset, len);
+	if(attribute == MAC_ATTR_BEACON_PAYLOAD && g_zbMacPib.beaconPayloadLen <= len){
+		len = g_zbMacPib.beaconPayloadLen;
+	}
 	*index = len;
 	return MAC_SUCCESS;
 }
@@ -534,6 +546,13 @@ _CODE_MAC_ void generateIEEEAddr(void){
 		}
 	}
 	ZB_IEEE_ADDR_COPY(ZB_PIB_EXTENDED_ADDRESS(), addr);
+}
+
+
+
+void updateKeyDevTable(mac_keydevDesc_t *desc)
+{
+	tn_list_add(macKeyDevTable, desc);
 }
 
 /*! @} */

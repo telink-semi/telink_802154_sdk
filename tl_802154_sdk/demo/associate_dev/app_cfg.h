@@ -102,6 +102,13 @@ extern "C" {
 #define ZBHCI_USB_CDC				0
 #define ZBHCI_USB_HID				0
 #define ZBHCI_USB_PRINT				0
+#define ZBHCI_SWIRE_MODE			0
+
+
+#if (ZBHCI_USB_PRINT || ZBHCI_USB_CDC || ZBHCI_USB_HID || ZBHCI_UART || ZBHCI_SWIRE_MODE)
+	#define ZBHCI_EN								1
+#endif
+
 
 
 

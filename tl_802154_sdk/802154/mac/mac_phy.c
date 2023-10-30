@@ -93,6 +93,12 @@ u8 fPaEn;
 u32 rf_pa_txen_pin;
 u32 rf_pa_rxen_pin;
 
+rf_phy_params_t g_phyParams = {
+		.ccaThres = CCA_THRESHOLD,
+		.turnArnd = ZB_TX_WAIT_US,
+};
+
+
 /**********************************************************************
  * LOCAL FUNCTIONS
  */
@@ -241,7 +247,7 @@ _attribute_ram_code_ void rf_setTrxState(u8 state)
         rfMode = RF_STATE_RX;
     }else if(RF_STATE_TX == state){
     	ZB_SWTICH_TO_TXMODE();
-        WaitUs(ZB_TX_WAIT_US);
+        WaitUs(g_phyParams.turnArnd);
         rfMode = RF_STATE_TX;
     }else{
         /* Close RF */
@@ -363,15 +369,9 @@ u8 rf_stopED(void)
     soft_rssi = sum_rssi/cnt_rssi;
 
     ev_disable_poll(EV_POLL_ED_DETECT);/*WISE_FIX_ME*/
+
     /* Transfer the RSSI value to ED value */
-    if(soft_rssi <= -106){
-        ed = 0;
-    }else if(soft_rssi >= -6){
-        ed = 0xff;
-    }else{
-    	temp = (soft_rssi + 106) * 255;
-        ed = temp/100;
-    }
+    ed = rf_getLqi(soft_rssi);
 
     return ed;
 
@@ -397,7 +397,7 @@ _attribute_ram_code_ u8 rf_performCCA(void)
 	}
 	rssi_peak = rssiSum/cnt;
 
-	if(rssi_peak > CCA_THRESHOLD || (rf_busyFlag & TX_BUSY)){//Return if currently in TX state
+	if(rssi_peak > g_phyParams.ccaThres || (rf_busyFlag & TX_BUSY)){//Return if currently in TX state
 		return PHY_CCA_BUSY;
 	}else{
 		return PHY_CCA_IDLE;
@@ -472,6 +472,7 @@ _attribute_ram_code_ void rf_paShutDown(void)
  * @return  none
  */
 volatile u8 T_Debug_CRCE[128] = {0};
+
 _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_rx_irq_handler(void)
 {
     u8 *p = rf_rxBuf;
@@ -479,6 +480,10 @@ _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_rx_irq_handler(voi
     u8 fDrop = 0;
     s32 txTime = 0;
     s32 txDelayUs = 0;
+
+    if(RF_DMA_BUSY()){
+		return;
+	}
 
     ZB_RADIO_RX_DISABLE;
 
@@ -506,12 +511,13 @@ _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_rx_irq_handler(voi
     	/* diagnostics MAC layer receive error packet */
     	g_sysDiags.macRxCrcFail++;
 
-    	for(u8 i =0;i<128;i++)
-    	   T_Debug_CRCE[i] = rf_rxBuf[i];
+    	//for(u8 i =0;i<128;i++)
+    	//   T_Debug_CRCE[i] = rf_rxBuf[i];
     	ZB_RADIO_RX_BUF_CLEAR(rf_rxBuf);
         ZB_RADIO_RX_ENABLE;
         return;
     }
+
 
     /* Parse necessary field to be used later */
     u8 len = (u8)ZB_RADIO_ACTUAL_PAYLOAD_LEN(p);
@@ -594,8 +600,8 @@ _attribute_ram_code_ __attribute__((optimize("-Os"))) void rf_rx_irq_handler(voi
 #endif
 
 		txDelayUs = (clock_time() - txTime) / S_TIMER_CLOCK_1US;
-		if(txDelayUs < ZB_TX_WAIT_US){
-			WaitUs(ZB_TX_WAIT_US - txDelayUs);
+		if(txDelayUs < g_phyParams.turnArnd){
+			WaitUs(g_phyParams.turnArnd - txDelayUs);
 		}
 
 		/* wait until tx done,

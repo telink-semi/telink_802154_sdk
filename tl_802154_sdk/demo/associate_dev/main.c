@@ -25,6 +25,7 @@ int main(void)
 
 #if VOLTAGE_DETECT_ENABLE
     tick = clock_time();
+    tick /= 25;
 #endif
 
     while(1) {

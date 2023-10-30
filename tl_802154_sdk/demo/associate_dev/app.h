@@ -15,7 +15,7 @@ extern void MyPollCnfCb(unsigned char *pData);
 extern void MyDisassociateCnfCb(unsigned char *pData);
 extern void MyDataCnfCb(unsigned char *pData);
 extern void MyBeaconIndCb(unsigned char *pData);
-
+extern u8 add_key_material(void);
 extern void poll_data_req_send(void *arg);
 extern int PollDataTimerCb(void *arg);
 void mac_set_pollRate(u32 newRate);

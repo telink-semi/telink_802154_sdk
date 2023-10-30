@@ -250,21 +250,21 @@ enum{
 
 
 	//added for MAC security
-	MAC_KEY_TABLE                   =       0x60,  //!< A table of KeyDescriptor entries
-	MAC_DEVICE_TABLE                =	    0x61,  //!< A table of DeviceDescriptor entries
-	MAC_SECURITY_LEVEL_TABLE        =	    0x62,  //!< A table of SecurityLevelDescriptor entries
-	MAC_KEY_TABLE_ENTRIES           =	    0x63,  //!< The number of entries in macKeyTable
-	MAC_DEVICE_TABLE_ENTRIES        =	    0x64,  //!< The number of entries in macDeviceTable.
-	MAC_SECURITY_LEVEL_TABLE_ENTRIES=	    0x65,  //!< The number of entries in macSecurityLevelTable.
-	MAC_AUTO_REQUEST_SECURITY_LEVEL =	    0x66,  //!< The security level used for automatic data requests
-	MAC_FRAME_COUNTER               =	    0x67,  //!< The outgoing frame counter for this device
-	MAC_AUTO_REQUEST_KEY_SOURCE     =	    0x68,  //!< The originator of the key used for automatic data requests. This attribute is invalid if the macAutoRequestKeyIdMode element is invalid or set to 0x00.
-	MAC_AUTO_REQUEST_KEYID_MODE     =	    0x69,  //!< The key identifier mode used for automatic data requests. This attribute is invalid if the macAutoRequestSecurityLevel attribute is set to 0x00.
-	MAC_AUTO_REQUEST_KEY_INDEX      =	  	0x6a,  //!< The index of the key used for automatic data requests. This attribute is invalid if the macAutoRequestKeyIdMode attribute is invalid or set to 0x00.
-	MAC_PAN_COORD_SHORT_ADDRESS     =	    0x6b,  //!< The 16-bit short address assigned to the PAN coordinator. A value of 0xfffe indicates that the PAN coordinator is only using its 64-bit extended address. A value of 0xffff indicates that this value is unknown.
-	MAC_DEFAULT_KEY_SOURCE          =	    0x6c,  //!< The originator of the default key used for key identifier mode 0x01
-	MAC_PAN_COORD_EXTENDED_ADDRESS  =	    0x6d,  //!< The 64-bit address of the PAN coordinator.
-	MAC_PIB_ATTRIBUTE_STOP			=       0x6d,	//!< attribute Identifier: autoRequest
+	MAC_KEY_TABLE                   =       0x71,  //!< A table of KeyDescriptor entries
+	MAC_KEY_TABLE_ENTRIES           =	    0x72,  //!< The number of entries in macKeyTable
+	MAC_DEVICE_TABLE                =	    0x73,  //!< A table of DeviceDescriptor entries
+	MAC_DEVICE_TABLE_ENTRIES        =	    0x74,  //!< The number of entries in macDeviceTable.
+	MAC_SECURITY_LEVEL_TABLE        =	    0x75,  //!< A table of SecurityLevelDescriptor entries
+	MAC_SECURITY_LEVEL_TABLE_ENTRIES=	    0x76,  //!< The number of entries in macSecurityLevelTable.
+	MAC_FRAME_COUNTER               =	    0x77,  //!< The outgoing frame counter for this device
+	MAC_AUTO_REQUEST_SECURITY_LEVEL =	    0x78,  //!< The security level used for automatic data requests
+	MAC_AUTO_REQUEST_KEYID_MODE     =	    0x79,  //!< The key identifier mode used for automatic data requests. This attribute is invalid if the macAutoRequestSecurityLevel attribute is set to 0x00.
+	MAC_AUTO_REQUEST_KEY_SOURCE     =	    0x7a,  //!< The originator of the key used for automatic data requests. This attribute is invalid if the macAutoRequestKeyIdMode element is invalid or set to 0x00.
+	MAC_AUTO_REQUEST_KEY_INDEX      =	  	0x7b,  //!< The index of the key used for automatic data requests. This attribute is invalid if the macAutoRequestKeyIdMode attribute is invalid or set to 0x00.
+	MAC_DEFAULT_KEY_SOURCE          =	    0x7c,  //!< The originator of the default key used for key identifier mode 0x01
+	MAC_PAN_COORD_EXTENDED_ADDRESS  =	    0x7d,  //!< The 64-bit address of the PAN coordinator.
+	MAC_PAN_COORD_SHORT_ADDRESS     =	    0x7e,  //!< The 16-bit short address assigned to the PAN coordinator. A value of 0xfffe indicates that the PAN coordinator is only using its 64-bit extended address. A value of 0xffff indicates that this value is unknown.
+	MAC_PIB_ATTRIBUTE_STOP			=       0x7f,	//!< attribute Identifier: autoRequest
 
 };
 
@@ -344,8 +344,10 @@ typedef enum{
     MAC_STA_NO_RESOURCES            = 0x1A,
 
     MAC_STA_FRAME_PENDING			= 0x20,
+	MAC_STA_FRAME_DATA_PURGE        = 0x21,
 
     MAC_TX_ABORTED              	= 0x1D,/**< For internal use only */
+
 }mac_sts_t;
 
 
@@ -1020,6 +1022,19 @@ void tl_zbMacTaskProc(void);
 
 
 void tl_zbMacMcpsDataRequestProc(void *arg);
+
+
+/*
+ * indirect data purge
+ *
+ * @param p, purge request
+ *
+ * @param pCnf, purge confirm
+ *
+ * @return None
+ *
+ * */
+void tl_zbMacDataPurgeRequestProc(zb_mscp_purge_req_t *p, zb_mscp_purge_conf_t *pCnf);
 
 /*
  * NWK layer to MAC layer primitive

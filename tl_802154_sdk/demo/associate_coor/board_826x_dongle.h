@@ -105,7 +105,7 @@ extern "C" {
 #endif
 
 
-
+#define UART_PRINTF_MODE            0
 //DEBUG
 #if UART_PRINTF_MODE
 	#define	DEBUG_INFO_TX_PIN	    GPIO_PB5//print

@@ -104,12 +104,12 @@
 /*
  *  @brief MAC security related consts
  */
-#define MAC_DEV_TABLE_MAX_LEN               3  /*maximum number of devices that can securely communicate with the local device*/
-#define MAC_KEY_TABLE_MAX_LEN               3
+#define MAC_DEV_TABLE_MAX_LEN               16  /*maximum number of devices that can securely communicate with the local device*/
+#define MAC_KEY_TABLE_MAX_LEN               16
 #define LOOKUP_MAX_NUM_PER_ONE_KEY          1 /*one KeyIDLookupDesc entry correspondings to one KeyDescriptor in macKeyTable*/
-#define MAC_KEYID_LOOKUP_TABLE_MAX_LEN      (MAC_KEY_TABLE_MAX_LEN*LOOKUP_MAX_NUM_PER_ONE_KEY)
-#define MAC_KEY_USAGE_TABLE_MAX_LEN         (6*MAC_KEY_TABLE_MAX_LEN) /* data frame + beacon frame + 4 command frame(data request,beacon request,associate request,associate response) */
-#define MAC_KEY_DEV_TABLE_MAX_LEN           (MAC_KEY_TABLE_MAX_LEN*MAC_DEV_TABLE_MAX_LEN)  /*one entry correspondings to one DeviceDescriptor in macDeviceTable*/
+#define MAC_KEYID_LOOKUP_TABLE_MAX_LEN      1//(MAC_KEY_TABLE_MAX_LEN*LOOKUP_MAX_NUM_PER_ONE_KEY)
+#define MAC_KEY_USAGE_TABLE_MAX_LEN         2//(6*MAC_KEY_TABLE_MAX_LEN) /* data frame + beacon frame + 4 command frame(data request,beacon request,associate request,associate response) */
+#define MAC_KEY_DEV_TABLE_MAX_LEN           (MAC_DEV_TABLE_MAX_LEN>MAC_KEY_TABLE_MAX_LEN) ? (MAC_DEV_TABLE_MAX_LEN):(MAC_KEY_TABLE_MAX_LEN)//(MAC_KEY_TABLE_MAX_LEN*MAC_DEV_TABLE_MAX_LEN)  /*one entry correspondings to one DeviceDescriptor in macDeviceTable*/
 #define MAC_SEC_LVL_TABLE_MAX_LEN           6 /* data frame + beacon frame + 4 command frame(data request,beacon request,associate request,associate response) */
 
 typedef enum {
@@ -233,6 +233,7 @@ u8 tl_zbMacAttrGet(u8 attribute, u8* value, u8* len);
 
 
 void mac_secMaterial_Init(u8 coldReset);
+void updateKeyDevTable(mac_keydevDesc_t *desc);
 //void *mac_secMaterial_alloc(mac_secMaterial_t type);
 //char mac_secMaterial_free(mac_secMaterial_t type, void *item);
 #endif /* TL_ZB_MAC_PIB_H */

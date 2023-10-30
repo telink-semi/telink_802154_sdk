@@ -35,6 +35,10 @@ unsigned char  coor_ext_addr[8] = {0};
 unsigned short coor_addr_short = 0x0;
 unsigned short pan_id = 0;
 
+//set key_usage_list  type 01£ºmac data  03:mac cmd
+mac_keyusageDesc_t *pKeyUsgDesc[2] = {NULL};
+mac_keyid_lookup_desc_t *pKeyIDDesc = NULL;
+
 //rx packet
 volatile u8 user_packet[16] = {0};
 //poll data
@@ -45,40 +49,8 @@ void dev_config(void)
 	tl_zbMacAttrSet(MAC_ATTR_SECURITY_ENABLED, &security, 1);
 
 	tl_zbMacAttrSet(MAC_DEFAULT_KEY_SOURCE,default_key_source,8);
-}
 
-
-
-void add_key_material(void)
-{
-	//set device table
-	mac_deviceDesc_t *pDevDesc = mac_deviceDesc_alloc();
-	if (!pDevDesc) {
-		while(1);
-	}
-	mac_deviceDesc_set(pDevDesc, pan_id, coor_addr_short, coor_ext_addr, 0, 0);
-	tl_zbMacAttrSet(MAC_DEVICE_TABLE, (u8 *)pDevDesc, 0);//add device table to macPib
-
-	//set key_id_lookup_list
-	mac_keyid_lookup_desc_t *pKeyIDDesc = (mac_keyid_lookup_desc_t *)mac_keyidDesc_alloc();
-	if (!pKeyIDDesc) {
-		while(1);
-	}
-	unsigned char look_data[9];
-	memset(look_data, 0, 9);
-	memcpy(look_data,default_key_source,sizeof(default_key_source));
-	look_data[8] = default_key_index;
-	mac_keyidDesc_set(pKeyIDDesc, LOOKUP_DATA_SIZE_9, look_data);//lookup data size 9 octos
-
-	//set key_device_list
-	mac_keydevDesc_t *pKeyDevDesc = (mac_keydevDesc_t *)mac_keydevDesc_alloc();
-	if (!pKeyDevDesc) {
-		while(1);
-	}
-	mac_keydevDesc_set(pKeyDevDesc, pDevDesc, 0, 0);//add mac_deviceDesc_t  to pKeyDevDesc
-
-	//set key_usage_list  mac packet type£¬01£ºmac data  03:mac cmd
-	mac_keyusageDesc_t *pKeyUsgDesc[2];
+	//COMMON METERIALS
 	pKeyUsgDesc[0]= (mac_keyusageDesc_t *)mac_keyusageDesc_alloc();
 	if (!pKeyUsgDesc[0]) {
 		while(1);
@@ -90,6 +62,37 @@ void add_key_material(void)
 	}
 	mac_keyusageDesc_set(pKeyUsgDesc[1], 3, 4);
 
+	//set key_id_lookup_list
+	pKeyIDDesc = (mac_keyid_lookup_desc_t *)mac_keyidDesc_alloc();
+	if (!pKeyIDDesc) {
+		while(1);
+	}
+	unsigned char look_data[9];
+	memset(look_data, 0, 9);
+	memcpy(look_data,default_key_source,sizeof(default_key_source));
+	look_data[8] = default_key_index;
+	mac_keyidDesc_set(pKeyIDDesc, LOOKUP_DATA_SIZE_9, look_data);//lookup data size 9 octos
+}
+
+
+
+u8 add_key_material(void)
+{
+	//set device table
+	mac_deviceDesc_t *pDevDesc = mac_deviceDesc_alloc();
+	if (!pDevDesc) {
+		while(1);
+	}
+	mac_deviceDesc_set(pDevDesc, pan_id, coor_addr_short, coor_ext_addr, 0, 0);
+	tl_zbMacAttrSet(MAC_DEVICE_TABLE, (u8 *)pDevDesc, 0);//add device table to macPib
+
+	//set key_device_list
+	mac_keydevDesc_t *pKeyDevDesc = (mac_keydevDesc_t *)mac_keydevDesc_alloc();
+	if (!pKeyDevDesc) {
+		while(1);
+	}
+	mac_keydevDesc_set(pKeyDevDesc, pDevDesc, 0, 0);//add mac_deviceDesc_t  to pKeyDevDesc
+
 	//set key table
 	mac_keyDesc_t *pKeyDesc = (mac_keyDesc_t *)mac_keyDesc_alloc();
 	if (!pKeyDesc) {
@@ -99,6 +102,8 @@ void add_key_material(void)
 	mac_keyDesc_set(pKeyDesc, &pKeyIDDesc, 1, &pKeyDevDesc, 1, pKeyUsgDesc, 2, test_key);
 
 	tl_zbMacAttrSet(MAC_KEY_TABLE, (u8 *)pKeyDesc, 0);  //add key table to macPib
+
+	return TRUE;
 }
 
 

@@ -47,7 +47,7 @@
 
 #if (ZBHCI_EN && ZBHCI_UART)
 #include "zb_task_queue.h"
-#include "zbhci.h"
+#include "../zbhci.h"
 
 void uart_txMsg(u16 u16Length, u8 *pu8Data);
 

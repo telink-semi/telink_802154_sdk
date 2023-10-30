@@ -6,6 +6,7 @@ typedef struct {
     addrExt_t   extAddr;           //!< Extended address
     u16         shortAddr;         //!< Short address
     u16 		pan_id;
+    u8 			rsv[4];
 }my_device_t;
 extern my_device_t end_device[];
 extern addr_t	dev_src_addr;
@@ -13,7 +14,7 @@ extern addr_t	dev_src_addr;
 
 extern void coor_config(void);
 extern void pan_start(void);
-extern void add_key_material(void);
+extern u8 add_key_material(void);
 extern void mac_send_data_indirect(void *arg);
 extern void data_send(void);
 

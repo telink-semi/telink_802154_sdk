@@ -28,13 +28,13 @@ void user_init(bool isRetention)
 
 		ota_init();
 #if ZBHCI_EN
-	/*
-	 * define ZBHCI_USB_PRINT, ZBHCI_USB_CDC or ZBHCI_UART as 1 in app_cfg.h
-	 * if needing to enable ZBHCI_EN
-	 *
-	 * */
-	zbhciInit();
-	ev_on_poll(EV_POLL_HCI, zbhciTask);
+		/*
+		 * define ZBHCI_USB_PRINT, ZBHCI_USB_CDC or ZBHCI_UART as 1 in app_cfg.h
+		 * if needing to enable ZBHCI_EN
+		 *
+		 * */
+		zbhciInit();
+		ev_on_poll(EV_POLL_HCI, zbhciTask);
 #endif
 
 		ev_on_poll(EV_POLL_IDLE, app_task);

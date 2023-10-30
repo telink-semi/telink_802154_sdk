@@ -42,6 +42,7 @@ void user_init(bool isRetention)
 	sys_exceptHandlerRegister(sampleCoorSysException);
 
 	coor_config();
+
 	//802.15.4 stack Init
 	UpperLayerCallbackSet(CALLBACK_START_CONFIRM, MyStartCnfCb);
 	UpperLayerCallbackSet(CALLBACK_ASSOCIATE_INDICATION, MyAssociateIndCb);

@@ -52,7 +52,7 @@
  */
 #define RF_PKT_BUFF_LEN				(144)//(128+32) //(128+16)
 
-#define CCA_THRESHOLD       		(-60)
+#define CCA_THRESHOLD       		(-75)
 #define RSSI_PASS_THRESHOLD			(-30)
 
 /*********************************************************************
@@ -154,7 +154,17 @@ typedef struct{
 }rx_buf_t;
 
 
+/*
+ * parameters for phy/mac
+ */
+typedef struct{
+	u16 turnArnd;  //phy turn arround
+	s8  ccaThres;    //threshold for cca
+}rf_phy_params_t;
+
+
 extern u8 g_zb_txPowerSet;
+extern rf_phy_params_t g_phyParams;
 
 
 /*********************************************************************

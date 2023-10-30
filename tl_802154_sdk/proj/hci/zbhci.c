@@ -64,6 +64,9 @@
 #if ZBHCI_UART
 	extern void hci_uart_init(void);
 	extern void uart_txMsg(u16 u16Length, u8 *pu8Data);
+#elif ZBHCI_USB_CDC
+	extern void usb_cdc_init(void);
+	extern zbhciTx_e usb_cdc_txMsg(u16 u16Type, u16 u16Length, u8 *pu8Data);
 #endif
 
 
@@ -92,22 +95,35 @@ u8 crc8Calculate(u16 type, u16 length, u8 *data){
  * @brief:   data send by HCI
  *
  * */
-zbhciTx_e zbhciTx(u16 u16Length, u8 *pu8Data)
+zbhciTx_e zbhciTx(u16 u16Type, u16 u16Length, u8 *pu8Data)
 {
 #if ZBHCI_UART
     uart_txMsg(u16Length, pu8Data);
     return ZBHCI_TX_SUCCESS;
+#elif ZBHCI_SWIRE_MODE
+    return usb_print_txMsg(u16Type, u16Length, pu8Data);
+#elif ZBHCI_USB_CDC
+	return usb_cdc_txMsg(u16Type, u16Length, pu8Data);
 #endif
 }
 
 void zbhciInit(void){
 #if ZBHCI_USB_PRINT || ZBHCI_USB_CDC || ZBHCI_USB_HID
 	HW_USB_CFG();
+#if ZBHCI_USB_PRINT
+	usb_print_init();
+	return;
+#elif ZBHCI_USB_CDC
+	usb_cdc_init();
+#endif
+    usb_init();
 #endif
 
 
 #if ZBHCI_UART
     hci_uart_init();
+#elif ZBHCI_SWIRE_MODE
+    usb_print_init();
 #endif
 }
 
@@ -115,6 +131,10 @@ void zbhciTask(void){
 #if  ZBHCI_UART
 	/* process messages in the uart ISR, and we must check the uart RX state in main loop. */
 	drv_uart_exceptionProcess();
+#elif ZBHCI_USB_PRINT || ZBHCI_SWIRE_MODE
+	usb_print_task();
+#elif ZBHCI_USB_CDC
+	usb_handle_irq();
 #endif
 }
 

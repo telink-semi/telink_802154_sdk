@@ -163,6 +163,7 @@ mac_seclevelDesc_t *mac_seclevelDesc_alloc(void);
 //macSecurityDescs set operations
 void mac_keyidDesc_set(mac_keyid_lookup_desc_t *desc, mac_lookupData_size_t size, u8 *data);
 void mac_deviceDesc_set(mac_deviceDesc_t *desc, u16 panID, u16 shortAddr, u8 *extAddr, u32 frameCnt, bool exempt);
+void mac_deviceDesc_reset(mac_deviceDesc_t *desc, u16 panID, u16 shortAddr, u8 *extAddr, u32 frameCnt, bool exempt);
 void mac_keydevDesc_set(mac_keydevDesc_t *desc, mac_deviceDesc_t *devDesc, bool uniDev, bool blackLst);
 void mac_keyusageDesc_set(mac_keyusageDesc_t *desc, u8 frameType, u8 cmdFrameID);
 void mac_keyDesc_set(mac_keyDesc_t *desc, 

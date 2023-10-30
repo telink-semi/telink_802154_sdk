@@ -52,6 +52,9 @@
 /* radio module reset */
 #define ZB_RADIO_RESET()					 			RF_reset()
 
+/* RF is busy */
+#define RF_DMA_BUSY()									0
+
 /* trx swith */
 #define ZB_RADIO_TRX_SWITCH(mode, chn) 					RF_TrxStateSet(mode, chn)
 
@@ -180,6 +183,9 @@
  ******************************************************************************************************/
 /* radio module reset */
 #define ZB_RADIO_RESET()
+
+/* RF is busy */
+#define RF_DMA_BUSY()									is_rf_receiving_pkt()
 
 /* trx swith */
 #define ZB_RADIO_TRX_SWITCH(mode, chn) 					rf_trx_state_set(mode, chn)
@@ -313,6 +319,9 @@
 /* radio module reset */
 #define ZB_RADIO_RESET()
 
+/* RF is busy */
+#define RF_DMA_BUSY()									is_rf_receiving_pkt()
+
 /* trx swith */
 #define ZB_RADIO_TRX_SWITCH(mode, chn) 					rf_trx_state_set(mode, chn)
 
@@ -445,6 +454,9 @@
 /* radio module reset */
 #define ZB_RADIO_RESET()
 
+/* RF is busy */
+#define RF_DMA_BUSY()									rf_receiving_flag()
+
 /* trx swith */
 #define ZB_RADIO_TRX_SWITCH(mode, chn) 					rf_set_trx_state(mode, chn)
 
@@ -534,7 +546,7 @@
 #define ZB_RADIO_RX_HDR_LEN								5
 
 /* delay after switch to Tx mode, and then start sending */
-#define ZB_TX_WAIT_US									85
+#define ZB_TX_WAIT_US									165
 
 /* get real payload length */
 #define ZB_RADIO_ACTUAL_PAYLOAD_LEN(p)					rf_zigbee_get_payload_len(p)

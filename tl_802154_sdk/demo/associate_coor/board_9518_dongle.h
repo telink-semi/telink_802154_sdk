@@ -116,6 +116,14 @@ extern "C" {
 	#error please configurate uart PIN!!!!!!
 #endif
 
+// USB
+#if ZBHCI_USB_PRINT || ZBHCI_USB_CDC || ZBHCI_USB_HID
+	#define HW_USB_CFG()			do{ \
+										usb_set_pin_en();	\
+										usb_edp_en();		\
+									}while(0)
+#endif
+
 // DEBUG
 #if UART_PRINTF_MODE
 	#define	DEBUG_INFO_TX_PIN	    GPIO_PC1//print

@@ -372,6 +372,11 @@ typedef struct{
 	u8	performaceTest;
 }zbhci_afTestReq_t;
 
+typedef struct{
+	u16 deviceAddr;
+	u8 status;
+}zbhci_testAssRespSta_t;
+
 extern zbhci_afTestReq_t g_afTestReq;
 
 
@@ -384,7 +389,7 @@ void zbhciAfDataRcvIndPush(void *arg);
 void zbhciAfDataCnfPush(void *arg);
 bool zbhciMacAddrGetPush(addrExt_t devExtAddr);
 
-extern zbhciTx_e zbhciTx(u16 u16Length, u8 *pu8Data);
+extern zbhciTx_e zbhciTx(u16 u16Type, u16 u16Length, u8 *pu8Data);
 extern void zbhciInit(void);
 extern void zbhciTask(void);
 

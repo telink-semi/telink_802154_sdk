@@ -4,7 +4,7 @@
 #define    DEBUG_PIN1                     LED_1
 #define    DEBUG_PIN2                     LED_2
 
-#define		END_DEVICE_NUM		10
+#define		END_DEVICE_NUM		MAC_DEV_TABLE_MAX_LEN
 my_device_t end_device[END_DEVICE_NUM] = {{{0},0,0}};
 u8 device_index=0;
 u8 indirect_device_index=0;
@@ -23,6 +23,11 @@ unsigned char test_key[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
 
 static int data_send_indir_timer_cb(void *arg);
 
+//set key_usage_list  type 01£ºmac data  03:mac cmd
+mac_keyusageDesc_t *pKeyUsgDesc[2] = {NULL};
+mac_keyid_lookup_desc_t *pKeyIDDesc = NULL;
+
+
 //rx packet
 volatile u8 user_packet[16] = {0};
 
@@ -34,39 +39,8 @@ void coor_config(void)
 	tl_zbMacAttrSet(MAC_ATTR_SHORT_ADDRESS,(u8 *)&coor_addr_short,2);
 
 	tl_zbMacAttrSet(MAC_DEFAULT_KEY_SOURCE,default_key_source,8);
-}
 
-
-void add_key_material(void)
-{
-	//set device table
-	mac_deviceDesc_t *pDevDesc = mac_deviceDesc_alloc();
-	if (!pDevDesc) {
-		while(1);
-	}
-	mac_deviceDesc_set(pDevDesc, pan_id, device_addr_short, device_ext_addr, 0, 0);
-	tl_zbMacAttrSet(MAC_DEVICE_TABLE, (u8 *)pDevDesc, 0);//add device table to macPib
-
-	//set key_id_lookup_list
-	mac_keyid_lookup_desc_t *pKeyIDDesc = (mac_keyid_lookup_desc_t *)mac_keyidDesc_alloc();
-	if (!pKeyIDDesc) {
-		while(1);
-	}
-	unsigned char look_data[9];
-	memset(look_data, 0, 9);
-	memcpy(look_data,default_key_source,sizeof(default_key_source));
-	look_data[8] = default_key_index;
-	mac_keyidDesc_set(pKeyIDDesc, LOOKUP_DATA_SIZE_9, look_data);//lookup data size 9 octos
-
-	//set key_device_list
-	mac_keydevDesc_t *pKeyDevDesc = (mac_keydevDesc_t *)mac_keydevDesc_alloc();
-	if (!pKeyDevDesc) {
-		while(1);
-	}
-	mac_keydevDesc_set(pKeyDevDesc, pDevDesc, 0, 0);//add mac_deviceDesc_t  to pKeyDevDesc
-
-	//set key_usage_list  type 01£ºmac data  03:mac cmd
-	mac_keyusageDesc_t *pKeyUsgDesc[2];
+	//COMMON METERIALS
 	pKeyUsgDesc[0]= (mac_keyusageDesc_t *)mac_keyusageDesc_alloc();
 	if (!pKeyUsgDesc[0]) {
 		while(1);
@@ -78,15 +52,76 @@ void add_key_material(void)
 	}
 	mac_keyusageDesc_set(pKeyUsgDesc[1], 3, 4);
 
+	//set key_id_lookup_list
+	pKeyIDDesc = (mac_keyid_lookup_desc_t *)mac_keyidDesc_alloc();
+	if (!pKeyIDDesc) {
+		while(1);
+	}
+	unsigned char look_data[9];
+	memset(look_data, 0, 9);
+	memcpy(look_data,default_key_source,sizeof(default_key_source));
+	look_data[8] = default_key_index;
+	mac_keyidDesc_set(pKeyIDDesc, LOOKUP_DATA_SIZE_9, look_data);//lookup data size 9 octos
+}
+
+
+u8 add_key_material(void)
+{
+	mac_deviceDesc_t *pDevDesc = NULL;
+
+	//set device table
+	for(u8 index=0;index<MAC_DEV_TABLE_MAX_LEN;index++)
+	{
+		tl_zbMacAttrGet(MAC_DEVICE_TABLE, (void *)&pDevDesc, &index);
+
+		if(pDevDesc)
+		{
+			if(memcmp(pDevDesc->long_address,device_ext_addr,8)==0)
+			{
+				device_addr_short = pDevDesc->short_address;
+				break;
+			}
+		}
+		pDevDesc = NULL;
+	}
+	if(pDevDesc != NULL)
+	{
+		mac_deviceDesc_reset(pDevDesc, pan_id, device_addr_short, device_ext_addr, 0, 0);
+		return TRUE;
+	}
+
+	if(device_index>=END_DEVICE_NUM)
+		return FALSE;
+
+	pDevDesc = mac_deviceDesc_alloc();
+	if (!pDevDesc) {
+		while(1);
+	}
+
+	device_addr_short = device_addr_short & 0xfff0;
+	device_addr_short += device_index;
+	mac_deviceDesc_set(pDevDesc, pan_id, device_addr_short, device_ext_addr, 0, 0);
+	tl_zbMacAttrSet(MAC_DEVICE_TABLE, (u8 *)pDevDesc, device_index);//add device table to macPib
+
+	//set key_device_list
+	mac_keydevDesc_t *pKeyDevDesc = (mac_keydevDesc_t *)mac_keydevDesc_alloc();
+	if (!pKeyDevDesc) {
+		while(1);
+	}
+	mac_keydevDesc_set(pKeyDevDesc, pDevDesc, 0, 0);//add mac_deviceDesc_t  to pKeyDevDesc
+
+
+
 	//set key table
 	mac_keyDesc_t *pKeyDesc = (mac_keyDesc_t *)mac_keyDesc_alloc();
 	if (!pKeyDesc) {
 		while(1);
 	}
-
 	mac_keyDesc_set(pKeyDesc, &pKeyIDDesc, 1, &pKeyDevDesc, 1, pKeyUsgDesc, 2, test_key);
 
-	tl_zbMacAttrSet(MAC_KEY_TABLE, (u8 *)pKeyDesc, 0);  //add key table to macPib
+	tl_zbMacAttrSet(MAC_KEY_TABLE, (u8 *)pKeyDesc, device_index);  //add key table to macPib
+	device_index++;
+	return TRUE;
 }
 
 
@@ -175,19 +210,20 @@ void data_send(void)
 
 void MyAssociateIndCb(unsigned char *pData)
 {
-	if(pData==NULL||device_index>=END_DEVICE_NUM) return;
+	if(pData==NULL) return;
 	zb_mlme_associate_ind_t *pInd = (zb_mlme_associate_ind_t *)pData;
 	extAddr_t device_address;
-	device_addr_short++;
-	u16 address = device_addr_short;
+	u16 address = 0;
+	u8 idx=0,len=0;
 	ZB_IEEE_ADDR_COPY(device_address, pInd->devAddress);
 	ZB_IEEE_ADDR_COPY(device_ext_addr, pInd->devAddress);
-	ZB_IEEE_ADDR_COPY(end_device[device_index].extAddr, device_address);
-	end_device[device_index].shortAddr = address;
-	u8 len=0;
-	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&end_device[device_index].pan_id,&len);
-	add_key_material();//add device info to key table
-	device_index++;
+	if(add_key_material()!=TRUE)//add device info to key table
+		return;
+	idx = device_addr_short&0xf;
+	ZB_IEEE_ADDR_COPY(end_device[idx].extAddr, device_address);
+	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&end_device[idx].pan_id,&len);
+	address = device_addr_short;
+	end_device[idx].shortAddr = address;
 	zb_mlme_associate_resp_t AssociateRsp;
 	zb_mlme_associate_resp_t *pResp = (zb_mlme_associate_resp_t *)&AssociateRsp;
     memset(pResp, 0, sizeof(zb_mlme_associate_resp_t));

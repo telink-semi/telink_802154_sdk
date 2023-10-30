@@ -81,12 +81,25 @@ extern "C" {
 #define ZBHCI_USB_CDC				0
 #define ZBHCI_USB_HID				0
 #define ZBHCI_USB_PRINT				0
+#define ZBHCI_SWIRE_MODE			0
 
 
-#if (ZBHCI_USB_PRINT || ZBHCI_USB_CDC || ZBHCI_USB_HID || ZBHCI_UART)
+
+#if (ZBHCI_USB_PRINT || ZBHCI_USB_CDC || ZBHCI_USB_HID || ZBHCI_UART || ZBHCI_SWIRE_MODE)
 	#define ZBHCI_EN								1
 #endif
 
+/* USB module */
+#if (ZBHCI_USB_CDC || ZBHCI_USB_HID)
+#define MODULE_USB_ENABLE							1
+#if ZBHCI_USB_CDC
+	#define USB_CDC_ENABLE							1
+	#define USB_VENDOR_ENABLE						0
+#elif ZBHCI_USB_HID
+	#define USB_CDC_ENABLE							0
+	#define USB_VENDOR_ENABLE						1
+#endif
+#endif
 
 /**********************************************************************
  * Product Information
@@ -126,7 +139,7 @@ extern "C" {
 
 #elif defined(MCU_CORE_B91)
 	#define FLASH_CAP_SIZE_1M		1
-	#define BOARD					BOARD_9518_DONGLE
+	#define BOARD					BOARD_9518_DONGLE //BOARD_9518_EVK  //BOARD_9518_DONGLE
 	/* system clock config */
 	#define CLOCK_SYS_CLOCK_HZ  	48000000
 #else
