@@ -1059,8 +1059,8 @@ enum{
 
 #define reg_alc_vol_th_h			REG_ADDR16(0xb44)
 #define reg_alc_vol_th_l			REG_ADDR16(0xb46)
-#define reg_alc_vol_thn				REG_ADDR16(0xb48)
-#define reg_alc_vad_thn				REG_ADDR16(0xb4a)
+#define reg_alc_vol_th_n			REG_ADDR16(0xb48)
+#define reg_alc_vad_th_n			REG_ADDR16(0xb4a)
 
 #define reg_alc_vol_step			REG_ADDR8(0xb4c)
 

@@ -274,7 +274,7 @@ void rf_setTxPower(u8 txPower);
 u8 rf_getLqi(s8 rssi);
 
 /*********************************************************************
- * @fn      rf_startED
+ * @fn      rf_startEnergyDetect
  *
  * @brief   Start ED detect
  *
@@ -282,10 +282,10 @@ u8 rf_getLqi(s8 rssi);
  *
  * @return  none
  */
-void rf_startED(void);
+void rf_startEnergyDetect(void);
 
 /*********************************************************************
- * @fn      rf_stopED
+ * @fn      rf_stopEnergyDetect
  *
  * @brief   Stop Energy Detect
  *
@@ -293,7 +293,7 @@ void rf_startED(void);
  *
  * @return  ED result
  */
-u8 rf_stopED(void);
+u8 rf_stopEnergyDetect(void);
 
 /*********************************************************************
  * @fn      rf_performCCA

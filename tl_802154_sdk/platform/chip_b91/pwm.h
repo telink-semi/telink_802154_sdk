@@ -427,7 +427,7 @@ static inline void pwm_set_pwm0_pulse_num(unsigned short pulse_num){
 
 
 /**
- * @brief     This function serves to set trigger level of interrupt for IR FiFo mode
+ * @brief     This function serves to set trigger level of interrupt for IR fifo mode
  * @param[in] trig_level - FIFO  num int trigger level.When fifo numbers is less than this value.It's will take effect.
  * @return	  none
  */
@@ -492,7 +492,7 @@ static inline unsigned short pwm_cal_pwm0_ir_fifo_cfg_data(unsigned short pulse_
 
 
 /**
- * @brief     This function serves to write data into FiFo
+ * @brief     This function serves to write data into fifo
  * @param[in] pulse_num  - the number of pulse
  * @param[in] use_shadow - determine whether the configuration of shadow cmp and shadow max is used
  * 						   1: use shadow, 0: not use
@@ -554,12 +554,12 @@ void pwm_set_dma_chain_llp(dma_chn_e chn,unsigned short * src_addr, unsigned int
  * @brief     This function servers to configure DMA cycle chain node.
  * @param[in] chn - to select the DMA channel.
  * @param[in] config_addr  - to servers to configure the address of the current node.
- * @param[in] llponit - to configure the address of the next node configure.
+ * @param[in] ll_ponit - to configure the address of the next node configure.
  * @param[in] src_addr - to configure DMA source address.
  * @param[in] data_len - to configure DMA length.
  * @return    none
  */
-void pwm_set_tx_dma_add_list_element(dma_chn_e chn,dma_chain_config_t *config_addr,dma_chain_config_t *llponit ,unsigned short * src_addr,unsigned int data_len);
+void pwm_set_tx_dma_add_list_element(dma_chn_e chn,dma_chain_config_t *config_addr,dma_chain_config_t *ll_ponit ,unsigned short * src_addr,unsigned int data_len);
 
 
 /**

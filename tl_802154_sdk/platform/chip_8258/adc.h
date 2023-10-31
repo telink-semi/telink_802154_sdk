@@ -109,7 +109,7 @@ typedef enum {
 	C5N,
 	PGA0N,
 	PGA1N,
-	TEMSENSORN,
+	TEMPERATURE_SENSOR_N,
 	RSVD_N,
 	GND,
 }ADC_InputNchTypeDef;
@@ -131,7 +131,7 @@ typedef enum {
 	C5P,
 	PGA0P,
 	PGA1P,
-	TEMSENSORP,
+	TEMPERATURE_SENSOR_P,
 	RSVD_P,
 	VBAT,
 }ADC_InputPchTypeDef;

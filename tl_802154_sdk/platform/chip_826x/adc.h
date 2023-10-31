@@ -116,8 +116,8 @@ typedef enum {
 	B7,
 	PGAVOM,
 	PGAVOP,
-	TEMSENSORN,
-	TEMSENSORP,
+	TEMPERATURE_SENSOR_N,
+	TEMPERATURE_SENSOR_P,
 	AVSS,
 	OTVDD,//1/3 voltage division detection
 }ADC_InputPTypeDef;

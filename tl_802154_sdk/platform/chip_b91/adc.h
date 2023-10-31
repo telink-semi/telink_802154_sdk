@@ -82,7 +82,7 @@ typedef enum {
 	ADC_GPIO_PB7N = 0x08,
 	ADC_GPIO_PD0N = 0x09,
 	ADC_GPIO_PD1N = 0x0a,
-	ADC_TEMSENSORN_EE = 0x0e,
+	ADC_TEMP_SENSOR_N_EE = 0x0e,
 	GND = 0x0f,
 }adc_input_nch_e;
 typedef enum {
@@ -97,7 +97,7 @@ typedef enum {
 	ADC_GPIO_PB7P = 0x08,
 	ADC_GPIO_PD0P = 0x09,
 	ADC_GPIO_PD1P = 0x0a,
-	ADC_TEMSENSORP_EE = 0x0e,
+	ADC_TEMP_SENSOR_P_EE = 0x0e,
 	ADC_VBAT = 0x0f,
 }adc_input_pch_e;
 /**
