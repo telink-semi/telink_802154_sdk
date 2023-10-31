@@ -85,7 +85,7 @@
 /******************************************************FOR TPLL************************************************************/
 
 /**
- *  @brief Those setting of offset according to private esb packet format, so this setting for ble only.
+ *  @brief Those setting of offset according to private TPLL packet format, so this setting for ble only.
  */
 #define 	RF_PRI_TPLL_DMA_RFRX_OFFSET_RFLEN				4
 
