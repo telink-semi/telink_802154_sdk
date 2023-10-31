@@ -554,12 +554,12 @@ void pwm_set_dma_chain_llp(dma_chn_e chn,unsigned short * src_addr, unsigned int
  * @brief     This function servers to configure DMA cycle chain node.
  * @param[in] chn - to select the DMA channel.
  * @param[in] config_addr  - to servers to configure the address of the current node.
- * @param[in] ll_ponit - to configure the address of the next node configure.
+ * @param[in] ll_point - to configure the address of the next node configure.
  * @param[in] src_addr - to configure DMA source address.
  * @param[in] data_len - to configure DMA length.
  * @return    none
  */
-void pwm_set_tx_dma_add_list_element(dma_chn_e chn,dma_chain_config_t *config_addr,dma_chain_config_t *ll_ponit ,unsigned short * src_addr,unsigned int data_len);
+void pwm_set_tx_dma_add_list_element(dma_chn_e chn,dma_chain_config_t *config_addr,dma_chain_config_t *ll_point ,unsigned short * src_addr,unsigned int data_len);
 
 
 /**
