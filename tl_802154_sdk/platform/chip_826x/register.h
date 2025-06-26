@@ -1161,7 +1161,7 @@ enum{
 	FLD_GP7_RXADC_CLK	=	BIT(3),
 	FLD_RP_T0			=	BIT(4),
 	FLD_RN_T1			=	BIT(5),
-	FLD_GP6_TE			=	BIT(6),
+	FLD_GP6_T_E			=	BIT(6),
 	FLD_GP7_MDC			=	BIT(7),
 };
 #define reg_gpio_config_func2 REG_ADDR8(0x5b2)
