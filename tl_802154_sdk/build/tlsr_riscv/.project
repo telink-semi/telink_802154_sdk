@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>tl_802154_sdk</name>
+	<name>telink_ieee802154_sdk</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -25,12 +25,12 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>802154</name>
+			<name>demo</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>demo</name>
+			<name>ieee802154</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -50,21 +50,6 @@
 			<locationURI>PARENT-2-PROJECT_LOC/tools</locationURI>
 		</link>
 		<link>
-			<name>802154/common</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/802154/common</locationURI>
-		</link>
-		<link>
-			<name>802154/lib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>802154/mac</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/802154/mac</locationURI>
-		</link>
-		<link>
 			<name>demo/app_common</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/demo/app_common</locationURI>
@@ -78,6 +63,21 @@
 			<name>demo/associate_dev</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/demo/associate_dev</locationURI>
+		</link>
+		<link>
+			<name>ieee802154/common</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/ieee802154/common</locationURI>
+		</link>
+		<link>
+			<name>ieee802154/lib</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>ieee802154/mac</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/ieee802154/mac</locationURI>
 		</link>
 		<link>
 			<name>platform/boot</name>
@@ -105,19 +105,14 @@
 			<locationURI>PARENT-2-PROJECT_LOC/platform/platform.h</locationURI>
 		</link>
 		<link>
-			<name>platform/riscv</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/platform/riscv</locationURI>
-		</link>
-		<link>
 			<name>platform/services</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>802154/lib/riscv</name>
+			<name>ieee802154/lib/riscv</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/802154/lib/riscv</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/ieee802154/lib/riscv</locationURI>
 		</link>
 		<link>
 			<name>platform/boot/b91</name>
@@ -128,6 +123,11 @@
 			<name>platform/services/irq_handler.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/platform/services/b91m/irq_handler.c</locationURI>
+		</link>
+		<link>
+			<name>platform/services/plic_isr.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/platform/services/b91m/plic_isr.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -48,7 +48,7 @@
 #if defined(__PROJECT_TL_BOOT_LOADER__) || defined(__PROJECT_TL_SNIFFER__)
 	#define RF_RECOVERY()
 #else
-	#include "zb_common.h"
+	#include <ieee802154_common.h>
 	/*
 	 * 8258/8278/B91 must recovery RF when waking up from suspend mode,
 	 * and must be before the interrupt is restored.

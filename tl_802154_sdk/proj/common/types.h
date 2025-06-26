@@ -110,7 +110,7 @@ typedef union {
 /**
  *  @brief Type definition for combined short/extended device address
  */
-typedef struct {
+typedef struct _attribute_packed_{
     union {
         u16         shortAddr;         //!< Short address
         addrExt_t   extAddr;           //!< Extended address
@@ -152,7 +152,9 @@ typedef struct {
 
 #ifndef __cplusplus
 
-typedef u8 bool;
+#ifndef bool
+#define bool    u8
+#endif
 
 #ifndef FALSE
 #define FALSE 	0
@@ -161,9 +163,13 @@ typedef u8 bool;
 #define TRUE 	(!FALSE)
 #endif
 
+#ifndef false
 #define false	FALSE
-#define true	TRUE
+#endif
 
+#ifndef true
+#define true	TRUE
+#endif
 #elif defined WIN32
 
 #ifndef FALSE
@@ -177,9 +183,9 @@ typedef u8 bool;
 
 // There is no way to directly recognise whether a typedef is defined
 // http://stackoverflow.com/questions/3517174/how-to-check-if-a-datatype-is-defined-with-typedef
-#ifdef __GNUC__
-typedef	u16	wchar_t;		
-#endif
+//#ifdef __GNUC__
+//typedef	u16	wchar_t;
+//#endif
 
 #ifndef WIN32
 typedef u32 size_t;

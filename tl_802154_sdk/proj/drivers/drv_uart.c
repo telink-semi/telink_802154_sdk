@@ -114,7 +114,7 @@ void drv_uart_init(u32 baudrate, u8 *rxBuf, u16 rxBufLen, uart_irq_callback uart
 	uart_reset(UART_IDX);
 
 	uart_cal_div_and_bwpc(baudrate, UART_CLOCK_SOURCE, &div, &bwpc);
-	uart_set_dma_rx_timeout(UART_IDX, bwpc, 12, UART_BW_MUL1);
+	uart_set_rx_timeout(UART_IDX, bwpc, 12, UART_BW_MUL1);
 	uart_init(UART_IDX, div, bwpc, UART_PARITY_NONE, UART_STOP_BIT_ONE);
 
 	dma_clr_irq_mask(UART_DMA_CHANNEL_TX, TC_MASK | ABT_MASK | ERR_MASK);

@@ -45,7 +45,7 @@
  *******************************************************************************************************/
 #ifdef MCU_CORE_B91
 
-#include "ver_info.h"
+#include "version_cfg.h"
 
     .section .vectors, "ax"
 

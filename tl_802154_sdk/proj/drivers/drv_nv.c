@@ -60,7 +60,13 @@ u32 g_u32CfgFlashAddr = FLASH_ADDR_OF_F_CFG_INFO_512K;
 
 nv_sts_t nv_index_update(u16 id, u8 opSect, u16 opItemIdx, nv_info_idx_t *idx){
 	u32 idxStartAddr = MODULE_IDX_START(id, opSect);
+#if FLASH_PROTECT_ENABLE
+	flash_unlock();
+#endif
 	flash_write(idxStartAddr+opItemIdx*sizeof(nv_info_idx_t), sizeof(nv_info_idx_t), (u8 *)idx);
+#if FLASH_PROTECT_ENABLE
+	flash_lock();
+#endif
 	return NV_SUCC;
 }
 
@@ -151,6 +157,10 @@ nv_sts_t nv_write_item(u16 id, u8 itemId, u8 opSect, u16 opItemIdx, u16 len, u8 
 	idxInfo.offset = offset;
 	idxInfo.itemId = itemId;
 
+#if FLASH_PROTECT_ENABLE
+	flash_unlock();
+#endif
+
 	flash_write(idxStartAddr+opItemIdx*sizeof(nv_info_idx_t), sizeof(nv_info_idx_t), (u8 *)&idxInfo);
 
 	/* write context to flash */
@@ -173,6 +183,9 @@ nv_sts_t nv_write_item(u16 id, u8 itemId, u8 opSect, u16 opItemIdx, u16 len, u8 
 			}
 			ev_buf_free(pTemp);
 		}else{
+#if FLASH_PROTECT_ENABLE
+			flash_lock();
+#endif
 			return NV_NOT_ENOUGH_SAPCE;
 		}
 	}else{
@@ -207,6 +220,9 @@ nv_sts_t nv_write_item(u16 id, u8 itemId, u8 opSect, u16 opItemIdx, u16 len, u8 
 			hdr.checkSum = checkSum;
 			flash_write(idxInfo.offset, sizeof(itemHdr_t), (u8*)&hdr);
 		}else{
+#if FLASH_PROTECT_ENABLE
+			flash_lock();
+#endif
 			return NV_CHECK_SUM_ERROR;
 		}
 	}
@@ -215,7 +231,9 @@ nv_sts_t nv_write_item(u16 id, u8 itemId, u8 opSect, u16 opItemIdx, u16 len, u8 
 	u8 staOffset = OFFSETOF(nv_info_idx_t, usedState);
 	idxInfo.usedState = ITEM_FIELD_VALID;
 	flash_write(idxStartAddr+opItemIdx*sizeof(nv_info_idx_t)+staOffset, 1, (u8 *)&idxInfo.usedState);
-
+#if FLASH_PROTECT_ENABLE
+	flash_lock();
+#endif
 	return NV_SUCC;
 }
 
@@ -245,7 +263,13 @@ nv_sts_t nv_itemDeleteByIndex(u8 id, u8 itemId, u8 opSect, u16 opIdx){
 	nv_info_idx_t idx;
 	u8 staOffset = OFFSETOF(nv_info_idx_t, usedState);
 	idx.usedState = ITEM_FIELD_INVALID;
+#if FLASH_PROTECT_ENABLE
+	flash_unlock();
+#endif
 	flash_write(idxStartAddr+opIdx*sizeof(nv_info_idx_t)+staOffset, 1, &(idx.usedState));
+#if FLASH_PROTECT_ENABLE
+	flash_lock();
+#endif
 	return ret;
 }
 
@@ -295,7 +319,9 @@ nv_sts_t nv_flashWriteNew(u8 single, u16 id, u8 itemId, u16 len, u8 *buf){
 			wItemIdx += 1;
 		}
 	}
-
+#if FLASH_PROTECT_ENABLE
+        flash_unlock();
+#endif
 	u8 oldSect = opSect;
 	if(sectorUpdate){
 		wItemIdx = 0;
@@ -323,6 +349,9 @@ nv_sts_t nv_flashWriteNew(u8 single, u16 id, u8 itemId, u16 len, u8 *buf){
 					(idxInfo[i].itemId != itemId || ((idxInfo[i].itemId == itemId) && !single))){
 					ret = nv_write_item(id, idxInfo[i].itemId, opSect, wItemIdx, idxInfo[i].size-sizeof(itemHdr_t), (u8*)idxInfo[i].offset, TRUE);
 					if(ret != NV_SUCC){
+#if FLASH_PROTECT_ENABLE
+						flash_lock();
+#endif
 						return ret;
 					}
 					sizeusedAddr += idxInfo[i].size;
@@ -336,6 +365,9 @@ nv_sts_t nv_flashWriteNew(u8 single, u16 id, u8 itemId, u16 len, u8 *buf){
 
 		idxTotalNum = MODULE_IDX_NUM(id);
 		if(wItemIdx == idxTotalNum || (sizeusedAddr + ITEM_TOTAL_LEN(len)) > MODULE_SECT_END(id, opSect)){
+#if FLASH_PROTECT_ENABLE
+			flash_lock();
+#endif
 			return NV_NOT_ENOUGH_SAPCE;
 		}
 	}
@@ -382,7 +414,9 @@ nv_sts_t nv_flashWriteNew(u8 single, u16 id, u8 itemId, u16 len, u8 *buf){
 			 }
 		}
 	}
-
+#if FLASH_PROTECT_ENABLE
+        flash_lock();
+#endif
 	return ret;
 }
 
@@ -483,6 +517,10 @@ nv_sts_t nv_nwkFrameCountSaveToFlash(u32 frameCount){
 	u8 id = NV_MODULE_NWK_FRAME_COUNT;
 	u32 moduleStartAddr = MODULES_START_ADDR(id);
 
+#if FLASH_PROTECT_ENABLE
+        flash_unlock();
+#endif
+
 	/* search valid operation sub-sector */
 	ret = nv_sector_read(id, MODULE_SECTOR_NUM, &sectInfo);
 	if(ret != NV_SUCC){
@@ -522,6 +560,11 @@ nv_sts_t nv_nwkFrameCountSaveToFlash(u32 frameCount){
 		}
 	}
 
+#if FLASH_PROTECT_ENABLE
+        flash_lock();
+#endif
+
+
 	return ret;
 }
 
@@ -550,6 +593,10 @@ nv_sts_t nv_nwkFrameCountFromFlash(u32 *frameCount){
 }
 
 nv_sts_t nv_resetModule(u8 modules){
+#if FLASH_PROTECT_ENABLE
+        flash_unlock();
+#endif
+
 	u32 eraseAddr = MODULES_START_ADDR(modules);
 	u8 sectNumber = NV_SECTOR_SIZE(modules)/FLASH_SECTOR_SIZE;
 	for(s32 i = 0; i < MODULE_SECTOR_NUM; i++){
@@ -558,6 +605,10 @@ nv_sts_t nv_resetModule(u8 modules){
 			eraseAddr += FLASH_SECTOR_SIZE;
 		}
 	}
+
+#if FLASH_PROTECT_ENABLE
+        flash_lock();
+#endif
 	return SUCCESS;
 }
 
@@ -604,10 +655,26 @@ bool nv_facrotyNewRstFlagCheck(void){
 }
 
 void nv_facrotyNewRstFlagSet(void){
+#if FLASH_PROTECT_ENABLE
+        flash_unlock();
+#endif
+
 	u8 flag = ITEM_FIELD_VALID;
 	flash_write(CFG_FACTORY_RST_CNT, 1, &flag);
+
+#if FLASH_PROTECT_ENABLE
+        flash_lock();
+#endif
 }
 
 void nv_facrotyNewRstFlagClear(void){
+#if FLASH_PROTECT_ENABLE
+        flash_unlock();
+#endif
+
 	flash_erase(CFG_FACTORY_RST_CNT);
+
+#if FLASH_PROTECT_ENABLE
+        flash_lock();
+#endif
 }

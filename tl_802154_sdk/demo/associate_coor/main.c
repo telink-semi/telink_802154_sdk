@@ -1,4 +1,4 @@
-#include "zb_common.h"
+#include <ieee802154_common.h>
 #include "samplecoor.h"
 #include "app.h"
 
@@ -21,7 +21,7 @@ int main(void)
     drv_enable_irq();
 
 #if (MODULE_WATCHDOG_ENABLE)
-	drv_wd_setInterval(600);
+	drv_wd_setInterval(1000);
     drv_wd_start();
 #endif
 
@@ -42,8 +42,8 @@ int main(void)
 		}
 #endif
 
-    	tl_zbTaskProcedure();
-        UpperLayerProcess();
+		ieee802154_procedure();
+    	ieee802154_app_task_process();
         ev_main();
 #if (MODULE_WATCHDOG_ENABLE)
 		drv_wd_clear();

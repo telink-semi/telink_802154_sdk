@@ -1,14 +1,13 @@
-#include "zb_common.h"
+#include <ieee802154_common.h>
 #include "samplecoor.h"
 #include "app.h"
+#include "app_ui.h"
 #include "../app_common/ota/tl_specific_data_ota.h"
 
-void led_init(void)
-{
-	drv_gpio_write(LED_1, 0);
-	drv_gpio_write(LED_2, 0);
-}
 
+
+
+app_ctx_t gCoorCtx;
 /*********************************************************************
  * @fn      user_init
  *
@@ -25,7 +24,7 @@ void user_init(bool isRetention)
 	led_init();
 
 	//802.15.4 stack Init
-	zb_init();
+	ieee802154_init();
 
 	ota_init();
 
@@ -63,7 +62,7 @@ void user_init(bool isRetention)
 
 void app_task(void)
 {
-//user can config ui and so on
+    app_key_handler();
 }
 
 

@@ -1,71 +1,48 @@
 /********************************************************************************************************
- * @file	timer.h
+ * @file    timer.h
  *
- * @brief	This is the header file for B91
+ * @brief   This is the header file for B91
  *
- * @author	Driver Group
- * @date	2019
+ * @author  Driver Group
+ * @date    2019
  *
  * @par     Copyright (c) 2019, Telink Semiconductor (Shanghai) Co., Ltd. ("TELINK")
- *          All rights reserved.
  *
- *          Redistribution and use in source and binary forms, with or without
- *          modification, are permitted provided that the following conditions are met:
+ *          Licensed under the Apache License, Version 2.0 (the "License");
+ *          you may not use this file except in compliance with the License.
+ *          You may obtain a copy of the License at
  *
- *              1. Redistributions of source code must retain the above copyright
- *              notice, this list of conditions and the following disclaimer.
+ *              http://www.apache.org/licenses/LICENSE-2.0
  *
- *              2. Unless for usage inside a TELINK integrated circuit, redistributions
- *              in binary form must reproduce the above copyright notice, this list of
- *              conditions and the following disclaimer in the documentation and/or other
- *              materials provided with the distribution.
- *
- *              3. Neither the name of TELINK, nor the names of its contributors may be
- *              used to endorse or promote products derived from this software without
- *              specific prior written permission.
- *
- *              4. This software, with or without modification, must only be used with a
- *              TELINK integrated circuit. All other usages are subject to written permission
- *              from TELINK and different commercial license may apply.
- *
- *              5. Licensee shall be solely responsible for any claim to the extent arising out of or
- *              relating to such deletion(s), modification(s) or alteration(s).
- *
- *          THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *          ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *          WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *          DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDER BE LIABLE FOR ANY
- *          DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *          (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *          LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *          ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *          (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *          SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *          Unless required by applicable law or agreed to in writing, software
+ *          distributed under the License is distributed on an "AS IS" BASIS,
+ *          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *          See the License for the specific language governing permissions and
+ *          limitations under the License.
  *
  *******************************************************************************************************/
-/**	@page TIMER
+/** @page TIMER
  *
- *	Introduction
- *	===============
- *	B91 supports two timers: Timer0~ Timer1. The two timers all support four modes:
- *		- Mode 0 (System Clock Mode),
- *		- Mode 1 (GPIO Trigger Mode),
- *		- Mode 2 (GPIO Pulse Width Mode),
- *		- Mode 3 (Tick Mode),
+ *  Introduction
+ *  ===============
+ *  B91 supports two timers: Timer0~ Timer1. The two timers all support four modes:
+ *      - Mode 0 (System Clock Mode),
+ *      - Mode 1 (GPIO Trigger Mode),
+ *      - Mode 2 (GPIO Pulse Width Mode),
+ *      - Mode 3 (Tick Mode),
  *
- *	Timer 1 can also be configured as "watchdog" to monitor firmware running.
+ *  Timer 1 can also be configured as "watchdog" to monitor firmware running.
  *
- *	API Reference
- *	===============
- *	Header File: timer.h
+ *  API Reference
+ *  ===============
+ *  Header File: timer.h
  */
 #ifndef TIMER_H_
 #define TIMER_H_
 
+#include "reg_include/register.h"
 #include "analog.h"
 #include "gpio.h"
-#include "reg_include/register_b91.h"
-
 
 /**********************************************************************************************************************
  *                                         global constants                                                           *
@@ -78,26 +55,28 @@
 /**
  * @brief   Type of Timer
  */
-typedef enum{
-	TIMER0		=0,
-	TIMER1		=1,
-}timer_type_e;
-
+typedef enum
+{
+    TIMER0 = 0,
+    TIMER1 = 1,
+} timer_type_e;
 
 /**
  * @brief   Mode of Timer
  */
-typedef enum{
-	TIMER_MODE_SYSCLK		=0,
-	TIMER_MODE_GPIO_TRIGGER	=1,
-	TIMER_MODE_GPIO_WIDTH	=2,
-	TIMER_MODE_TICK			=3,
-}timer_mode_e;
+typedef enum
+{
+    TIMER_MODE_SYSCLK       = 0,
+    TIMER_MODE_GPIO_TRIGGER = 1,
+    TIMER_MODE_GPIO_WIDTH   = 2,
+    TIMER_MODE_TICK         = 3,
+} timer_mode_e;
 
-typedef enum{
-	TMR_STA_TMR0   =		BIT(0),
-    TMR_STA_TMR1   =		BIT(1),
-}time_irq_e;
+typedef enum
+{
+    TMR_STA_TMR0 = BIT(0),
+    TMR_STA_TMR1 = BIT(1),
+} time_irq_e;
 
 /**********************************************************************************************************************
  *                                      global function prototype                                                     *
@@ -106,11 +85,12 @@ typedef enum{
 /*
  * @brief    This function refer to get timer irq status.
  * @param[in] status - variable of enum to select the timer interrupt source.
- * @return   the status of timer0/timer1.
+ * @retval    non-zero   -  the interrupt occurred.
+ * @retval    zero  -  the interrupt did not occur.
  */
 static inline unsigned char timer_get_irq_status(time_irq_e status)
 {
-    return  reg_tmr_sta&status ;
+    return reg_tmr_sta & status;
 }
 
 /*
@@ -120,20 +100,17 @@ static inline unsigned char timer_get_irq_status(time_irq_e status)
  */
 static inline void timer_clr_irq_status(time_irq_e status)
 {
-		reg_tmr_sta= status;
+    reg_tmr_sta = status;
 }
-
 
 /*
  * @brief   This function refer to get timer0 tick.
  * @return  none
  */
-static inline  unsigned int timer0_get_gpio_width(void)
+static inline unsigned int timer0_get_gpio_width(void)
 {
-	 return reg_tmr0_tick;
-
+    return reg_tmr0_tick;
 }
-
 
 /*
  * @brief   This function refer to get timer1 tick.
@@ -141,10 +118,8 @@ static inline  unsigned int timer0_get_gpio_width(void)
  */
 static inline unsigned int timer1_get_gpio_width(void)
 {
-	return reg_tmr1_tick;
-
+    return reg_tmr1_tick;
 }
-
 
 /*
  * @brief   This function refer to set timer0 tick .
@@ -153,7 +128,7 @@ static inline unsigned int timer1_get_gpio_width(void)
  */
 static inline void timer0_set_tick(unsigned int tick)
 {
-	reg_tmr0_tick = tick;
+    reg_tmr0_tick = tick;
 }
 
 /*
@@ -162,9 +137,8 @@ static inline void timer0_set_tick(unsigned int tick)
  */
 static inline unsigned int timer0_get_tick(void)
 {
-	return reg_tmr0_tick ;
+    return reg_tmr0_tick;
 }
-
 
 /*
  * @brief   This function refer to set timer1 tick.
@@ -173,7 +147,7 @@ static inline unsigned int timer0_get_tick(void)
  */
 static inline void timer1_set_tick(unsigned int tick)
 {
-	reg_tmr1_tick = tick;
+    reg_tmr1_tick = tick;
 }
 
 /*
@@ -182,7 +156,7 @@ static inline void timer1_set_tick(unsigned int tick)
  */
 static inline unsigned int timer1_get_tick(void)
 {
-	return reg_tmr1_tick;
+    return reg_tmr1_tick;
 }
 
 /*
@@ -193,8 +167,9 @@ static inline unsigned int timer1_get_tick(void)
  */
 static inline void timer_set_init_tick(timer_type_e type, unsigned int init_tick)
 {
-	reg_tmr_tick(type) = init_tick;
+    reg_tmr_tick(type) = init_tick;
 }
+
 /*
  * @brief     This function set to capture tick for timer0/timer1.
  * @param[in] type - timer0/timer1.
@@ -203,10 +178,8 @@ static inline void timer_set_init_tick(timer_type_e type, unsigned int init_tick
  */
 static inline void timer_set_cap_tick(timer_type_e type, unsigned int cap_tick)
 {
-	reg_tmr_capt(type) = cap_tick;
+    reg_tmr_capt(type) = cap_tick;
 }
-
-
 
 /**
  * @brief     the specified timer start working.
@@ -216,7 +189,7 @@ static inline void timer_set_cap_tick(timer_type_e type, unsigned int cap_tick)
 void timer_start(timer_type_e type);
 
 /**
- * @brief     set mode, initial tick and capture of timer.
+ * @brief     set mode of timer.
  * @param[in] type - select the timer to start.
  * @param[in] mode - select mode for timer.
  * @return    none
@@ -230,8 +203,7 @@ void timer_set_mode(timer_type_e type, timer_mode_e mode);
  * @param[in] pol - select polarity for gpio trigger and gpio width
  * @return    none
  */
-void timer_gpio_init(timer_type_e type, gpio_pin_e pin, gpio_pol_e pol );
-
+void timer_gpio_init(timer_type_e type, gpio_pin_e pin, gpio_pol_e pol);
 
 
 /**
@@ -240,7 +212,6 @@ void timer_gpio_init(timer_type_e type, gpio_pin_e pin, gpio_pol_e pol );
  * @return    none
  */
 void timer_stop(timer_type_e type);
-
 
 
 #endif /* TIMER_H_ */

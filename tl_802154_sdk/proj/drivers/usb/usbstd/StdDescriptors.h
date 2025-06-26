@@ -648,7 +648,7 @@ typedef struct
 typedef struct
 {
 	USB_Descriptor_Header_t Header; /**< Descriptor header, including type and size. */
-	wchar_t UnicodeString[]; /**< String data, as unicode characters (alternatively,
+	u16 UnicodeString[]; /**< String data, as unicode characters (alternatively,
 	                           *   string language IDs). If normal ASCII characters are
 	                           *   to be used, they must be added as an array of characters
 	                           *   rather than a normal C string so that they are widened to
@@ -684,7 +684,7 @@ typedef struct
 	u8 bDescriptorType; /**< Type of the descriptor, either a value in \ref USB_DescriptorTypes_t
 	                          *   or a value given by the specific class.
 	                          */
-	wchar_t bString[]; /**< String data, as unicode characters (alternatively, string language IDs).
+	u16 bString[]; /**< String data, as unicode characters (alternatively, string language IDs).
 	                     *   If normal ASCII characters are to be used, they must be added as an array
 	                     *   of characters rather than a normal C string so that they are widened to
 	                     *   Unicode size.

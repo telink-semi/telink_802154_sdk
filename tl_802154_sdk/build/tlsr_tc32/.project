@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>tl_802154_sdk</name>
+	<name>telink_ieee802154_sdk</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -82,11 +82,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>802154</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>demo</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -95,6 +90,11 @@
 			<name>div_mod.S</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/platform/tc32/div_mod.S</locationURI>
+		</link>
+		<link>
+			<name>ieee802154</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/ieee802154</locationURI>
 		</link>
 		<link>
 			<name>platform</name>
@@ -110,21 +110,6 @@
 			<name>tools</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/tools</locationURI>
-		</link>
-		<link>
-			<name>802154/common</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/802154/common</locationURI>
-		</link>
-		<link>
-			<name>802154/lib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>802154/mac</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/802154/mac</locationURI>
 		</link>
 		<link>
 			<name>demo/app_common</name>
@@ -175,11 +160,6 @@
 			<name>platform/services</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>802154/lib/tc32</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/802154/lib/tc32</locationURI>
 		</link>
 		<link>
 			<name>platform/boot/8258</name>

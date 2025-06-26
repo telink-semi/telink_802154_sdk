@@ -45,7 +45,7 @@
  *******************************************************************************************************/
 #ifdef MCU_CORE_826x
 
-#include "ver_info.h"
+#include "version_cfg.h"
 
 #ifndef __LOAD_RAM_SIZE__
 #define	__LOAD_RAM_SIZE__		0xc

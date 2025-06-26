@@ -292,7 +292,7 @@ static inline void pwm_clear_interrupt_status(PWM_IRQ status)
 }
 
 /**
- * @brief     This function serves to set trigger level of interrupt for IR fifo mode
+ * @brief     This function serves to set trigger level of interrupt for IR FiFo mode
  * @param[in] trig_level - FIFO  num int trigger level
  * @return	  none
  */
@@ -343,7 +343,7 @@ static inline unsigned char pwm_ir_fifo_is_full(void)
 }
 
 /**
- * @brief     This function serves to write data into fifo
+ * @brief     This function serves to write data into FiFo
  * @param[in] pulse_num  - the number of pulse
  * @param[in] use_shadow - determine whether the configuration of shadow cmp and shadow max is used
  * 						   1: use shadow, 0: not use
@@ -393,7 +393,7 @@ static inline void pwm_set_dma_address(void * pdat)
 }
 
 /**
- * @brief     This function servers to start the pwm's IRQ sending.
+ * @brief     This fuction servers to start the pwm's IRQ sending.
  * @param[in] none.
  * @return	  none.
  */

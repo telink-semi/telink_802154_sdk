@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
-		<cconfiguration id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520" moduleId="org.eclipse.cdt.core.settings" name="associate_coordinator_9518">
-				<externalSettings>
-					<externalSetting>
-						<entry flags="BUILTIN|RESOLVED" kind="macro" name="__ATOMIC_ACQ_REL" value="4"/>
-					</externalSetting>
-				</externalSettings>
+		<cconfiguration id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161" moduleId="org.eclipse.cdt.core.settings" name="associate_coordinator_b91">
+				<externalSettings/>
 				<extensions>
-					<extension id="com.andestech.ide.cdt.managedbuilder.core.CROSS_GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -18,107 +14,121 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="elf" artifactName="${ConfigName}" buildArtefactType="nds.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=nds.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" description="coordinator-9518" id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520" name="associate_coordinator_9518" parent="config.nds32le-elf-mculib-v5f.exe.debug" postbuildStep="&quot;../../../tools/tl_check_fw.sh&quot; ${ConfigName} riscv" prebuildStep="&quot;../../../tools/tl_link_load.sh&quot; &quot;../../../platform/boot/b91/boot_b91.link&quot; &quot;${workspace_loc:/${ProjName}}/boot.link&quot;">
-					<folderInfo id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520." name="/" resourcePath="">
-						<toolChain id="nds.nds32le-elf-mculib-v5f.exe.debug.619005439" name="nds32le-elf-mculib-v5f" superClass="nds.nds32le-elf-mculib-v5f.exe.debug">
-							<option id="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_CONNECT.468329742" name="RSE_CONNECT" superClass="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_CONNECT" value="ICE" valueType="string"/>
-							<option id="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_TARGET.773943492" name="RSE_TARGET" superClass="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_TARGET" value="rse://LOCALHOST/~target/ADP-AE350-D25F-EAGLE-0106" valueType="string"/>
-							<targetPlatform id="target.nds32le-elf-mculib-v5f.platform.exe.debug.1208691575" name="Debug Platform" superClass="target.nds32le-elf-mculib-v5f.platform.exe.debug"/>
-							<builder arguments="-j8" buildPath="${workspace_loc:/tl_zigbee_pro}/Debug" command="make" id="target.nds32le-elf-mculib-v5f.builder.exe.debug.230847203" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Andes Make Builder" superClass="target.nds32le-elf-mculib-v5f.builder.exe.debug"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.archiver.base.43085882" name="Andes Archiver" superClass="tool.nds32le-elf-mculib-v5f.archiver.base"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.cpp.compiler.exe.debug.677775843" name="Andes C++ Compiler" superClass="tool.nds32le-elf-mculib-v5f.cpp.compiler.exe.debug">
-								<option id="nds32le-elf-mculib-v5f.cpp.compiler.exe.debug.option.debugging.level.1577745289" name="Debug Level" superClass="nds32le-elf-mculib-v5f.cpp.compiler.exe.debug.option.debugging.level" value="nds.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.cpp.linker.exe.debug.734893809" name="Andes C++ Linker" superClass="tool.nds32le-elf-mculib-v5f.cpp.linker.exe.debug">
-								<option defaultValue="-O0" id="nds.cpp.link.option.optimization.level.1312613632" name="Optimization Level" superClass="nds.cpp.link.option.optimization.level" valueType="string"/>
-								<option defaultValue="true" id="nds32le-elf-mculib-v5f.cpp.link.option.noshared.base.1911524283" name="No shared libraries (-static)" superClass="nds32le-elf-mculib-v5f.cpp.link.option.noshared.base" valueType="boolean"/>
-							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.c.compiler.exe.debug.273411589" name="Andes C Compiler" superClass="tool.nds32le-elf-mculib-v5f.c.compiler.exe.debug">
-								<option id="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.debugging.level.263642972" name="Debug Level" superClass="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.debugging.level" value="nds.c.debugging.level.none" valueType="enumerated"/>
-								<option id="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.optimization.level.1015449590" name="Optimization Level" superClass="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.optimization.level" value="nds.c.optimization.level.more" valueType="enumerated"/>
-								<option id="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.cmodel.531134878" name="Code Model" superClass="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.cmodel" value="nds.c.compiler.option.cmodel.small" valueType="enumerated"/>
-								<option id="nds.c.compiler.option.optimization.removesections.function.1930188237" name="Remove unused function sections (-ffunction-sections)" superClass="nds.c.compiler.option.optimization.removesections.function" value="true" valueType="boolean"/>
-								<option id="nds.c.compiler.option.optimization.removesections.data.285314951" name="Remove unused data sections (-fdata-sections)" superClass="nds.c.compiler.option.optimization.removesections.data" value="true" valueType="boolean"/>
-								<option id="nds.c.compiler.option.preprocessor.undef.symbol.880383681" name="Undefined symbols (-U)" superClass="nds.c.compiler.option.preprocessor.undef.symbol"/>
-								<option id="nds.c.compiler.option.preprocessor.def.symbols.1943119247" name="Defined symbols (-D)" superClass="nds.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="MCU_CORE_B91=1"/>
+				<configuration artifactName="${ConfigName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="${cross_rm} -rf" description="coordinator-b91" id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161" name="associate_coordinator_b91" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=" parent="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release" postbuildStep="&quot;../../../tools/tl_check_fw.sh&quot; ${ConfigName} riscv" prebuildStep="&quot;../../../tools/tl_link_load.sh&quot; &quot;../../../platform/boot/b91/boot_b91.link&quot; &quot;${workspace_loc:/${ProjName}}/boot.link&quot;">
+					<folderInfo id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161." name="/" resourcePath="">
+						<toolChain id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.release.763810101" name="RISC-V Cross GCC" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.release">
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createflash.607656063" name="Create flash image" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createlisting.1447497363" name="Create extended listing" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createlisting" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.printsize.1849821910" name="Print size" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level.972906152" name="Optimization Level" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level" useByScannerDiscovery="true" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level.more" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.messagelength.1258907465" name="Message length (-fmessage-length=0)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.messagelength" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.signedchar.1259950059" name="'char' is signed (-fsigned-char)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.signedchar" useByScannerDiscovery="true" value="false" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.functionsections.450719716" name="Function sections (-ffunction-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.functionsections" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.datasections.1131699373" name="Data sections (-fdata-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.datasections" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level.976186167" name="Debug level" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level" useByScannerDiscovery="true" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level.none" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.format.341865032" name="Debug format" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.format" useByScannerDiscovery="true"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name.1081328688" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name" useByScannerDiscovery="false" value="TL32 ELF MCULIB V5F GCC7.4" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix.1781797484" name="Prefix" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix" useByScannerDiscovery="false" value="riscv32-elf-" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.c.1123583877" name="C compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.c" useByScannerDiscovery="false" value="gcc" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.cpp.665623365" name="C++ compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.cpp" useByScannerDiscovery="false" value="g++" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.ar.2087660787" name="Archiver" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.ar" useByScannerDiscovery="false" value="ar" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objcopy.1970860811" name="Hex/Bin converter" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objcopy" useByScannerDiscovery="false" value="objcopy" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objdump.1698285806" name="Listing generator" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objdump" useByScannerDiscovery="false" value="objdump" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.size.787601383" name="Size command" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.size" useByScannerDiscovery="false" value="size" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make.1526110661" name="Build command" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make" useByScannerDiscovery="false" value="make" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm.1751875560" name="Remove command" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm" useByScannerDiscovery="false" value="rm" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id.1048816454" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id" useByScannerDiscovery="false" value="1683269279" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.lto.458037582" name="Link-time optimizer (-flto)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.lto" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.allwarn.1797695945" name="Enable all common warnings (-Wall)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.allwarn" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.other.1163695822" name="Other warning flags" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.other" useByScannerDiscovery="true" value="-Wno-nonnull-compare" valueType="string"/>
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnumcueclipse.managedbuild.cross.riscv.targetPlatform.1026013712" isAbstract="false" osList="all" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/zigbee_sampleLight_b91}/Release" id="ilg.gnumcueclipse.managedbuild.cross.riscv.builder.1648158968" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.builder"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler.1941494870" name="GNU RISC-V Cross Assembler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.usepreprocessor.584815211" name="Use preprocessor" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.usepreprocessor" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.defs.1048020482" name="Defined symbols (-D)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="COORDINATOR=1"/>
+									<listOptionValue builtIn="false" value="MCU_CORE_B91=1"/>
 								</option>
-								<option id="nds.c.compiler.option.include.paths.1847681271" name="Include paths (-I)" superClass="nds.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../802154/common/includes"/>
-									<listOptionValue builtIn="false" value="../../../802154/common"/>
-									<listOptionValue builtIn="false" value="../../../platform"/>
-									<listOptionValue builtIn="false" value="../../../platform/riscv"/>
-									<listOptionValue builtIn="false" value="../../../proj/common"/>
-									<listOptionValue builtIn="false" value="../../../proj"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.paths.1131480313" name="Include paths (-I)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.paths" useByScannerDiscovery="true" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../../demo/associate_coor"/>
 								</option>
-								<option id="nds.c.compiler.option.misc.other.434337263" name="Other flags" superClass="nds.c.compiler.option.misc.other" value="-mext-dsp -mabi=ilp32f  -c -fmessage-length=0  -fomit-frame-pointer -fno-strict-aliasing -fshort-wchar -fuse-ld=bfd -Wno-nonnull-compare" valueType="string"/>
-								<option id="nds.c.compiler.option.optimization.lto.1734531520" name="Link Time Optimization (-flto)" superClass="nds.c.compiler.option.optimization.lto" value="true" valueType="boolean"/>
-								<option id="nds.c.compiler.option.optimization.flags.1191465621" name="Other optimization flags" superClass="nds.c.compiler.option.optimization.flags" value="-fpack-struct -fshort-enums" valueType="string"/>
-								<inputType id="tool.nds.c.compiler.input.420663133" superClass="tool.nds.c.compiler.input"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.other.1847517684" name="Other assembler flags" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.other" useByScannerDiscovery="false" value="-mext-dsp -mabi=ilp32f -fomit-frame-pointer -fno-strict-aliasing -fuse-ld=bfd" valueType="string"/>
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler.input.2127346737" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler.input"/>
 							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.c.linker.exe.debug.700298742" name="Andes C Linker" superClass="tool.nds32le-elf-mculib-v5f.c.linker.exe.debug">
-								<option defaultValue="-O0" id="nds.c.link.option.optimization.level.603443179" name="Optimization Level" superClass="nds.c.link.option.optimization.level" value="-O2" valueType="string"/>
-								<option defaultValue="true" id="nds32le-elf-mculib-v5f.c.link.option.noshared.base.464608894" name="No shared libraries (-static)" superClass="nds32le-elf-mculib-v5f.c.link.option.noshared.base" valueType="boolean"/>
-								<option id="nds.c.link.option.removesections.1047152026" name="Remove unused sections (-ffunction-sections or -fdata-sections)" superClass="nds.c.link.option.removesections" value="true" valueType="boolean"/>
-								<option id="nds.c.link.option.nostart.224370229" name="Do not use standard start files (-nostartfiles)" superClass="nds.c.link.option.nostart" value="true" valueType="boolean"/>
-								<option id="nds.c.link.option.virtualhosting.1531217148" name="Virtual Hosting (-mvh)" superClass="nds.c.link.option.virtualhosting" value="false" valueType="boolean"/>
-								<option defaultValue="" id="nds32le-elf-mculib-v5f.c.link.exe.debug.option.ldscript.1864916368" name="Linker Script (-T)" superClass="nds32le-elf-mculib-v5f.c.link.exe.debug.option.ldscript" value="../boot.link" valueType="string"/>
-								<option id="nds.c.link.option.LTO.1107844081" name="Link Time Optimization (-flto)" superClass="nds.c.link.option.LTO" value="true" valueType="boolean"/>
-								<option id="nds.c.link.option.other.duplacitecompiler.811092285" name="DuplaciteComplierOption" superClass="nds.c.link.option.other.duplacitecompiler" value="-mcmodel=small -fpack-struct -fshort-enums -mcpu=d25f -ffunction-sections -fdata-sections -mext-dsp -mabi=ilp32f -fmessage-length=0 -fomit-frame-pointer -fno-strict-aliasing -fshort-wchar -fuse-ld=bfd " valueType="string"/>
-								<option id="nds.c.link.option.libs.550342271" name="Libraries (-l)" superClass="nds.c.link.option.libs" valueType="libs">
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.662597664" name="GNU RISC-V Cross C Compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.defs.501212038" name="Defined symbols (-D)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="COORDINATOR=1"/>
+									<listOptionValue builtIn="false" value="MCU_CORE_B91=1"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.paths.1797873973" name="Include paths (-I)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
+									<listOptionValue builtIn="false" value="../../../ieee802154/common/includes"/>
+									<listOptionValue builtIn="false" value="../../../demo/associate_coor"/>
+									<listOptionValue builtIn="false" value="../../../platform/chip_b91"/>
+									<listOptionValue builtIn="false" value="../../../platform"/>
+									<listOptionValue builtIn="false" value="../../../proj"/>
+									<listOptionValue builtIn="false" value="../../../proj/common"/>
+								</option>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.std.2069760214" name="Language standard" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.std.c99" valueType="enumerated"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.other.628396336" name="Other compiler flags" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.other" useByScannerDiscovery="true" value="-mext-dsp -mabi=ilp32f -fomit-frame-pointer -fno-strict-aliasing -fuse-ld=bfd" valueType="string"/>
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.input.1901972700" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.input"/>
+							</tool>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.compiler.1103033529" name="GNU RISC-V Cross C++ Compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.compiler"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker.1581000655" name="GNU RISC-V Cross C Linker" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.gcsections.222328710" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.gcsections" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.scriptfile.116147939" name="Script files (-T)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.scriptfile" useByScannerDiscovery="false" valueType="stringList">
+									<listOptionValue builtIn="false" value="../boot.link"/>
+								</option>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.nostart.853748911" name="Do not use standard start files (-nostartfiles)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.nostart" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs.1623977002" name="Libraries (-l)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="mac_coor"/>
 									<listOptionValue builtIn="false" value="drivers_b91"/>
-									<listOptionValue builtIn="false" value="firmware_encrypt"/>
+									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="axon_driver_lib"/>
 								</option>
-								<option id="nds.c.link.option.paths.1204703390" name="Library search path (-L)" superClass="nds.c.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../../platform/riscv"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.other.888433491" name="Other linker flags" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.other" useByScannerDiscovery="false" value="-mcpu=d25f -mext-dsp -mabi=ilp32f -fomit-frame-pointer -fno-strict-aliasing -fuse-ld=bfd" valueType="string"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.paths.1107363596" name="Library search path (-L)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="../../../platform/lib"/>
-									<listOptionValue builtIn="false" value="../../../802154/lib/riscv"/>
+									<listOptionValue builtIn="false" value="../../../platform/chip_b91/lib"/>
+									<listOptionValue builtIn="false" value="../../../ieee802154/lib/riscv"/>
 								</option>
-								<inputType id="tool.nds.c.linker.input.1056792558" superClass="tool.nds.c.linker.input">
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker.input.881381885" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.assembler.exe.debug.1185882141" name="Andes Assembler" superClass="tool.nds32le-elf-mculib-v5f.assembler.exe.debug">
-								<option defaultValue="-g" id="nds.both.asm.option.flags.1552189988" name="Assembler flags" superClass="nds.both.asm.option.flags" valueType="string"/>
-								<inputType id="tool.nds.assembler.input.1225167720" superClass="tool.nds.assembler.input"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.linker.2098034134" name="GNU RISC-V Cross C++ Linker" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.linker">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.gcsections.1143910583" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.gcsections" value="true" valueType="boolean"/>
 							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.nm.exe.debug.1239723934" name="NM (symbol listing)" superClass="tool.nds32le-elf-mculib-v5f.nm.exe.debug"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.readelf.exe.debug.163599397" name="Readelf (ELF info listing)" superClass="tool.nds32le-elf-mculib-v5f.readelf.exe.debug"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.objdump.exe.debug.166342007" name="Objdump (disassembly)" superClass="tool.nds32le-elf-mculib-v5f.objdump.exe.debug">
-								<option id="nds.objdump.option.linenumber.959149830" name="Include line numbers and filenames in output. (-l)" superClass="nds.objdump.option.linenumber" value="false" valueType="boolean"/>
-								<option id="nds.objdump.option.disable.1741600015" name="Disable. (Do not auto-generate output file.)" superClass="nds.objdump.option.disable" value="false" valueType="boolean"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.archiver.892779935" name="GNU RISC-V Cross Archiver" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.archiver"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.createflash.1379860177" name="GNU RISC-V Cross Create Flash Image" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.createflash">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createflash.choice.1139584228" name="Output file format (-O)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createflash.choice" useByScannerDiscovery="false" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createflash.choice.binary" valueType="enumerated"/>
 							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.objcopy.exe.debug.1741561375" name="Objcopy (object content copy)" superClass="tool.nds32le-elf-mculib-v5f.objcopy.exe.debug">
-								<option id="nds.objcopy.option.disable.1560716153" name="Disable. (Do not auto-generate output file.)" superClass="nds.objcopy.option.disable" value="true" valueType="boolean"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.createlisting.1845561116" name="GNU RISC-V Cross Create Listing" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.createlisting">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.source.1962762202" name="Display source (--source|-S)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.source" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.allheaders.1367130115" name="Display all headers (--all-headers|-x)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.allheaders" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.demangle.1107681646" name="Demangle names (--demangle|-C)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.demangle" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.linenumbers.1146448567" name="Display line numbers (--line-numbers|-l)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.linenumbers" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.wide.783367828" name="Wide lines (--wide|-w)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.wide" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.size.exe.debug.1674386130" name="Size (section size listing)" superClass="tool.nds32le-elf-mculib-v5f.size.exe.debug"/>
-							<tool command="$(ANDESIGHT_ROOT)/utils/nds_ldsag --version=v5" id="tool.nds32le-elf-mculib-v5f.ldsag.exe.debug.2050736934" name="LdSaG Tool" superClass="tool.nds32le-elf-mculib-v5f.ldsag.exe.debug">
-								<option id="nds.ldsag.option.sagscript.747832167" name="SaG file" superClass="nds.ldsag.option.sagscript" value="../ae350-xip.sag" valueType="string"/>
-								<option id="nds.ldsag.option.enablement.231442357" name="Generate linker script" superClass="nds.ldsag.option.enablement" value="false" valueType="boolean"/>
-								<option defaultValue="$(ANDESIGHT_ROOT)/utils/nds32_template_v5.txt" id="nds.ldsag.option.sagtemplate.1670601759" name="Linker script template" superClass="nds.ldsag.option.sagtemplate" value="../boot.link" valueType="string"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.printsize.286649425" name="GNU RISC-V Cross Print Size" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.printsize">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.format.194044006" name="Size format" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.format" useByScannerDiscovery="false" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.format.none" valueType="enumerated"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="demo/associate_dev|apps/sampleContactSensor|apps/sampleSwitch|apps/sampleLight|apps/bootLoader" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="demo/associate_dev" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="ilg.gnuarmeclipse.managedbuild.packs"/>
+			<storageModule moduleId="ilg.gnumcueclipse.managedbuild.packs"/>
 		</cconfiguration>
-		<cconfiguration id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520.2070989666.1686655720">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520.2070989666.1686655720" moduleId="org.eclipse.cdt.core.settings" name="associate_device_9518">
-				<externalSettings>
-					<externalSetting>
-						<entry flags="BUILTIN|RESOLVED" kind="macro" name="__ATOMIC_ACQ_REL" value="4"/>
-					</externalSetting>
-				</externalSettings>
+		<cconfiguration id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161.455654723">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161.455654723" moduleId="org.eclipse.cdt.core.settings" name="associate_device_b91">
+				<externalSettings/>
 				<extensions>
-					<extension id="com.andestech.ide.cdt.managedbuilder.core.CROSS_GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -127,158 +137,137 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="elf" artifactName="${ConfigName}" buildArtefactType="nds.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=nds.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" description="device-9518" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520.2070989666.1686655720" name="associate_device_9518" parent="config.nds32le-elf-mculib-v5f.exe.debug" postannouncebuildStep="" postbuildStep="&quot;../../../tools/tl_check_fw.sh&quot; ${ConfigName} riscv" preannouncebuildStep="" prebuildStep="&quot;../../../tools/tl_link_load.sh&quot; &quot;../../../platform/boot/b91/boot_b91.link&quot; &quot;${workspace_loc:/${ProjName}}/boot.link&quot;">
-					<folderInfo id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520.2070989666.1686655720." name="/" resourcePath="">
-						<toolChain errorParsers="" id="nds.nds32le-elf-mculib-v5f.exe.debug.1914761163" name="nds32le-elf-mculib-v5f" superClass="nds.nds32le-elf-mculib-v5f.exe.debug">
-							<option id="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_CONNECT.110314990" name="RSE_CONNECT" superClass="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_CONNECT" value="ICE" valueType="string"/>
-							<option id="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_TARGET.1140002777" name="RSE_TARGET" superClass="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_TARGET" value="rse://LOCALHOST/~target/ADP-AE350-D25F-EAGLE-0106" valueType="string"/>
-							<targetPlatform binaryParser="com.andestech.ide.cdt.managedbuilder.core.CROSS_GNU_ELF" id="target.nds32le-elf-mculib-v5f.platform.exe.debug.802978711" name="Debug Platform" superClass="target.nds32le-elf-mculib-v5f.platform.exe.debug"/>
-							<builder arguments="-j8" buildPath="${workspace_loc:/tl_zigbee_pro}/Debug" command="make" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator" id="target.nds32le-elf-mculib-v5f.builder.exe.debug.803841416" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Andes Make Builder" superClass="target.nds32le-elf-mculib-v5f.builder.exe.debug"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.archiver.base.265392603" name="Andes Archiver" superClass="tool.nds32le-elf-mculib-v5f.archiver.base"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.cpp.compiler.exe.debug.1381732752" name="Andes C++ Compiler" superClass="tool.nds32le-elf-mculib-v5f.cpp.compiler.exe.debug">
-								<option id="nds32le-elf-mculib-v5f.cpp.compiler.exe.debug.option.debugging.level.1050703547" name="Debug Level" superClass="nds32le-elf-mculib-v5f.cpp.compiler.exe.debug.option.debugging.level" value="nds.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.cpp.linker.exe.debug.1980489270" name="Andes C++ Linker" superClass="tool.nds32le-elf-mculib-v5f.cpp.linker.exe.debug">
-								<option defaultValue="-O0" id="nds.cpp.link.option.optimization.level.625166852" name="Optimization Level" superClass="nds.cpp.link.option.optimization.level" valueType="string"/>
-								<option defaultValue="true" id="nds32le-elf-mculib-v5f.cpp.link.option.noshared.base.731538017" name="No shared libraries (-static)" superClass="nds32le-elf-mculib-v5f.cpp.link.option.noshared.base" valueType="boolean"/>
-							</tool>
-							<tool command="$(CROSS_COMPILE)gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="tool.nds32le-elf-mculib-v5f.c.compiler.exe.debug.1895043764" name="Andes C Compiler" superClass="tool.nds32le-elf-mculib-v5f.c.compiler.exe.debug">
-								<option id="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.debugging.level.61080487" name="Debug Level" superClass="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.debugging.level" value="nds.c.debugging.level.none" valueType="enumerated"/>
-								<option id="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.optimization.level.1393688534" name="Optimization Level" superClass="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.optimization.level" value="nds.c.optimization.level.more" valueType="enumerated"/>
-								<option id="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.cmodel.1887320691" name="Code Model" superClass="nds32le-elf-mculib-v5f.c.compiler.exe.debug.option.cmodel" value="nds.c.compiler.option.cmodel.small" valueType="enumerated"/>
-								<option id="nds.c.compiler.option.optimization.removesections.function.1144856937" name="Remove unused function sections (-ffunction-sections)" superClass="nds.c.compiler.option.optimization.removesections.function" value="true" valueType="boolean"/>
-								<option id="nds.c.compiler.option.optimization.removesections.data.984907518" name="Remove unused data sections (-fdata-sections)" superClass="nds.c.compiler.option.optimization.removesections.data" value="true" valueType="boolean"/>
-								<option id="nds.c.compiler.option.preprocessor.undef.symbol.1460018127" name="Undefined symbols (-U)" superClass="nds.c.compiler.option.preprocessor.undef.symbol"/>
-								<option id="nds.c.compiler.option.preprocessor.def.symbols.1376265422" name="Defined symbols (-D)" superClass="nds.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+				<configuration artifactName="${ConfigName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="${cross_rm} -rf" description="device-b91" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161.455654723" name="associate_device_b91" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.enablement=null,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.image=null,org.eclipse.cdt.docker.launcher.containerbuild.property.connection=null" parent="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release" postbuildStep="&quot;../../../tools/tl_check_fw.sh&quot; ${ConfigName} riscv" prebuildStep="&quot;../../../tools/tl_link_load.sh&quot; &quot;../../../platform/boot/b91/boot_b91.link&quot; &quot;${workspace_loc:/${ProjName}}/boot.link&quot;">
+					<folderInfo id="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161.455654723." name="/" resourcePath="">
+						<toolChain id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.release.1360864604" name="RISC-V Cross GCC" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.elf.release">
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createflash.1871914446" name="Create flash image" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createlisting.1421300632" name="Create extended listing" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.createlisting" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.printsize.1384865561" name="Print size" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level.740888269" name="Optimization Level" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level" useByScannerDiscovery="true" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level.more" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.messagelength.550410022" name="Message length (-fmessage-length=0)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.messagelength" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.signedchar.824616297" name="'char' is signed (-fsigned-char)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.signedchar" useByScannerDiscovery="true" value="false" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.functionsections.331333023" name="Function sections (-ffunction-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.functionsections" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.datasections.1271782354" name="Data sections (-fdata-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.datasections" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level.224035542" name="Debug level" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level" useByScannerDiscovery="true" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level.none" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.format.74398024" name="Debug format" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.format" useByScannerDiscovery="true"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name.735742373" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name" useByScannerDiscovery="false" value="TL32 ELF MCULIB V5F GCC7.4" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix.1520934752" name="Prefix" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix" useByScannerDiscovery="false" value="riscv32-elf-" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.c.396295835" name="C compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.c" useByScannerDiscovery="false" value="gcc" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.cpp.1637320499" name="C++ compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.cpp" useByScannerDiscovery="false" value="g++" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.ar.403561518" name="Archiver" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.ar" useByScannerDiscovery="false" value="ar" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objcopy.970549935" name="Hex/Bin converter" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objcopy" useByScannerDiscovery="false" value="objcopy" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objdump.864351388" name="Listing generator" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objdump" useByScannerDiscovery="false" value="objdump" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.size.754712132" name="Size command" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.size" useByScannerDiscovery="false" value="size" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make.21278278" name="Build command" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make" useByScannerDiscovery="false" value="make" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm.1287366916" name="Remove command" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm" useByScannerDiscovery="false" value="rm" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id.750366254" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id" useByScannerDiscovery="false" value="1683269279" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.lto.749426347" name="Link-time optimizer (-flto)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.lto" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.allwarn.1294824910" name="Enable all common warnings (-Wall)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.allwarn" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.other.981121307" name="Other warning flags" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.other" useByScannerDiscovery="true" value="-Wno-nonnull-compare" valueType="string"/>
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnumcueclipse.managedbuild.cross.riscv.targetPlatform.1887898998" isAbstract="false" osList="all" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/zigbee_sampleLight_b91}/Release" id="ilg.gnumcueclipse.managedbuild.cross.riscv.builder.1756028565" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.builder"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler.808412184" name="GNU RISC-V Cross Assembler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.usepreprocessor.615606306" name="Use preprocessor" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.usepreprocessor" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.defs.218842418" name="Defined symbols (-D)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="MCU_CORE_B91=1"/>
 									<listOptionValue builtIn="false" value="END_DEVICE=1"/>
 								</option>
-								<option id="nds.c.compiler.option.include.paths.1666680274" name="Include paths (-I)" superClass="nds.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../802154/common/includes"/>
-									<listOptionValue builtIn="false" value="../../../802154/common"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.paths.1564322816" name="Include paths (-I)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.paths" useByScannerDiscovery="true" valueType="includePath">
+									<listOptionValue builtIn="false" value="../../../demo/associate_dev"/>
+								</option>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.other.1487481663" name="Other assembler flags" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.other" useByScannerDiscovery="false" value="-mext-dsp -mabi=ilp32f -fomit-frame-pointer -fno-strict-aliasing -fuse-ld=bfd" valueType="string"/>
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler.input.290578639" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler.input"/>
+							</tool>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.1951779004" name="GNU RISC-V Cross C Compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.defs.35665969" name="Defined symbols (-D)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="MCU_CORE_B91=1"/>
+									<listOptionValue builtIn="false" value="END_DEVICE=1"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.paths.1333204588" name="Include paths (-I)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
+									<listOptionValue builtIn="false" value="../../../ieee802154/common/includes"/>
+									<listOptionValue builtIn="false" value="../../../platform/chip_b91"/>
 									<listOptionValue builtIn="false" value="../../../platform"/>
 									<listOptionValue builtIn="false" value="../../../proj/common"/>
 									<listOptionValue builtIn="false" value="../../../proj"/>
 									<listOptionValue builtIn="false" value="../../../demo/associate_dev"/>
 								</option>
-								<option id="nds.c.compiler.option.misc.other.357538101" name="Other flags" superClass="nds.c.compiler.option.misc.other" value="-mext-dsp -mabi=ilp32f  -c -fmessage-length=0  -fomit-frame-pointer -fno-strict-aliasing -fshort-wchar -fuse-ld=bfd -Wno-nonnull-compare" valueType="string"/>
-								<option id="nds.c.compiler.option.optimization.lto.1944059811" name="Link Time Optimization (-flto)" superClass="nds.c.compiler.option.optimization.lto" value="true" valueType="boolean"/>
-								<option id="nds.c.compiler.option.optimization.flags.1065437835" name="Other optimization flags" superClass="nds.c.compiler.option.optimization.flags" value="-fpack-struct -fshort-enums" valueType="string"/>
-								<inputType id="tool.nds.c.compiler.input.1713676408" superClass="tool.nds.c.compiler.input"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.std.27887925" name="Language standard" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.std.c99" valueType="enumerated"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.other.864205656" name="Other compiler flags" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.other" useByScannerDiscovery="true" value="-mext-dsp -mabi=ilp32f -fomit-frame-pointer -fno-strict-aliasing -fuse-ld=bfd" valueType="string"/>
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.input.903885084" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.input"/>
 							</tool>
-							<tool command="$(CROSS_COMPILE)gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="tool.nds32le-elf-mculib-v5f.c.linker.exe.debug.1090185909" name="Andes C Linker" superClass="tool.nds32le-elf-mculib-v5f.c.linker.exe.debug">
-								<option defaultValue="-O0" id="nds.c.link.option.optimization.level.1533593128" name="Optimization Level" superClass="nds.c.link.option.optimization.level" value="-O2" valueType="string"/>
-								<option defaultValue="true" id="nds32le-elf-mculib-v5f.c.link.option.noshared.base.295128546" name="No shared libraries (-static)" superClass="nds32le-elf-mculib-v5f.c.link.option.noshared.base" valueType="boolean"/>
-								<option id="nds.c.link.option.removesections.227691617" name="Remove unused sections (-ffunction-sections or -fdata-sections)" superClass="nds.c.link.option.removesections" value="true" valueType="boolean"/>
-								<option id="nds.c.link.option.nostart.980576378" name="Do not use standard start files (-nostartfiles)" superClass="nds.c.link.option.nostart" value="true" valueType="boolean"/>
-								<option id="nds.c.link.option.virtualhosting.190192559" name="Virtual Hosting (-mvh)" superClass="nds.c.link.option.virtualhosting" value="false" valueType="boolean"/>
-								<option defaultValue="" id="nds32le-elf-mculib-v5f.c.link.exe.debug.option.ldscript.1244726161" name="Linker Script (-T)" superClass="nds32le-elf-mculib-v5f.c.link.exe.debug.option.ldscript" value="../boot.link" valueType="string"/>
-								<option id="nds.c.link.option.LTO.1670425008" name="Link Time Optimization (-flto)" superClass="nds.c.link.option.LTO" value="true" valueType="boolean"/>
-								<option id="nds.c.link.option.other.duplacitecompiler.1126780211" name="DuplaciteComplierOption" superClass="nds.c.link.option.other.duplacitecompiler" value="-mcmodel=small -fpack-struct -fshort-enums -mcpu=d25f -ffunction-sections -fdata-sections -mext-dsp -mabi=ilp32f -fmessage-length=0 -fomit-frame-pointer -fno-strict-aliasing -fshort-wchar -fuse-ld=bfd " valueType="string"/>
-								<option id="nds.c.link.option.libs.663918965" name="Libraries (-l)" superClass="nds.c.link.option.libs" valueType="libs">
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.compiler.1925945637" name="GNU RISC-V Cross C++ Compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.compiler"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker.1048659941" name="GNU RISC-V Cross C Linker" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.gcsections.341523636" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.gcsections" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.scriptfile.2131363217" name="Script files (-T)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.scriptfile" useByScannerDiscovery="false" valueType="stringList">
+									<listOptionValue builtIn="false" value="../boot.link"/>
+								</option>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.nostart.1949761241" name="Do not use standard start files (-nostartfiles)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.nostart" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs.2011106558" name="Libraries (-l)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="mac_device"/>
 									<listOptionValue builtIn="false" value="drivers_b91"/>
+									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="axon_driver_lib"/>
 								</option>
-								<option id="nds.c.link.option.paths.307892518" name="Library search path (-L)" superClass="nds.c.link.option.paths" valueType="libPaths">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.other.522332239" name="Other linker flags" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.other" useByScannerDiscovery="false" value="-mcpu=d25f -mext-dsp -mabi=ilp32f -fomit-frame-pointer -fno-strict-aliasing -fuse-ld=bfd" valueType="string"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.paths.972214258" name="Library search path (-L)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.paths" useByScannerDiscovery="false" valueType="libPaths">
+									<listOptionValue builtIn="false" value="../../../platform/chip_b91/lib"/>
 									<listOptionValue builtIn="false" value="../../../platform/lib"/>
-									<listOptionValue builtIn="false" value="../../../802154/lib/riscv"/>
+									<listOptionValue builtIn="false" value="../../../ieee802154/lib/riscv"/>
 								</option>
-								<inputType id="tool.nds.c.linker.input.1524319148" superClass="tool.nds.c.linker.input">
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker.input.763276116" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
-							<tool command="$(CROSS_COMPILE)as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="tool.nds32le-elf-mculib-v5f.assembler.exe.debug.1472666863" name="Andes Assembler" superClass="tool.nds32le-elf-mculib-v5f.assembler.exe.debug">
-								<option defaultValue="-g" id="nds.both.asm.option.flags.1163356750" name="Assembler flags" superClass="nds.both.asm.option.flags" valueType="string"/>
-								<inputType id="tool.nds.assembler.input.1057667364" superClass="tool.nds.assembler.input"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.linker.417867937" name="GNU RISC-V Cross C++ Linker" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.linker">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.gcsections.348935372" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.gcsections" value="true" valueType="boolean"/>
 							</tool>
-							<tool command="$(CROSS_COMPILE)nm" commandLinePattern="${COMMAND} ${FLAGS} &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot; ${OUTPUT_FLAG} ${OUTPUT}" errorParsers="" id="tool.nds32le-elf-mculib-v5f.nm.exe.debug.1102813219" name="NM (symbol listing)" superClass="tool.nds32le-elf-mculib-v5f.nm.exe.debug"/>
-							<tool command="$(CROSS_COMPILE)readelf" commandLinePattern="${COMMAND} ${FLAGS} &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot; ${OUTPUT_FLAG} ${OUTPUT}" errorParsers="" id="tool.nds32le-elf-mculib-v5f.readelf.exe.debug.982204132" name="Readelf (ELF info listing)" superClass="tool.nds32le-elf-mculib-v5f.readelf.exe.debug"/>
-							<tool command="$(CROSS_COMPILE)objdump" commandLinePattern="${COMMAND} ${FLAGS} &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot; ${OUTPUT_FLAG} ${OUTPUT}" errorParsers="" id="tool.nds32le-elf-mculib-v5f.objdump.exe.debug.1346825382" name="Objdump (disassembly)" superClass="tool.nds32le-elf-mculib-v5f.objdump.exe.debug">
-								<option id="nds.objdump.option.linenumber.1224837652" name="Include line numbers and filenames in output. (-l)" superClass="nds.objdump.option.linenumber" value="false" valueType="boolean"/>
-								<option id="nds.objdump.option.disable.594490224" name="Disable. (Do not auto-generate output file.)" superClass="nds.objdump.option.disable" value="false" valueType="boolean"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.archiver.1370131362" name="GNU RISC-V Cross Archiver" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.archiver"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.createflash.879360068" name="GNU RISC-V Cross Create Flash Image" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.createflash">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createflash.choice.1782602081" name="Output file format (-O)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createflash.choice" useByScannerDiscovery="false" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createflash.choice.binary" valueType="enumerated"/>
 							</tool>
-							<tool command="$(CROSS_COMPILE)objcopy" commandLinePattern="${COMMAND} ${FLAGS} &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot; ${OUTPUT}" errorParsers="" id="tool.nds32le-elf-mculib-v5f.objcopy.exe.debug.1365396936" name="Objcopy (object content copy)" superClass="tool.nds32le-elf-mculib-v5f.objcopy.exe.debug">
-								<option id="nds.objcopy.option.disable.1256416501" name="Disable. (Do not auto-generate output file.)" superClass="nds.objcopy.option.disable" value="true" valueType="boolean"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.createlisting.1871022889" name="GNU RISC-V Cross Create Listing" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.createlisting">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.source.515910899" name="Display source (--source|-S)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.source" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.allheaders.1815808385" name="Display all headers (--all-headers|-x)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.allheaders" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.demangle.1322330977" name="Demangle names (--demangle|-C)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.demangle" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.linenumbers.306026605" name="Display line numbers (--line-numbers|-l)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.linenumbers" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.wide.810310019" name="Wide lines (--wide|-w)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.wide" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							</tool>
-							<tool command="$(CROSS_COMPILE)size" commandLinePattern="${COMMAND} ${FLAGS} &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot; ${OUTPUT_FLAG} ${OUTPUT}" errorParsers="" id="tool.nds32le-elf-mculib-v5f.size.exe.debug.1877397472" name="Size (section size listing)" superClass="tool.nds32le-elf-mculib-v5f.size.exe.debug"/>
-							<tool command="$(ANDESIGHT_ROOT)/utils/nds_ldsag --version=v5" commandLinePattern="${COMMAND} ${FLAGS} &quot;$(SAG_FILE)&quot; ${OUTPUT_FLAG} $(LDSAG_OUT)" errorParsers="" id="tool.nds32le-elf-mculib-v5f.ldsag.exe.debug.1268855025" name="LdSaG Tool" superClass="tool.nds32le-elf-mculib-v5f.ldsag.exe.debug">
-								<option id="nds.ldsag.option.sagscript.1279648974" name="SaG file" superClass="nds.ldsag.option.sagscript" value="../ae350-xip.sag" valueType="string"/>
-								<option id="nds.ldsag.option.enablement.1853498431" name="Generate linker script" superClass="nds.ldsag.option.enablement" value="false" valueType="boolean"/>
-								<option defaultValue="$(ANDESIGHT_ROOT)/utils/nds32_template_v5.txt" id="nds.ldsag.option.sagtemplate.47517387" name="Linker script template" superClass="nds.ldsag.option.sagtemplate" value="../boot.link" valueType="string"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.printsize.1156280527" name="GNU RISC-V Cross Print Size" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.printsize">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.format.87686953" name="Size format" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.format" useByScannerDiscovery="false" value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.format.none" valueType="enumerated"/>
 							</tool>
-						</toolChain>
-					</folderInfo>
-					<folderInfo id="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520.2070989666.1686655720.apps/common" name="/" resourcePath="demo/associate_coor">
-						<toolChain errorParsers="" id="nds.nds32le-elf-mculib-v5f.exe.debug.639133715" name="nds32le-elf-mculib-v5f" superClass="nds.nds32le-elf-mculib-v5f.exe.debug" unusedChildren="">
-							<option id="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_CONNECT.168895470.1765614761.1946519425" name="RSE_CONNECT" superClass="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_CONNECT.168895470"/>
-							<option id="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_TARGET.2023435838.1038941718.595143912" name="RSE_TARGET" superClass="nds32le-elf-mculib-v5f.managedbuild.option.toolchain.RSE_TARGET.2023435838"/>
-							<targetPlatform id="target.nds32le-elf-mculib-v5f.platform.exe.debug.438845706" name="Debug Platform" superClass="target.nds32le-elf-mculib-v5f.platform.exe.debug"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.archiver.base.975238848" name="Andes Archiver" superClass="tool.nds32le-elf-mculib-v5f.archiver.base.265392603"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.cpp.compiler.exe.debug.1846867552" name="Andes C++ Compiler" superClass="tool.nds32le-elf-mculib-v5f.cpp.compiler.exe.debug.1381732752"/>
-							<tool id="tool.nds32le-elf-mculib-v5f.cpp.linker.exe.debug.490556740" name="Andes C++ Linker" superClass="tool.nds32le-elf-mculib-v5f.cpp.linker.exe.debug.1980489270"/>
-							<tool errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="tool.nds32le-elf-mculib-v5f.c.compiler.exe.debug.1777468219" name="Andes C Compiler" superClass="tool.nds32le-elf-mculib-v5f.c.compiler.exe.debug.1895043764">
-								<inputType id="tool.nds.c.compiler.input.1831551489" superClass="tool.nds.c.compiler.input"/>
-							</tool>
-							<tool id="tool.nds32le-elf-mculib-v5f.c.linker.exe.debug.837697804" name="Andes C Linker" superClass="tool.nds32le-elf-mculib-v5f.c.linker.exe.debug.1090185909"/>
-							<tool errorParsers="org.eclipse.cdt.core.GASErrorParser" id="tool.nds32le-elf-mculib-v5f.assembler.exe.debug.187247179" name="Andes Assembler" superClass="tool.nds32le-elf-mculib-v5f.assembler.exe.debug.1472666863">
-								<inputType id="tool.nds.assembler.input.619415315" superClass="tool.nds.assembler.input"/>
-							</tool>
-							<tool errorParsers="" id="tool.nds32le-elf-mculib-v5f.nm.exe.debug.48536171" name="NM (symbol listing)" superClass="tool.nds32le-elf-mculib-v5f.nm.exe.debug.1102813219"/>
-							<tool errorParsers="" id="tool.nds32le-elf-mculib-v5f.readelf.exe.debug.262965000" name="Readelf (ELF info listing)" superClass="tool.nds32le-elf-mculib-v5f.readelf.exe.debug.982204132"/>
-							<tool errorParsers="" id="tool.nds32le-elf-mculib-v5f.objdump.exe.debug.1756482856" name="Objdump (disassembly)" superClass="tool.nds32le-elf-mculib-v5f.objdump.exe.debug.1346825382"/>
-							<tool errorParsers="" id="tool.nds32le-elf-mculib-v5f.objcopy.exe.debug.1334593036" name="Objcopy (object content copy)" superClass="tool.nds32le-elf-mculib-v5f.objcopy.exe.debug.1365396936"/>
-							<tool errorParsers="" id="tool.nds32le-elf-mculib-v5f.size.exe.debug.1172320304" name="Size (section size listing)" superClass="tool.nds32le-elf-mculib-v5f.size.exe.debug.1877397472"/>
-							<tool errorParsers="" id="tool.nds32le-elf-mculib-v5f.ldsag.exe.debug.1662864283" name="LdSaG Tool" superClass="tool.nds32le-elf-mculib-v5f.ldsag.exe.debug.1268855025"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="demo/associate_coor|apps/sampleContactSensor|apps/sampleGW|apps/sampleLight|apps/bootLoader" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="demo/associate_coor" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="ilg.gnuarmeclipse.managedbuild.packs"/>
+			<storageModule moduleId="ilg.gnumcueclipse.managedbuild.packs"/>
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="tl_zigbee_pro.target.nds32le-elf-mculib-v5f.exe.1534881487" name="Andes Executable" projectType="target.nds32le-elf-mculib-v5f.exe"/>
+		<project id="zigbee_sampleLight_b91.ilg.gnumcueclipse.managedbuild.cross.riscv.target.elf.1816953792" name="Executable" projectType="ilg.gnumcueclipse.managedbuild.cross.riscv.target.elf"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161;ilg.gnumcueclipse.managedbuild.cross.riscv.config.elf.release.817327161.;ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.662597664;ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.input.1901972700">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="associate_coor_9518">
-			<resource resourceType="PROJECT" workspacePath="/tl_802154_src"/>
+		<configuration configurationName="sampleLight_b91">
+			<resource resourceType="PROJECT" workspacePath="/zigbee_sampleLight_b91"/>
 		</configuration>
-		<configuration configurationName="associate_dev_9518">
-			<resource resourceType="PROJECT" workspacePath="/tl_802154_src"/>
-		</configuration>
-		<configuration configurationName="sampleLight_9518">
-			<resource resourceType="PROJECT" workspacePath="/tl_802154_src"/>
-			<resource resourceType="PROJECT" workspacePath="/tl_zigbee_pro"/>
-		</configuration>
-		<configuration configurationName="sampleGw_9518">
-			<resource resourceType="PROJECT" workspacePath="/tl_802154_src"/>
-			<resource resourceType="PROJECT" workspacePath="/tl_zigbee_pro"/>
-		</configuration>
-		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/tl_802154_src"/>
-			<resource resourceType="PROJECT" workspacePath="/tl_zigbee_pro"/>
+		<configuration configurationName="device_b91">
+			<resource resourceType="PROJECT" workspacePath="/ieee802154_device_b91"/>
 		</configuration>
 		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/tl_802154_src"/>
-			<resource resourceType="PROJECT" workspacePath="/tl_zigbee_pro"/>
+			<resource resourceType="PROJECT" workspacePath="/zigbee_sampleLight_b91"/>
 		</configuration>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="config.nds32le-elf-mculib-v5f.exe.release.1345837909;config.nds32le-elf-mculib-v5f.exe.release.1345837909.;tool.nds32le-elf-mculib-v5f.c.compiler.exe.release.186360112;tool.nds.c.compiler.input.1071741839">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.andestech.ide.cdt.managedbuilder.core.ndsManagedMakePerProjectProfileC"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520;config.nds32le-elf-mculib-v5f.exe.debug.1574064407.897070520.;tool.nds32le-elf-mculib-v5f.c.compiler.exe.debug.273411589;tool.nds.c.compiler.input.420663133">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.andestech.ide.cdt.managedbuilder.core.ndsManagedMakePerProjectProfileC"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="config.nds32le-elf-mculib-v5f.exe.debug.1574064407;config.nds32le-elf-mculib-v5f.exe.debug.1574064407.;tool.nds32le-elf-mculib-v5f.c.compiler.exe.debug.2008939127;tool.nds.c.compiler.input.1999486751">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.andestech.ide.cdt.managedbuilder.core.ndsManagedMakePerProjectProfileC"/>
-		</scannerConfigBuildInfo>
-	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

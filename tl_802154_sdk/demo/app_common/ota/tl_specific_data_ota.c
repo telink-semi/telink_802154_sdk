@@ -27,7 +27,6 @@
 
 extern unsigned int xcrc32 (const unsigned char *buf, int len, unsigned int init);
 
-
 /**********************************************************************
  * LOCAL VARIABLES
  */
@@ -52,6 +51,7 @@ u8 mcuBootAddrGet(void)
 
 
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
+
 u8 ota_bin_state;
 u32 ota_headersize;
 
@@ -68,6 +68,7 @@ void ota_init(void)
 	ota_headersize = 0;
 	if(file_id==OTA_UPGRADE_FILE_ID)
 	{
+
 		flash_read(flashAddr,sizeof(ota_hdrFields_t), (u8 *)&headinfo);
 		if(headinfo.totalImageSize>=OTA_MAX_IMAGE_SIZE)
 		{
@@ -88,6 +89,8 @@ void ota_init(void)
 			ota_bin_state = OTA_BIN_INVALID;
 			return;
 		}
+
+
 		dev_otaInfo.fileVer = headinfo.fileVer;
 		dev_otaInfo.imageType = headinfo.imageType;
 		dev_otaInfo.manufaurerCode = headinfo.manufaurerCode;
@@ -111,7 +114,7 @@ void ota_startReqHandler(u8 *pd)
 	zb_mscp_data_req_t *msg = (zb_mscp_data_req_t *)&coor_req;
 	if(msg){
 		memset(msg, 0, req_cmd_len);
-		ota_cmd_t rsp;
+		static ota_cmd_t rsp;
 		rsp.hdr.appId = TL_SPECIFIC_ID_OTA;
 		rsp.hdr.cmdId = TL_CMD_OTA_START_RSP;
 		rsp.hdr.seqNo = TL_SPECIFIC_SEQNO_ADD;
@@ -294,7 +297,7 @@ void ota_dataReqHandler(u8 *pd)
 
 #elif defined ZB_ED_ROLE
 #define OTA_MAX_IMAGE_BLOCK_RETRIES					10
-#define OTA_MAX_IMAGE_BLOCK_RSP_WAIT_TIME			5//s
+#define OTA_MAX_IMAGE_BLOCK_RSP_WAIT_TIME			1//s
 
 ota_preamble_t binInfo;
 
@@ -327,6 +330,10 @@ void ota_mcuReboot(void)
 	u32 baseAddr = 0;
 	u32 newAddr = FLASH_OTA_NEWIMAGE_ADDR;
 	u8 flashInfo = 0x4b;
+
+#if FLASH_PROTECT_ENABLE
+    flash_unlock();
+#endif
 	if(mcuBootAddr){
 		baseAddr = FLASH_OTA_NEWIMAGE_ADDR;
 		newAddr = 0;
@@ -334,6 +341,11 @@ void ota_mcuReboot(void)
 	flash_write((newAddr + OTA_TLNK_KEYWORD_ADDROFFSET),1,&flashInfo);//enable boot-up flag
 	flashInfo = 0;
 	flash_write((baseAddr + OTA_TLNK_KEYWORD_ADDROFFSET),1,&flashInfo);//disable boot-up flag
+
+#if FLASH_PROTECT_ENABLE
+    flash_lock();
+#endif
+
 	SYSTEM_RESET();//reset
 }
 
@@ -365,7 +377,11 @@ void ota_startRspHandler(u8 *pd)
 				flash_erase(baseAddr + i * FLASH_SECTOR_SIZE);
 			}
 			ota_state = OTA_STA_STARTING;
+
+			if(ev_timer_exist(&otaQueryTimer)){
 			ev_unon_timer(&otaQueryTimer);//stop poll rate
+			}
+
 			ota_dataReq();
 			mac_set_pollRate(OTA_POLL_RATE);//data request
 			ota_dataCb = ota_dataReq;
@@ -453,7 +469,16 @@ void ota_DataProcess(u8 len, u8 *pData)
 					flag = 1;
 					pData[i+OTA_TLNK_KEYWORD_ADDROFFSET-flashOffsetAddr] = 0xff;
 			}
-			cfs_flash_write(baseAddr + flashOffsetAddr, datalen, &pData[i]);
+
+			if(flash_writeWithCheck(baseAddr + flashOffsetAddr, datalen, &pData[i])==FALSE)
+			{
+				ota_state = OTA_STA_IDLE;
+				if(otaDataReqTimer)
+					TL_ZB_TIMER_CANCEL(&otaDataReqTimer);
+				ota_queryStart(QUERY_RATE);//ota query 30S
+				mac_set_pollRate(NORMAL_POLL_RATE);//data request
+				return;
+			}
 
 			if(flag)
 				pData[i+OTA_TLNK_KEYWORD_ADDROFFSET-flashOffsetAddr] = 0x4b;
@@ -506,7 +531,16 @@ void ota_dataRspHandler(u8 *pd)
 			mac_set_pollRate(NORMAL_POLL_RATE);//data request
 			return;
 		}
+
+#if FLASH_PROTECT_ENABLE
+        flash_unlock();
+#endif
+
 		ota_DataProcess(pHdr->payloadSize,pHdr->payload);
+
+#if FLASH_PROTECT_ENABLE
+            flash_lock();
+#endif
 
 		blockDataCount++;
 		if(ota_headercnt>=dev_otaInfo.imageSize)
@@ -547,7 +581,7 @@ void ota_dataRspHandler(u8 *pd)
 
 void ota_startReq(void)
 {
-	ota_cmd_t req;
+	static ota_cmd_t req;
 	u8 payload_len = sizeof(ota_cmd_t);
 	u8 req_cmd_len = sizeof(zb_mscp_data_req_t);
 	zb_mscp_data_req_t	dev_req;
@@ -735,6 +769,7 @@ int ota_periodicDataServerCb(void *data)
 {
 	int ret = 0;
 	ota_reqRetryCnt++;
+
 	if(ota_reqRetryCnt>=OTA_MAX_IMAGE_BLOCK_RETRIES)
 	{
 		ota_reqRetryCnt = 0;
@@ -745,8 +780,9 @@ int ota_periodicDataServerCb(void *data)
 	}
 	else
 	{
-		if(ota_dataCb)
+		if(ota_dataCb){
 			ota_dataCb();
+		}
 	}
 	return ret;
 }

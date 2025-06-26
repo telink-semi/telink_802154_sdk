@@ -7,16 +7,16 @@
 
 #ifndef _TL_SPECIFIC_DATA_OTA_H_
 #define _TL_SPECIFIC_DATA_OTA_H_
+#include <ieee802154_common.h>
 #include "../../../proj/tl_common.h"
 #include "../tl_specific_data.h"
-#include "zb_common.h"
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
 #include "../../associate_coor/app_cfg.h"
-#include "../../associate_coor/ver_info.h"
+#include "../../associate_coor/version_cfg.h"
 #include "../../associate_coor/app.h"
 #elif defined ZB_ED_ROLE
 #include "../../associate_dev/app_cfg.h"
-#include "../../associate_dev/ver_info.h"
+#include <version_cfg.h>
 #include "../../associate_dev/app.h"
 #endif
 #define		OTA_SECURITY		0
@@ -90,14 +90,14 @@ enum{
 }tl_otaHeaderLocation_e;
 
 
-typedef struct{
+typedef struct _attribute_packed_{
 	u32			fileVer;
 	u16			imageType;
 	u16			manufaurerCode;
 	u32			imageSize;	//The value represents the total image size in bytes.
 }ota_preamble_t;
 
-typedef struct{
+typedef struct _attribute_packed_{
 	u32			fileVer;
 	u16			imageType;
 	u16			manufaurerCode;
@@ -106,7 +106,7 @@ typedef struct{
 	u8			payload[OTA_FRAMESIZE];
 }ota_dataFrame_t;
 
-typedef struct{
+typedef struct _attribute_packed_{
 	/*The value is a unique 4-byte value that is included at the beginning of all ZigBee OTA upgrade image
 	files in order to quickly identify and distinguish the file as being a ZigBee OTA cluster upgrade file,
 	without having to examine the whole file content. This helps distinguishing the file from other file
@@ -127,7 +127,7 @@ typedef struct{
 
 	/*The manufacturer should assign an appropriate and unique image type value to each of its devices in
 	651 order to distinguish the products.*/
-	u16			imageType;;
+	u16			imageType;
 
 	//
 	u32			fileVer;
@@ -137,7 +137,7 @@ typedef struct{
 	//The value represents the total image size in bytes.
 	u32			totalImageSize;
 
-//	u8			securityCredVer;//option ²¿·Ö
+//	u8			securityCredVer;//option ï¿½ï¿½ï¿½ï¿½
 //	addrExt_t	fileDest;
 //	u16			minHdrVer;
 //	u16			maxHdrVer;

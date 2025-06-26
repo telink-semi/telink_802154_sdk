@@ -352,60 +352,60 @@ void flash_read_uid(unsigned char idcmd, unsigned char *buf)
  *												Secondary interface
  ******************************************************************************************************************/
 
-/**
- * @brief		This function serves to read flash mid and uid,and check the correctness of mid and uid.
- * @param[out]	flash_mid	- Flash Manufacturer ID.
- * @param[out]	flash_uid	- Flash Unique ID.
- * @return		0: flash no uid or not a known flash model 	 1:the flash model is known and the uid is read.
- * @note        Attention: Before calling the FLASH function, please check the power supply voltage of the chip.
- *              Only if the detected voltage is greater than the safe voltage value, the FLASH function can be called.
- *              Taking into account the factors such as power supply fluctuations, the safe voltage value needs to be greater
- *              than the minimum chip operating voltage. For the specific value, please make a reasonable setting according
- *              to the specific application and hardware circuit.
- *
- *              Risk description: When the chip power supply voltage is relatively low, due to the unstable power supply,
- *              there may be a risk of error in the operation of the flash (especially for the write and erase operations.
- *              If an abnormality occurs, the firmware and user data may be rewritten, resulting in the final Product failure)
- */
-int flash_read_mid_uid_with_check(unsigned int *flash_mid, unsigned char *flash_uid)
-{
-	unsigned char no_uid[16]={0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01};
-	int i,f_cnt=0;
-	*flash_mid  = flash_read_mid();
-
-	/*
-	 * If add flash type, need pay attention to the read uid cmd and the bir number of status register
-	   Flash Type	CMD			MID		Company
-	   GD25LD10C	0x4b(AN)0x1160C8	GD
-	   GD25LD40C	0x4b	0x1360C8	GD
-	   GD25LD80C	0x4b(AN)0x1460C8	GD
-	   ZB25WD10A	0x4b	0x11325E	ZB
-	   ZB25WD40B	0x4b	0x13325E	ZB
-	   ZB25WD80B	0x4b	0x14325E	ZB
-	   ZB25WD20A	0x4b	0x12325E	ZB	The actual capacity is 256K, but the nominal value is 128KB.
-											The software cannot do capacity adaptation and requires special customer special processing.
-
-	   The uid of the early ZB25WD40B (mid is 0x13325E) is 8 bytes. If you read 16 bytes of uid,
-	   the next 8 bytes will be read as 0xff. Later, the uid of ZB25WD40B has been switched to 16 bytes.
-	 */
-	if((*flash_mid == 0x1160C8)||(*flash_mid == 0x1360C8)||(*flash_mid == 0x1460C8)||(*flash_mid == 0x11325E)||(*flash_mid == 0x12325E)||(*flash_mid == 0x13325E)||(*flash_mid == 0x14325E)){
-		flash_read_uid(FLASH_READ_UID_CMD_GD_PUYA_ZB_UT, (unsigned char *)flash_uid);
-	}else{
-		return 0;
-	}
-
-	for(i=0;i<16;i++){
-		if(flash_uid[i] == no_uid[i]){
-			f_cnt++;
-		}
-	}
-
-	if(f_cnt == 16){	//no uid flash
-		return 0;
-	}else{
-		return 1;
-	}
-}
+///**
+// * @brief		This function serves to read flash mid and uid,and check the correctness of mid and uid.
+// * @param[out]	flash_mid	- Flash Manufacturer ID.
+// * @param[out]	flash_uid	- Flash Unique ID.
+// * @return		0: flash no uid or not a known flash model 	 1:the flash model is known and the uid is read.
+// * @note        Attention: Before calling the FLASH function, please check the power supply voltage of the chip.
+// *              Only if the detected voltage is greater than the safe voltage value, the FLASH function can be called.
+// *              Taking into account the factors such as power supply fluctuations, the safe voltage value needs to be greater
+// *              than the minimum chip operating voltage. For the specific value, please make a reasonable setting according
+// *              to the specific application and hardware circuit.
+// *
+// *              Risk description: When the chip power supply voltage is relatively low, due to the unstable power supply,
+// *              there may be a risk of error in the operation of the flash (especially for the write and erase operations.
+// *              If an abnormality occurs, the firmware and user data may be rewritten, resulting in the final Product failure)
+// */
+//int flash_read_mid_uid_with_check(unsigned int *flash_mid, unsigned char *flash_uid)
+//{
+//	unsigned char no_uid[16]={0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01,0x51,0x01};
+//	int i,f_cnt=0;
+//	*flash_mid  = flash_read_mid();
+//
+//	/*
+//	 * If add flash type, need pay attention to the read uid cmd and the bir number of status register
+//	   Flash Type	CMD			MID		Company
+//	   GD25LD10C	0x4b(AN)0x1160C8	GD
+//	   GD25LD40C	0x4b	0x1360C8	GD
+//	   GD25LD80C	0x4b(AN)0x1460C8	GD
+//	   ZB25WD10A	0x4b	0x11325E	ZB
+//	   ZB25WD40B	0x4b	0x13325E	ZB
+//	   ZB25WD80B	0x4b	0x14325E	ZB
+//	   ZB25WD20A	0x4b	0x12325E	ZB	The actual capacity is 256K, but the nominal value is 128KB.
+//											The software cannot do capacity adaptation and requires special customer special processing.
+//
+//	   The uid of the early ZB25WD40B (mid is 0x13325E) is 8 bytes. If you read 16 bytes of uid,
+//	   the next 8 bytes will be read as 0xff. Later, the uid of ZB25WD40B has been switched to 16 bytes.
+//	 */
+//	if((*flash_mid == 0x1160C8)||(*flash_mid == 0x1360C8)||(*flash_mid == 0x1460C8)||(*flash_mid == 0x11325E)||(*flash_mid == 0x12325E)||(*flash_mid == 0x13325E)||(*flash_mid == 0x14325E)){
+//		flash_read_uid(FLASH_READ_UID_CMD_GD_PUYA_ZB_UT, (unsigned char *)flash_uid);
+//	}else{
+//		return 0;
+//	}
+//
+//	for(i=0;i<16;i++){
+//		if(flash_uid[i] == no_uid[i]){
+//			f_cnt++;
+//		}
+//	}
+//
+//	if(f_cnt == 16){	//no uid flash
+//		return 0;
+//	}else{
+//		return 1;
+//	}
+//}
 
 /**
  * @brief		This function serves to find whether it is zb flash.

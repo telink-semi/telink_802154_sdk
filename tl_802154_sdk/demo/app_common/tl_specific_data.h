@@ -30,14 +30,14 @@ typedef enum{
 	TL_SPECIFIC_ID_OTA 		= 0x01,
 }tl_specificDataId_e;
 
-typedef struct{
-	tl_specificDataId_e	appId;
+typedef struct _attribute_packed_{
+	u8					appId;
 	u8					seqNo;
 	u8					cmdId;
 	u8					len;
 }tl_appFrameHdr_t;
 
-typedef struct{
+typedef struct _attribute_packed_{
 	tl_appFrameHdr_t	hdr;
 	u8					payload[0];
 }tl_appFrameFmt_t;

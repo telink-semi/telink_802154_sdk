@@ -55,7 +55,8 @@
 #include "./chip_8278/driver_8278.h"
 #include "./chip_8278/gpio_default.h"
 #elif defined (MCU_CORE_B91)
-#include "chip_b91/driver_b91.h"
+#include "chip_b91/driver.h"
 #include "chip_b91/gpio_default.h"
+#include "chip_b91/ext_driver/driver_ext.h"
 #endif
 

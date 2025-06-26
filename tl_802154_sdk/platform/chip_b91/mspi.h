@@ -1,46 +1,24 @@
 /********************************************************************************************************
- * @file	mspi.h
+ * @file    mspi.h
  *
- * @brief	This is the header file for B91
+ * @brief   This is the header file for B91
  *
- * @author	Driver Group
- * @date	2019
+ * @author  Driver Group
+ * @date    2019
  *
  * @par     Copyright (c) 2019, Telink Semiconductor (Shanghai) Co., Ltd. ("TELINK")
- *          All rights reserved.
  *
- *          Redistribution and use in source and binary forms, with or without
- *          modification, are permitted provided that the following conditions are met:
+ *          Licensed under the Apache License, Version 2.0 (the "License");
+ *          you may not use this file except in compliance with the License.
+ *          You may obtain a copy of the License at
  *
- *              1. Redistributions of source code must retain the above copyright
- *              notice, this list of conditions and the following disclaimer.
+ *              http://www.apache.org/licenses/LICENSE-2.0
  *
- *              2. Unless for usage inside a TELINK integrated circuit, redistributions
- *              in binary form must reproduce the above copyright notice, this list of
- *              conditions and the following disclaimer in the documentation and/or other
- *              materials provided with the distribution.
- *
- *              3. Neither the name of TELINK, nor the names of its contributors may be
- *              used to endorse or promote products derived from this software without
- *              specific prior written permission.
- *
- *              4. This software, with or without modification, must only be used with a
- *              TELINK integrated circuit. All other usages are subject to written permission
- *              from TELINK and different commercial license may apply.
- *
- *              5. Licensee shall be solely responsible for any claim to the extent arising out of or
- *              relating to such deletion(s), modification(s) or alteration(s).
- *
- *          THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *          ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *          WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *          DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDER BE LIABLE FOR ANY
- *          DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *          (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *          LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *          ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *          (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *          SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *          Unless required by applicable law or agreed to in writing, software
+ *          distributed under the License is distributed on an "AS IS" BASIS,
+ *          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *          See the License for the specific language governing permissions and
+ *          limitations under the License.
  *
  *******************************************************************************************************/
 #pragma once
@@ -50,91 +28,137 @@
 #include "reg_include/mspi_reg.h"
 
 /**
+ * @brief   Data line mode of mspi
+ */
+typedef enum
+{
+    MSPI_SINGLE_LINE = 0x00,
+    MSPI_DUAL_LINE   = 0x04,
+    MSPI_QUAD_LINE   = 0x0c,
+} mspi_data_line_e;
+
+/**
   * @brief     This function servers to set the spi wait.
   * @return    none.
   */
-_attribute_ram_code_sec_ static inline void mspi_wait(void){
-	while(reg_mspi_status & FLD_MSPI_BUSY);
+_attribute_ram_code_sec_ static inline void mspi_wait(void)
+{
+    while (reg_mspi_status & FLD_MSPI_BUSY)
+        ;
 }
 
 /**
  * @brief     This function servers to enable read trigger spi.
  * @return    none.
  */
-_attribute_ram_code_sec_ static inline void mspi_fm_rd_en(void){
-	reg_mspi_fm |= FLD_MSPI_RD_TRIG_EN;
+_attribute_ram_code_sec_ static inline void mspi_fm_rd_trig_en(void)
+{
+    reg_mspi_fm |= FLD_MSPI_RD_TRIG_EN;
 }
 
 /**
  * @brief     This function servers to disable read trigger spi.
  * @return    none.
  */
-_attribute_ram_code_sec_ static inline void mspi_fm_rd_dis(void){
-	reg_mspi_fm &= ~FLD_MSPI_RD_TRIG_EN;
+_attribute_ram_code_sec_ static inline void mspi_fm_rd_trig_dis(void)
+{
+    reg_mspi_fm &= ~FLD_MSPI_RD_TRIG_EN;
+}
+
+/**
+ * @brief     This function is used to configure mspi to read mode.
+ * @return    none.
+ */
+_attribute_ram_code_sec_ static inline void mspi_fm_read_en(void)
+{
+    reg_mspi_fm |= FLD_MSPI_RD_MODE;
+}
+
+/**
+ * @brief     This function is used to configure mspi to write mode.
+ * @return    none.
+ */
+_attribute_ram_code_sec_ static inline void mspi_fm_write_en(void)
+{
+    reg_mspi_fm &= ~FLD_MSPI_RD_MODE;
+}
+
+/**
+ * @brief     This function is used to configure mspi for several-line communication mode.
+ * @param[in] line  - several-line communication mode.
+ * @return    none.
+ */
+_attribute_ram_code_sec_ static inline void mspi_fm_data_line(mspi_data_line_e line)
+{
+    reg_mspi_fm = (reg_mspi_fm & (~FLD_MSPI_DATA_LINE)) | line;
 }
 
 /**
  * @brief     This function servers to set spi interface csn signal.
  * @return    none.
  */
-_attribute_ram_code_sec_ static inline void mspi_high(void){
-	reg_mspi_fm |= FLD_MSPI_CSN;
+_attribute_ram_code_sec_ static inline void mspi_high(void)
+{
+    reg_mspi_fm |= FLD_MSPI_CSN;
 }
 
 /**
  * @brief     This function servers to clear spi interface csn signal.
  * @return    none.
  */
-_attribute_ram_code_sec_ static inline void mspi_low(void){
-	reg_mspi_fm &= ~FLD_MSPI_CSN;
+_attribute_ram_code_sec_ static inline void mspi_low(void)
+{
+    reg_mspi_fm &= ~FLD_MSPI_CSN;
 }
 
 /**
- * @brief		This function servers to gets the spi data.
- * @return		the spi data.
+ * @brief       This function servers to gets the spi data.
+ * @return      the spi data.
  */
-_attribute_ram_code_sec_ static inline unsigned char mspi_get(void){
-	return reg_mspi_data;
+_attribute_ram_code_sec_ static inline unsigned char mspi_get(void)
+{
+    return reg_mspi_data;
 }
 
 /**
- * @brief		This function servers to write the spi.
- * @param[in]	c	- the char need to be write.
- * @return		none.
+ * @brief       This function servers to write the spi.
+ * @param[in]   c   - the char need to be write.
+ * @return      none.
  */
-_attribute_ram_code_sec_ static inline void mspi_write(unsigned char c){
-	reg_mspi_data = c;
+_attribute_ram_code_sec_ static inline void mspi_write(unsigned char c)
+{
+    reg_mspi_data = c;
 }
 
 /**
- * @brief		This function servers to control the write.
- * @param[in]	c	- need to be write.
- * @return		none.
+ * @brief       This function servers to control the write.
+ * @param[in]   c   - need to be write.
+ * @return      none.
  */
-_attribute_ram_code_sec_ static inline void mspi_fm_write(unsigned char c){
-	reg_mspi_fm = c;
+_attribute_ram_code_sec_ static inline void mspi_fm_write(unsigned char c)
+{
+    reg_mspi_fm = c;
 }
 
 /**
- * @brief		This function servers to spi read.
- * @return		read result.
+ * @brief       This function servers to spi read.
+ * @return      read result.
  */
-_attribute_ram_code_sec_ static inline unsigned char mspi_read(void){
-	mspi_write(0);		// dummy, issue clock
-	mspi_wait();
-	return mspi_get();
+_attribute_ram_code_sec_ static inline unsigned char mspi_read(void)
+{
+    mspi_write(0); // dummy, issue clock
+    mspi_wait();
+    return mspi_get();
 }
 
 /**
- * @brief		This function serves to Stop XIP operation before flash.
- * @return		none.
+ * @brief       This function serves to Stop XIP operation before flash.
+ * @return      none.
  */
 _attribute_ram_code_sec_ static inline void mspi_stop_xip(void)
 {
-	mspi_wait();	//wait xip busy=0
-	mspi_high();	//mspi_cn=1, stop xip read
-	while(gpio_get_level(GPIO_PF3) == 0);	//wait cn=1
+    mspi_wait(); //wait xip busy=0
+    mspi_high(); //mspi_cn=1, stop xip read
+    while (gpio_get_level(GPIO_PF3) == 0)
+        ;        //wait cn=1
 }
-
-
-

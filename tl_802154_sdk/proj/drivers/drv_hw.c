@@ -76,7 +76,7 @@
 	#endif
 #endif
 
-#define BATTERY_SAFETY_THRESHOLD	2200   //2.2v
+
 
 //system ticks per US
 u32 sysTimerPerUs;
@@ -128,16 +128,17 @@ static void internalFlashSizeCheck(void){
 #endif
 }
 
-static void voltage_detect_init(void)
+static void voltage_detect_init(u32 detectPin)
 {
 	drv_adc_init();
 
 #if defined(MCU_CORE_826x)
+	(void)detectPin;
 	drv_adc_mode_pin_set(DRV_ADC_VBAT_MODE, NOINPUT);
 #elif defined(MCU_CORE_8258) || defined(MCU_CORE_8278)
-	drv_adc_mode_pin_set(DRV_ADC_VBAT_MODE, GPIO_PC5);
+	drv_adc_mode_pin_set(DRV_ADC_VBAT_MODE, (GPIO_PinTypeDef)detectPin);
 #elif defined(MCU_CORE_B91)
-	drv_adc_mode_pin_set(DRV_ADC_BASE_MODE, ADC_GPIO_PB0);
+	drv_adc_mode_pin_set(DRV_ADC_VBAT_MODE, (adc_input_pin_def_e)detectPin);
 #endif
 
 	drv_adc_enable(1);
@@ -145,12 +146,6 @@ static void voltage_detect_init(void)
 
 void voltage_detect(void)
 {
-#if defined(MCU_CORE_B91)
-	//EVK board and dongle do not support.
-	return;
-#endif
-
-
 	static u16 voltage = 0;
 	voltage = drv_get_adc_data();
 	u32 curTick = clock_time();
@@ -162,7 +157,7 @@ void voltage_detect(void)
 #if PM_ENABLE
 			drv_pm_sleep(PM_SLEEP_MODE_DEEPSLEEP, 0, 0);
 #else
-			SYSTEM_RESET();
+//			SYSTEM_RESET();
 #endif
 		}
 		voltage = drv_get_adc_data();
@@ -178,7 +173,7 @@ static startup_state_e platform_wakeup_init(void)
 #elif defined(MCU_CORE_8278)
 	cpu_wakeup_init(LDO_MODE, EXTERNAL_XTAL_24M);
 #elif defined(MCU_CORE_B91)
-	sys_init(LDO_1P4_LDO_1P8, VBAT_MAX_VALUE_GREATER_THAN_3V6);
+	sys_init(LDO_1P4_LDO_1P8, VBAT_MAX_VALUE_GREATER_THAN_3V6, INTERNAL_CAP_XTAL24M);
 #endif
 
 #if defined(MCU_CORE_826x)
@@ -228,6 +223,12 @@ startup_state_e drv_platform_init(void)
 	if(state == SYSTEM_RETENTION_NONE){
 		randInit();
 		internalFlashSizeCheck();
+
+#if FLASH_PROTECT_ENABLE
+        flash_loadOpt();
+        flash_lock();
+#endif
+
 #if PM_ENABLE
 		PM_CLOCK_INIT();
 #endif
@@ -239,7 +240,7 @@ startup_state_e drv_platform_init(void)
 	}
 
 #if VOLTAGE_DETECT_ENABLE
-	voltage_detect_init();
+	voltage_detect_init(VOLTAGE_DETECT_ADC_PIN);
 #endif
 
 	ZB_RADIO_INIT();

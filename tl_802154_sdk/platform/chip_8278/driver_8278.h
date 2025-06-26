@@ -70,4 +70,5 @@
 #include "emi.h"
 #include "pm.h"
 #include "pke.h"
-
+#include "flash/flash_type.h"
+#include "flash/flash_common.h"

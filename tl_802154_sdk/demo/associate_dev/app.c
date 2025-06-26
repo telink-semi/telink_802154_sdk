@@ -1,10 +1,32 @@
-#include "zb_common.h"
+/********************************************************************************************************
+ * @file    app.c
+ *
+ * @brief   This is the source file for app
+ *
+ * @author  Zigbee Group
+ * @date    2021
+ *
+ * @par     Copyright (c) 2021, Telink Semiconductor (Shanghai) Co., Ltd. ("TELINK")
+ *
+ *          Licensed under the Apache License, Version 2.0 (the "License");
+ *          you may not use this file except in compliance with the License.
+ *          You may obtain a copy of the License at
+ *
+ *              http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *          Unless required by applicable law or agreed to in writing, software
+ *          distributed under the License is distributed on an "AS IS" BASIS,
+ *          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *          See the License for the specific language governing permissions and
+ *          limitations under the License.
+ *******************************************************************************************************/
+#include <ieee802154_common.h>
 #include "app.h"
 #include "app_cfg.h"
+#include "sampleDevice.h"
 #include "../app_common/tl_specific_data.h"
 #include "../app_common/ota/tl_specific_data_ota.h"
-#define    DEBUG_PIN1                      LED_1
-#define    DEBUG_PIN2                      LED_2
+
 
 typedef struct {
     u16 pan_id;
@@ -35,7 +57,7 @@ unsigned char  coor_ext_addr[8] = {0};
 unsigned short coor_addr_short = 0x0;
 unsigned short pan_id = 0;
 
-//set key_usage_list  type 01£ºmac data  03:mac cmd
+//set key_usage_list  type 01ï¿½ï¿½mac data  03:mac cmd
 mac_keyusageDesc_t *pKeyUsgDesc[2] = {NULL};
 mac_keyid_lookup_desc_t *pKeyIDDesc = NULL;
 
@@ -123,17 +145,21 @@ void dev_active_scan(void)
     tl_MacMlmeScanRequest(scan_req);
 }
 
-void MyScanCnfCb(unsigned char *pData)
+void MyScanCnfCb(void *pData)
 {
 	if(pData==NULL) return;
 	zb_mac_mlme_scan_conf_t *pConf = (zb_mac_mlme_scan_conf_t *)pData;
     if ((pConf->status == MAC_SUCCESS) && (pConf->scanType == ACTIVE_SCAN)) {
-    	if (BeaconReqTimer) {
+
+    }
+	if(received_coor.coor_size){
+
+		if (BeaconReqTimer) {
     		TL_ZB_TIMER_CANCEL(&BeaconReqTimer);
     	}
-    }
-	if(received_coor.coor_size);
-    dev_start_associate();
+
+		dev_start_associate();
+	}
 }
 
 
@@ -143,10 +169,11 @@ void dev_start_associate(void)
     my_pan_t *pan_of_highest_lqi = NULL;
     u8 len=0;
     u32 pan_size = received_coor.coor_size;
-    if(pan_size)
-    	pan_of_highest_lqi = &received_coor.coor_beacon[0];
-    else
+    if(!pan_size){
     	return;
+    }
+
+    pan_of_highest_lqi = &received_coor.coor_beacon[0];
     //find out the pan with highest lqi first
     for(u32 i=0;i<pan_size;i++)
     {
@@ -229,10 +256,12 @@ void mac_set_pollRate(u32 newRate){
 	if(ZB_PIB_RX_ON_WHEN_IDLE()){
 		return;
 	}
-	if(newRate)
-	{
-    	if (PollDataTimer)
+	if(newRate){
+	
+    	if (PollDataTimer)	{
     		TL_ZB_TIMER_CANCEL(&PollDataTimer);
+		}
+		
 		PollDataTimer = TL_ZB_TIMER_SCHEDULE(PollDataTimerCb, NULL, newRate);
 	}
 
@@ -247,7 +276,7 @@ int PollDataTimerCb(void *arg)
 }
 
 
-void MyAssocCnfCb(unsigned char *pData)
+void MyAssocCnfCb(void *pData)
 {
 	if(pData==NULL) return;
 	u8 len=0;
@@ -262,14 +291,17 @@ void MyAssocCnfCb(unsigned char *pData)
 	ZB_IEEE_ADDR_COPY(coor_ext_addr, pCnf->parentAddress);
 	add_key_material();
 
-    if (pCnf->status == MAC_SUCCESS)
-    {
-    	mac_set_pollRate(NORMAL_POLL_RATE);//data request
-	    ota_queryStart(QUERY_RATE);	// ota query 30S
+    if (pCnf->status == MAC_SUCCESS) {
+    	ieee802154_info_save(); //store network info
+    	gDevCtx.newDev = 0;
+    	if (1 || !ZB_PIB_RX_ON_WHEN_IDLE()) {
+    		mac_set_pollRate(NORMAL_POLL_RATE);//data request
+    	}
+        ota_queryStart(QUERY_RATE); //ota query 30S
     }
 }
 
-void MyDataIndCb(unsigned char *pData)
+void MyDataIndCb(void *pData)
 {
 	if(pData==NULL)  return;
 	zb_mscp_data_ind_t * pInd = (zb_mscp_data_ind_t *)pData;
@@ -283,10 +315,43 @@ void MyDataIndCb(unsigned char *pData)
 	}
 }
 
-volatile static unsigned int tdebug_cnt_poll_cnf = 0;
-void MyPollCnfCb(unsigned char *pData)
+/*********************************************************************
+ * @fn      MyDataCnfCb
+ *
+ * @brief   callback function for data-confirm
+ *
+ * @param   arg  the result status for sending a packet
+ *
+ * @return  none
+ */
+void MyDataCnfCb(void *arg)
 {
-	if (pData==NULL)   return;
+    if (arg == NULL) {
+        return;
+    }
+
+    zb_mscp_data_conf_t *pCnf = (zb_mscp_data_conf_t *)arg;
+
+    if (pCnf->status != MAC_SUCCESS) {
+        //if the status isn't MAC_SUCCESS,user can retransmit in app layer
+    }
+}
+
+/*********************************************************************
+ * @fn      app_pollCnfCb
+ *
+ * @brief   callback function for data-request confirm
+ *
+ * @param   arg  data-request confirm primitive
+ *
+ * @return  none
+ */
+volatile static unsigned int tdebug_cnt_poll_cnf = 0;
+void MyPollCnfCb(void *pData)
+{
+	if (pData==NULL){
+        return;
+    }
     tdebug_cnt_poll_cnf++;
     mac_mlme_poll_conf_t *pCnf = (mac_mlme_poll_conf_t *)pData;
     if(pCnf->status==MAC_STA_FRAME_PENDING)//if status is MAC_STA_FRAME_PENDING,user can continue to poll
@@ -297,10 +362,17 @@ void MyPollCnfCb(unsigned char *pData)
 
 
 
-void MyBeaconIndCb(unsigned char *pData)
+void MyBeaconIndCb(void *pData)
 {
 	if(pData==NULL)  return;
 	zb_mlme_beacon_notify_ind_t *pInd = (zb_mlme_beacon_notify_ind_t *)pData;
+    zb_superframe_spec_t frm;
+
+    memcpy(&frm, &(pInd->panDesc.superframeSpec), sizeof(zb_superframe_spec_t));
+
+    if (frm.associatePermit == 0) {
+        return;
+    }
 	u8 size = received_coor.coor_size+1;
 	if(size<MAX_ED_SCAN_RESULTS_SUPPORTED)
 	{
@@ -311,17 +383,5 @@ void MyBeaconIndCb(unsigned char *pData)
 		pan_ptr->channel = pInd->panDesc.logicalChannel;
 		pan_ptr->permitjoin = pInd->panDesc.gtsPermit;
 		received_coor.coor_size++;
-	}
-}
-
-
-
-void MyDataCnfCb(unsigned char *pData)
-{
-	if(pData==NULL)  return;
-	zb_mscp_data_conf_t *pCnf = (zb_mscp_data_conf_t *)pData;
-	if(pCnf->status!=MAC_SUCCESS)
-	{
-			//if the status isn't MAC_SUCCESS,user can retransmit in app layer
 	}
 }

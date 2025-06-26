@@ -1,9 +1,30 @@
-#include "zb_common.h"
+/********************************************************************************************************
+ * @file    app.c
+ *
+ * @brief   This is the source file for app
+ *
+ * @author  Zigbee Group
+ * @date    2021
+ *
+ * @par     Copyright (c) 2021, Telink Semiconductor (Shanghai) Co., Ltd. ("TELINK")
+ *
+ *          Licensed under the Apache License, Version 2.0 (the "License");
+ *          you may not use this file except in compliance with the License.
+ *          You may obtain a copy of the License at
+ *
+ *              http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *          Unless required by applicable law or agreed to in writing, software
+ *          distributed under the License is distributed on an "AS IS" BASIS,
+ *          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *          See the License for the specific language governing permissions and
+ *          limitations under the License.
+ *******************************************************************************************************/
+#include <ieee802154_common.h>
 #include "app.h"
 #include "../app_common/tl_specific_data.h"
-#define    DEBUG_PIN1                     LED_1
-#define    DEBUG_PIN2                     LED_2
 
+#define 	APP_NODE_NUM_MAX        128
 #define		END_DEVICE_NUM		MAC_DEV_TABLE_MAX_LEN
 my_device_t end_device[END_DEVICE_NUM] = {{{0},0,0}};
 u8 device_index=0;
@@ -23,13 +44,89 @@ unsigned char test_key[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
 
 static int data_send_indir_timer_cb(void *arg);
 
-//set key_usage_list  type 01£ºmac data  03:mac cmd
+//set key_usage_list  type 01:mac data  03:mac cmd
 mac_keyusageDesc_t *pKeyUsgDesc[2] = {NULL};
 mac_keyid_lookup_desc_t *pKeyIDDesc = NULL;
 
 
 //rx packet
 volatile u8 user_packet[16] = {0};
+
+static u16 g_node_addr[APP_NODE_NUM_MAX];
+static u16 g_node_num_cur = 0;
+
+static u8 g_mac_msdu_handle = 0;
+static u32 g_node_index = 0;
+static ev_timer_event_t *g_data_txto_allnode_timer = NULL;
+static u32 g_app_data_sn = 0;
+
+s32 app_data_txto_allnode(void *arg)
+{
+    zb_mscp_data_req_t req;
+    memset(&req, 0, sizeof(req));
+    u8 len;
+    tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&req.dstPanId,&len);
+    req.srcAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST;    // short addr mode
+    req.dstAddr.addrMode = ZB_ADDR_16BIT_DEV_OR_BROADCAST;    // short addr mode
+
+#if 1
+    if (g_node_num_cur > 0) {
+        req.dstAddr.addr.shortAddr = g_node_addr[g_node_index];
+        if (++g_node_index >= g_node_num_cur) {
+            g_node_index = 0;
+        }
+    } else {
+        return -1;
+    }
+#endif
+
+    req.msduHandle = (g_mac_msdu_handle++) & 0x3f;
+    /* tx options:
+     * MAC_TX_OPTION_ACKNOWLEDGED_BIT: mac ack needed(normally used for unicasting)
+     * MAC_TX_OPTION_INDIRECT_TRANSMISSION_BIT: indirect transmit if the destination device is sleepy-device
+     * 0:   for broadcasting
+     * */
+    req.txOptions = MAC_TX_OPTION_ACKNOWLEDGED_BIT | MAC_TX_OPTION_INDIRECT_TRANSMISSION_BIT;
+    // don't use security
+#if APP_MAC_SEC_ENABLE
+    req.sec.securityLevel = 0;
+#endif
+
+    u8 msduLen = 50+4;
+    u8 *msdu = ev_buf_allocate(msduLen);
+    u32 *pdu = (u32 *)msdu;
+    *pdu = g_app_data_sn++;
+    if (msdu) {
+        for (int i = 4; i < msduLen; i++) {
+            msdu[i] = i - 4;
+        }
+        tl_MacMcpsDataRequestSend(req, msdu, msduLen);
+        ev_buf_free(msdu);
+    }
+
+#if 0
+    if (g_node_index++ > 4) {
+        return -1;
+    }
+#endif
+
+    return 0;
+}
+
+
+
+
+void app_data_transmit_toggle(void)
+{
+    if (g_data_txto_allnode_timer) {
+        TL_ZB_TIMER_CANCEL(&g_data_txto_allnode_timer);
+        return;
+    }
+    g_node_index = 0;
+    g_data_txto_allnode_timer = TL_ZB_TIMER_SCHEDULE(app_data_txto_allnode, NULL, 3000);
+}
+
+
 
 void coor_config(void)
 {
@@ -208,7 +305,7 @@ void data_send(void)
     data_send_indir_timer = TL_ZB_TIMER_SCHEDULE(data_send_indir_timer_cb, NULL, 5000);
 }
 
-void MyAssociateIndCb(unsigned char *pData)
+void MyAssociateIndCb(void *pData)
 {
 	if(pData==NULL) return;
 	zb_mlme_associate_ind_t *pInd = (zb_mlme_associate_ind_t *)pData;
@@ -217,8 +314,12 @@ void MyAssociateIndCb(unsigned char *pData)
 	u8 idx=0,len=0;
 	ZB_IEEE_ADDR_COPY(device_address, pInd->devAddress);
 	ZB_IEEE_ADDR_COPY(device_ext_addr, pInd->devAddress);
+
 	if(add_key_material()!=TRUE)//add device info to key table
+	{
 		return;
+	}
+
 	idx = device_addr_short&0xf;
 	ZB_IEEE_ADDR_COPY(end_device[idx].extAddr, device_address);
 	tl_zbMacAttrGet(MAC_ATTR_PAN_ID,(u8 *)&end_device[idx].pan_id,&len);
@@ -235,7 +336,7 @@ void MyAssociateIndCb(unsigned char *pData)
 }
 
 
-void MyStartCnfCb(unsigned char *pData)
+void MyStartCnfCb(void *pData)
 {
 	if(pData==NULL)  	return;
 //	mac_mlme_startCnf_t *pCnf = (mac_mlme_startCnf_t *)pData;
@@ -244,7 +345,7 @@ void MyStartCnfCb(unsigned char *pData)
 
 
 
-void MyDataCnfCb(unsigned char *pData)
+void MyDataCnfCb(void *pData)
 {
 	if(pData==NULL)  	return;
 	zb_mscp_data_conf_t *pCnf = (zb_mscp_data_conf_t *)pData;
@@ -252,18 +353,16 @@ void MyDataCnfCb(unsigned char *pData)
 	{
 			//if the status isn't MAC_SUCCESS,user can retransmit in app layer
 	}
-    gpio_toggle(DEBUG_PIN1);
 }
 
-void MyPullIndCb(unsigned char *pData)
+void MyPullIndCb(void *pData)
 {
 	if(pData==NULL)  	return;
 //	mac_mlme_poll_ind_t *pInd = (mac_mlme_poll_ind_t *)pData;
 //	pInd->addrMode
-    gpio_toggle(DEBUG_PIN2);
 }
 
-void MyStateIndCb(unsigned char *pData)
+void MyStateIndCb(void *pData)
 {
 	if(pData==NULL)  	return;
 	zb_mlme_comm_status_ind_t * pInd = (zb_mlme_comm_status_ind_t *)pData;
@@ -275,7 +374,7 @@ void MyStateIndCb(unsigned char *pData)
 
 
 
-void MyDataIndCb(unsigned char *pData)
+void MyDataIndCb(void *pData)
 {
 	if(pData==NULL)  	return;
 	zb_mscp_data_ind_t * pInd = (zb_mscp_data_ind_t *)pData;
@@ -285,7 +384,9 @@ void MyDataIndCb(unsigned char *pData)
 	if(ret!=SUCCESS)
 	{
 		if(len>sizeof(user_packet))
+		{
 			len = sizeof(user_packet);
+		}
 		memcpy((u8 *)user_packet,(u8 *)pInd->msdu,len);
 	}
 }

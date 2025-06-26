@@ -45,6 +45,9 @@
  *******************************************************************************************************/
 #pragma once
 
+#define BATTERY_SAFETY_THRESHOLD	2200   //2.2v
+
+
 #if defined(MCU_CORE_826x) || defined(MCU_CORE_8258) || defined(MCU_CORE_8278)
 	#define SYSTEM_RESET()			mcu_reset()
 #elif defined(MCU_CORE_B91)

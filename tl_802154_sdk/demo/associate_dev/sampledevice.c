@@ -1,13 +1,30 @@
-#include "zb_common.h"
+/********************************************************************************************************
+ * @file    sampleDevice.c
+ *
+ * @brief   This is the source file for sampleDevice
+ *
+ * @author  Zigbee Group
+ * @date    2021
+ *
+ * @par     Copyright (c) 2021, Telink Semiconductor (Shanghai) Co., Ltd. ("TELINK")
+ *
+ *          Licensed under the Apache License, Version 2.0 (the "License");
+ *          you may not use this file except in compliance with the License.
+ *          You may obtain a copy of the License at
+ *
+ *              http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *          Unless required by applicable law or agreed to in writing, software
+ *          distributed under the License is distributed on an "AS IS" BASIS,
+ *          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *          See the License for the specific language governing permissions and
+ *          limitations under the License.
+ *******************************************************************************************************/
+#include <ieee802154_common.h>
 #include "sampledevice.h"
 #include "app.h"
+#include "app_ui.h"
 #include "../app_common/ota/tl_specific_data_ota.h"
-
-void led_init(void)
-{
-	drv_gpio_write(LED_1, 0);
-	drv_gpio_write(LED_2, 0);
-}
 
 /*********************************************************************
  * @fn      user_init
@@ -24,7 +41,7 @@ void user_init(bool isRetention)
 
 	if(!isRetention){
 	    //802.15.4 stack Init
-		zb_init();
+		gDevCtx.newDev = ieee802154_init();
 
 		ota_init();
 #if ZBHCI_EN
@@ -41,8 +58,6 @@ void user_init(bool isRetention)
 
 		sys_exceptHandlerRegister(sampleDeviceSysException);
 
-		dev_config();
-
 	    UpperLayerCallbackSet(CALLBACK_SCAN_CONFIRM, MyScanCnfCb);
 	    UpperLayerCallbackSet(CALLBACK_ASSOCIATE_CONFIRM, MyAssocCnfCb);
 	    UpperLayerCallbackSet(CALLBACK_DATA_INDICATION, MyDataIndCb);
@@ -50,7 +65,18 @@ void user_init(bool isRetention)
 	    UpperLayerCallbackSet(CALLBACK_MCPS_DATA_CONFIRM, MyDataCnfCb);
 	    UpperLayerCallbackSet(CALLBACK_BEACON_NOTIFY_INDICATION, MyBeaconIndCb);
 
-	    dev_start_scan();
+        if (gDevCtx.newDev) {
+    		dev_config();
+    	    dev_start_scan();
+        } else {
+            ota_queryStart(QUERY_RATE);
+            if (!ZB_PIB_RX_ON_WHEN_IDLE()) {
+            	mac_set_pollRate(NORMAL_POLL_RATE);//data request
+            }
+        }
+
+
+
 	}
 	else
 	{
@@ -66,8 +92,14 @@ void user_init(bool isRetention)
 
 void app_task(void)
 {
+    app_key_handler();
+
 #if PM_ENABLE
-	drv_pm_lowPowerEnter();
+    if (!gDevCtx.keyPressed) {
+        if (!tl_stackBusy() && zb_isTaskDone()) {
+            drv_pm_lowPowerEnter();
+        }
+    }
 #endif
 }
 

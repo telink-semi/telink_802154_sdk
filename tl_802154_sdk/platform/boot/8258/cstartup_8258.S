@@ -45,7 +45,7 @@
  *******************************************************************************************************/
 #ifdef MCU_STARTUP_8258
 
-#include "ver_info.h"
+#include "version_cfg.h"
 
 #define MCU_RUN_SRAM_EN			  			0 /*caution: update the configuration in boot.link */
 

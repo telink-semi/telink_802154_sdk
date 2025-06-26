@@ -267,13 +267,13 @@ typedef enum{
 
 
 /* sector info(4Bytes) + index info(8Bytes) + index info(8Bytes) + ... */
-typedef struct{
+typedef struct _attribute_packed_{
 	u16 usedFlag;
 	u8  idName;
 	u8  opSect;
 }nv_sect_info_t;
 
-typedef struct{
+typedef struct _attribute_packed_{
 	u32 offset;
 	u16 size;
 	u8  itemId;
@@ -281,14 +281,14 @@ typedef struct{
 }nv_info_idx_t;
 
 /* item:  item_hdr(8Bytes) + payload*/
-typedef struct{
+typedef struct _attribute_packed_{
 	u32 checkSum;
 	u16 size;
 	u8  itemId;
 	u8  used;
 }itemHdr_t;
 
-typedef struct{
+typedef struct _attribute_packed_{
 	u16 opIndex;
 	u8 	opSect;
 }itemIfno_t;

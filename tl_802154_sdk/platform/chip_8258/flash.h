@@ -60,6 +60,7 @@ enum{
 	FLASH_WRITE_ENABLE_CMD 		= 	0x06,
 	FLASH_SECT_ERASE_CMD		=	0x20,
 	FLASH_GD_PUYA_READ_UID_CMD	=	0x4B,	//Flash Type = GD/PUYA
+	FLASH_READ_UID_CMD_GD_PUYA_ZB_TH	=	0x4B,	//Flash Type = GD/PUYA/ZB/TH
 	FLASH_32KBLK_ERASE_CMD		=	0x52,
 	FLASH_XTX_READ_UID_CMD		=	0x5A,	//Flash Type = XTX
 	FLASH_CHIP_ERASE_CMD		=	0x60,   //or 0xc7
@@ -73,6 +74,18 @@ enum{
 	FLASH_ERASE_SECURITY_REGISTERS_CMD	=	0x44,
 
 };
+
+/**
+ * @brief     flash vendor and technology definition
+ */
+typedef enum{
+	FLASH_ETOX_ZB  		= 0x0100325E,	// 325E		bit[24]:ETOX: Byte Program Time != Page Programming Time
+	FLASH_ETOX_GD   	= 0x010060C8,	// 60C8/4051
+	FLASH_SONOS_PUYA  	= 0x02006085,	// 6085		bit[25]:SONOS:Byte Program Time == Page Programming Time
+	FLASH_SONOS_TH  	= 0x020060EB,	// 60EB
+	FLASH_SST_TH  		= 0x040060CD,	// 60CD		bit[26]:SST:  Byte Program Time != Page Programming Time
+}flash_vendor_e;
+
 
 /**
  * @brief     flash capacity definition
@@ -134,10 +147,10 @@ _attribute_ram_code_ void flash_read_mid(unsigned char *buf);
  */
 _attribute_ram_code_ void flash_read_uid(unsigned char idcmd,unsigned char *buf);
 
-/**
- * @brief 		 This function serves to read flash mid and uid,and check the correctness of mid and uid.
- * @param[out]   flash_mid - Flash Manufacturer ID
- * @param[out]   flash_uid - Flash Unique ID
- * @return       0:error 1:ok
- */
-_attribute_ram_code_ int flash_read_mid_uid_with_check( unsigned int *flash_mid ,unsigned char *flash_uid);
+///**
+// * @brief 		 This function serves to read flash mid and uid,and check the correctness of mid and uid.
+// * @param[out]   flash_mid - Flash Manufacturer ID
+// * @param[out]   flash_uid - Flash Unique ID
+// * @return       0:error 1:ok
+// */
+//_attribute_ram_code_ int flash_read_mid_uid_with_check( unsigned int *flash_mid ,unsigned char *flash_uid);
