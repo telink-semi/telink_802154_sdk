@@ -72,7 +72,7 @@ void dev_config(void)
 
 	tl_zbMacAttrSet(MAC_DEFAULT_KEY_SOURCE,default_key_source,8);
 
-	//COMMON METERIALS
+	//COMMON Materials
 	pKeyUsgDesc[0]= (mac_keyusageDesc_t *)mac_keyusageDesc_alloc();
 	if (!pKeyUsgDesc[0]) {
 		while(1);

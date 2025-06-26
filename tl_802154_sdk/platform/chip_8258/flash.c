@@ -81,7 +81,7 @@ _attribute_ram_code_ static void flash_send_addr(unsigned int addr){
 
 /**
  * @brief     This function serves to wait flash done.
- *            (make this a asynchorous version).
+ *            (make this a asynchronous version).
  * @param[in] none.
  * @return    none.
  */
@@ -173,7 +173,7 @@ _attribute_ram_code_ void flash_read_page(unsigned long addr, unsigned long len,
 }
 
 
-/* according to your appliaction */
+/* according to your application */
 #if 1
 
 /**

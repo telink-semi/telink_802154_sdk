@@ -16,7 +16,7 @@
  *           MUST NOT be removed from this file.
  *
  *           Licensees are granted free, non-transferable use of the information in this
- *           file under Mutual Non-Disclosure Agreement. NO WARRENTY of ANY KIND is provided.
+ *           file under Mutual Non-Disclosure Agreement. NO WARRANTY of ANY KIND is provided.
  *
  *******************************************************************************************************/
 #ifndef __MID13325E_H__

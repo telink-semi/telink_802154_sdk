@@ -1070,7 +1070,7 @@ void tl_zbMacDataPurgeRequestProc(zb_mscp_purge_req_t *p, zb_mscp_purge_conf_t *
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacResetRequst(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_RESET_REQ, p)
+#define tl_zbMacResetRequest(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_RESET_REQ, p)
 
 /*
  * MLME-POLL.request primitive from upper layer to MAC layer
@@ -1080,7 +1080,7 @@ void tl_zbMacDataPurgeRequestProc(zb_mscp_purge_req_t *p, zb_mscp_purge_conf_t *
  * @return ZB_RET_OVERFLOW if failure, ZB_RET_OK else
  *
  * */
-#define tl_zbMacPollRequst(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_POLL_REQ, p)
+#define tl_zbMacPollRequest(p)			tl_zbPrimitivePost(TL_Q_NWK2MAC, MAC_MLME_POLL_REQ, p)
 
 /*
  * MLME-ASSOCIATE.request primitive from upper layer to MAC layer

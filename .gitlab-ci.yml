@@ -146,6 +146,9 @@ plainPW_check:
 
 misspellChecking:
   stage: misspellChecking
+  variables:
+    pattern: "./tl_zigbee_sdk/platform/chip_b91/reg_include/core_reg.h"
+    word_filter_pattern: "monts SIE currentY"
   tags:
     - LINUX
   script:

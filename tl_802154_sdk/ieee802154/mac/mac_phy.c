@@ -330,7 +330,7 @@ u8 rf_getLqi(s8 rssi)
 }
 
 /*********************************************************************
- * @fn      rf_startED
+ * @fn      rf_startEDScan
  *
  * @brief   Start ED detect
  *
@@ -338,7 +338,7 @@ u8 rf_getLqi(s8 rssi)
  *
  * @return  none
  */
-void rf_startED(void)
+void rf_startEDScan(void)
 {
 #ifndef WIN32
     soft_rssi = -110;
@@ -351,7 +351,7 @@ void rf_startED(void)
 }
 
 /*********************************************************************
- * @fn      rf_stopED
+ * @fn      rf_stopEDScan
  *
  * @brief   Stop Energy Detect
  *
@@ -359,7 +359,7 @@ void rf_startED(void)
  *
  * @return  ED result
  */
-u8 rf_stopED(void)
+u8 rf_stopEDScan(void)
 {
 #ifndef WIN32
     u8 ed;
